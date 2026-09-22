@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Voz do Aluno e das Famílias — Painel Executivo</title>
+<title>NPS - Heavenly — Painel Executivo</title>
 <style>
 /* =========================================================
    PALETA INSTITUCIONAL
@@ -49,6 +49,16 @@
   --orange:#a5581e;
   --aqua:  #1c4a3c;
   --violet:#5a3350;
+
+  /* Cores "vivas" para números em destaque (só modo claro — no escuro caem de volta às cores padrão) */
+  --good-vivid: #1f8a4d;
+  --warn-vivid: #d98c0f;
+  --crit-vivid: #c22a44;
+  --navy-vivid: #0a5fb0;
+  --vivid-bg-good: #d9f0e1;
+  --vivid-bg-warn: #fbe8c4;
+  --vivid-bg-crit: #fbdde1;
+  --vivid-bg-navy: #dcebfa;
 
   --shadow: 0 1px 2px rgba(2,36,66,.06), 0 2px 6px rgba(2,36,66,.06);
   --shadow-md: 0 4px 16px rgba(2,36,66,.10), 0 1px 3px rgba(2,36,66,.08);
@@ -97,6 +107,16 @@
   --aqua:  #7fc8a9;
   --violet:#caa0c0;
 
+  /* Destaque "vivo" é só recurso de modo claro — no escuro, mantém as cores padrão sem fundo extra */
+  --good-vivid: var(--good);
+  --warn-vivid: var(--warn);
+  --crit-vivid: var(--crit);
+  --navy-vivid: var(--navy);
+  --vivid-bg-good: transparent;
+  --vivid-bg-warn: transparent;
+  --vivid-bg-crit: transparent;
+  --vivid-bg-navy: transparent;
+
   --shadow: 0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.3);
   --shadow-md: 0 6px 22px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.35);
 }
@@ -115,6 +135,8 @@
     --crit:var(--bordo); --crit-bg:rgba(225,139,152,.14); --crit-brd:rgba(225,139,152,.35);
     --neutral:#b9ae93; --neutral-bg:rgba(185,174,147,.14); --neutral-brd:rgba(185,174,147,.3);
     --blue:#7fb6e8; --orange:#e0a869; --aqua:#7fc8a9; --violet:#caa0c0;
+    --good-vivid:var(--good); --warn-vivid:var(--warn); --crit-vivid:var(--crit); --navy-vivid:var(--navy);
+    --vivid-bg-good:transparent; --vivid-bg-warn:transparent; --vivid-bg-crit:transparent; --vivid-bg-navy:transparent;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.3);
     --shadow-md: 0 6px 22px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.35);
   }
@@ -135,39 +157,40 @@ h1,h2,h3,h4{font-family:inherit;}
 /* ===== HEADER ===== */
 header.top{
   background: linear-gradient(135deg, var(--navy) 0%, #063057 55%, var(--bordo) 130%);
-  color:#f4ebd4; padding:7px 0 6px; margin-bottom:12px;
+  color:#f4ebd4; padding:5px 0; margin-bottom:6px; line-height:1.2;
   position:sticky; top:0; z-index:50; box-shadow:var(--shadow-md);
 }
+header.top .wrap{ padding-bottom:0; } /* .wrap normalmente carrega o padding-bottom:70px do corpo da página — não deve valer aqui */
 :root[data-theme="dark"] header.top{ background: linear-gradient(135deg, #030d16 0%, #0a1c2c 60%, #2a1116 130%); }
 header.top .head-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;}
-header.top .title-block{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
-header.top h1{font-size:15px; margin:0; letter-spacing:.3px; font-weight:800; white-space:nowrap;}
-header.top p.sub{margin:0; color:#cbbf9e; font-size:11px; max-width:440px; display:none;}
+header.top .title-block{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;}
+header.top h1{font-size:20px; margin:0; letter-spacing:.3px; font-weight:800; white-space:nowrap;}
+header.top p.sub{margin:0; color:#cbbf9e; font-size:13.5px; max-width:460px; display:none;}
 @media (min-width:1300px){ header.top p.sub{display:block;} }
 .head-actions{display:flex; align-items:center; gap:8px;}
 .theme-toggle{
   display:flex; align-items:center; gap:5px; background:rgba(244,235,212,.12); border:1px solid rgba(244,235,212,.28);
-  color:#f4ebd4; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer;
+  color:#f4ebd4; padding:3px 10px; border-radius:20px; font-size:13.5px; font-weight:600; cursor:pointer;
   transition:background .15s ease;
 }
 .theme-toggle:hover{background:rgba(244,235,212,.22);}
-.badge-live{display:inline-flex; align-items:center; gap:5px; font-size:10px; color:#cbbf9e; background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.22); padding:2px 8px; border-radius:20px; white-space:nowrap;}
-.badge-live span.dot{width:5px;height:5px;border-radius:50%;background:#7fc8a9;display:inline-block; box-shadow:0 0 0 2px rgba(127,200,169,.25);}
+.badge-live{display:inline-flex; align-items:center; gap:5px; font-size:12.5px; color:#cbbf9e; background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.22); padding:2px 9px; border-radius:20px; white-space:nowrap;}
+.badge-live span.dot{width:6px;height:6px;border-radius:50%;background:#7fc8a9;display:inline-block; box-shadow:0 0 0 2px rgba(127,200,169,.25);}
 
 /* ===== FILTER BAR ===== */
-.filter-shell{margin-top:5px; background:rgba(244,235,212,.08); border:1px solid rgba(244,235,212,.18); border-radius:10px; padding:5px 9px;}
-.filter-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-.filter-label{font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#cbbf9e; flex:0 0 auto; width:54px;}
-.pillset{display:flex; gap:4px; flex-wrap:wrap;}
+.filter-shell{margin-top:5px; background:rgba(244,235,212,.08); border:1px solid rgba(244,235,212,.18); border-radius:10px; padding:5px 10px;}
+.filter-row{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+.filter-label{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#cbbf9e; flex:0 0 auto; width:66px;}
+.pillset{display:flex; gap:5px; flex-wrap:wrap;}
 .pill-btn{
   background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.25); color:#f4ebd4;
-  padding:2px 9px; border-radius:16px; font-size:11px; font-weight:600; cursor:pointer;
+  padding:3px 11px; border-radius:16px; font-size:13.5px; font-weight:600; cursor:pointer;
   transition: all .15s ease;
 }
 .pill-btn:hover{background:rgba(244,235,212,.22);}
 .pill-btn.active{background:#f4ebd4; color:var(--navy); border-color:#f4ebd4; box-shadow:0 2px 8px rgba(0,0,0,.18);}
-.filter-note{font-size:9px; color:#b5a985; margin-top:3px; line-height:1.25;}
-.scope-summary{display:inline-flex; align-items:center; gap:6px; background:rgba(244,235,212,.14); border:1px solid rgba(244,235,212,.3); padding:2px 10px; border-radius:18px; font-size:10.5px; font-weight:700; color:#f4ebd4; margin-left:6px;}
+.filter-note{font-size:11px; color:#b5a985; margin-top:3px; line-height:1.2;}
+.scope-summary{display:inline-flex; align-items:center; gap:6px; background:rgba(244,235,212,.14); border:1px solid rgba(244,235,212,.3); padding:2px 11px; border-radius:18px; font-size:13px; font-weight:700; color:#f4ebd4; margin-left:6px;}
 
 /* ===== SECTION SHELL ===== */
 section{margin-bottom:36px;}
@@ -182,20 +205,23 @@ section{margin-bottom:36px;}
 .card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:18px 20px; transition: box-shadow .2s ease, transform .2s ease, background-color .25s ease, border-color .25s ease;}
 
 /* ===== KPI ROW ===== */
-.kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.kpi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
 .kpi{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px; position:relative; transition:transform .18s ease, box-shadow .18s ease;}
 .kpi:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
 .kpi .label{font-size:11.5px; color:var(--ink-3); font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
-.kpi .value{font-size:30px; font-weight:800; color:var(--navy); margin:4px 0 2px; font-variant-numeric:tabular-nums;}
-.kpi .value.good{color:var(--good);}
-.kpi .value.warn{color:var(--warn);}
-.kpi .value.crit{color:var(--crit);}
+.kpi .value{font-size:30px; font-weight:800; color:var(--navy-vivid); margin:6px 0 2px; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 14px; border-radius:10px; background:var(--vivid-bg-navy);}
+.kpi .value.good{color:var(--good-vivid); background:var(--vivid-bg-good);}
+.kpi .value.warn{color:var(--warn-vivid); background:var(--vivid-bg-warn);}
+.kpi .value.crit{color:var(--crit-vivid); background:var(--vivid-bg-crit);}
 .kpi .foot{font-size:12px; color:var(--ink-2);}
-.kpi .chip{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:20px; margin-top:6px;}
-.kpi-sub-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px;}
+.kpi .chip, .kpi-mini .chip{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:20px; margin-top:6px;}
+.kpi-sub-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;}
 .kpi-mini{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:14px 16px;}
 .kpi-mini .t{font-size:11.5px; color:var(--ink-3); font-weight:700; text-transform:uppercase;}
-.kpi-mini .v{font-size:20px; font-weight:800; margin-top:2px;}
+.kpi-mini .v{font-size:20px; font-weight:800; margin-top:4px; color:var(--navy-vivid); display:inline-block; padding:0px 11px; border-radius:8px; background:var(--vivid-bg-navy);}
+.kpi-mini .v.good{color:var(--good-vivid); background:var(--vivid-bg-good);}
+.kpi-mini .v.warn{color:var(--warn-vivid); background:var(--vivid-bg-warn);}
+.kpi-mini .v.crit{color:var(--crit-vivid); background:var(--vivid-bg-crit);}
 .kpi-mini .d{font-size:12px; color:var(--ink-2); margin-top:2px;}
 .small-sample-flag{display:inline-flex; align-items:center; gap:5px; background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-brd); font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; margin-top:8px;}
 
@@ -204,9 +230,9 @@ section{margin-bottom:36px;}
 .stackbar{height:36px; border-radius:9px; overflow:hidden; display:flex; width:100%; box-shadow:inset 0 0 0 1px rgba(2,36,66,.06);}
 .stackbar > div{height:100%; display:flex; align-items:center; justify-content:center; color:#fffdf8; font-size:12px; font-weight:700; min-width:0; cursor:default; transition:filter .15s ease;}
 .stackbar > div:hover{filter:brightness(1.08);}
-.seg-prom{background:var(--good);}
-.seg-neu{background:var(--warn);}
-.seg-det{background:var(--crit);}
+.seg-prom{background:var(--good-vivid);}
+.seg-neu{background:var(--warn-vivid);}
+.seg-det{background:var(--crit-vivid);}
 .legend-row{display:flex; gap:18px; margin-top:12px; flex-wrap:wrap;}
 .legend-item{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2);}
 .legend-dot{width:11px;height:11px;border-radius:3px; display:inline-block;}
@@ -227,7 +253,7 @@ section{margin-bottom:36px;}
 .rank-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
 .rank-card .pos{position:absolute; top:14px; right:16px; font-size:22px; font-weight:800; color:var(--border-2);}
 .rank-card h4{margin:0 0 8px; font-size:15px; color:var(--navy);}
-.rank-card .nps-big{font-size:26px; font-weight:800; font-variant-numeric:tabular-nums;}
+.rank-card .nps-big{font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 12px; border-radius:9px; margin-top:2px;}
 .rank-card .row-mini{display:flex; justify-content:space-between; font-size:12px; color:var(--ink-2); margin-top:8px; border-top:1px solid var(--border); padding-top:8px;}
 
 table{width:100%; border-collapse:collapse; font-size:13px;}
@@ -245,10 +271,10 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 .eixo-card .eixo-title{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:10px;}
 .eixo-card h3{font-size:15.5px; margin:0; color:var(--navy);}
 .status-badge{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; white-space:nowrap;}
-.status-alto{background:var(--good-bg); color:var(--good); border:1px solid var(--good-brd);}
+.status-alto{background:var(--good-bg); color:var(--good-vivid); border:1px solid var(--good-brd);}
 .status-medioalto{background:var(--bg-card-2); color:var(--navy-3); border:1px solid var(--border-2);}
-.status-mediobaixo{background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-brd);}
-.status-baixo{background:var(--crit-bg); color:var(--crit); border:1px solid var(--crit-brd);}
+.status-mediobaixo{background:var(--warn-bg); color:var(--warn-vivid); border:1px solid var(--warn-brd);}
+.status-baixo{background:var(--crit-bg); color:var(--crit-vivid); border:1px solid var(--crit-brd);}
 .eixo-bars{margin:10px 0 12px;}
 .mini-bar-row{display:grid; grid-template-columns:78px 1fr 42px; gap:8px; align-items:center; margin-bottom:6px;}
 .mini-bar-row .k{font-size:11px; color:var(--ink-3); font-weight:600;}
@@ -260,6 +286,28 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 .eixo-block b{color:var(--navy); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.3px; margin-bottom:2px;}
 .eixo-interp{background:var(--bg-card-2); border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:12px; color:var(--ink-1); margin-top:10px;}
 
+/* ===== consulta por professor ===== */
+.prof-search-wrap{position:relative; max-width:520px;}
+.prof-search-input{width:100%; padding:11px 14px; border:1px solid var(--border-2); border-radius:9px; font-size:14px; background:var(--bg-card); color:var(--ink-1); font-family:inherit;}
+.prof-search-input:focus{outline:2px solid var(--navy-3); outline-offset:1px;}
+.prof-search-results{position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--bg-card); border:1px solid var(--border); border-radius:9px; box-shadow:var(--shadow-md); max-height:300px; overflow-y:auto; z-index:30; display:none;}
+.prof-search-item{padding:8px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid var(--border);}
+.prof-search-item:last-child{border-bottom:none;}
+.prof-search-item:hover{background:var(--bg-card-2);}
+.prof-search-item b{color:var(--navy); font-weight:700;}
+.prof-search-item small{display:block; color:var(--ink-3); font-size:11px; margin-top:1px;}
+
+/* ===== grafico eixos (grouped bars, 02-Painel-Eixos) ===== */
+.eixo-chart-outer{display:grid; grid-template-columns:26px 1fr; gap:6px;}
+.eixo-chart-yaxis{display:flex; flex-direction:column; justify-content:space-between; height:220px; padding-bottom:2px; font-size:10px; color:var(--ink-3); text-align:right; font-variant-numeric:tabular-nums;}
+.eixo-chart-wrap{display:flex; align-items:flex-end; gap:10px; height:222px; border-bottom:1px solid var(--border); padding:0 4px;}
+.eixo-chart-group{flex:1; display:flex; flex-direction:column; align-items:center; min-width:0; height:100%; justify-content:flex-end;}
+.eixo-chart-bars{display:flex; align-items:flex-end; justify-content:center; gap:3px; width:100%; height:220px;}
+.eixo-chart-bar{width:15px; border-radius:3px 3px 0 0; cursor:default; transition:opacity .15s ease;}
+.eixo-chart-bar:hover{opacity:.78;}
+.eixo-chart-label{font-size:10.5px; color:var(--ink-2); text-align:center; line-height:1.25; margin-top:8px; max-width:118px;}
+.eixo-chart-legend{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:16px; font-size:12px; color:var(--ink-2);}
+
 /* ===== matriz fam x aluno ===== */
 .gapbar-track{height:20px; background:var(--bg-card-2); border:1px solid var(--border); border-radius:6px; position:relative;}
 .gapbar-mid{position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--ink-3);}
@@ -267,9 +315,9 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 /* ===== theme table ===== */
 .pill{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px;}
-.pill-pos{background:var(--good-bg); color:var(--good);}
-.pill-neg{background:var(--crit-bg); color:var(--crit);}
-.pill-mix{background:var(--warn-bg); color:var(--warn);}
+.pill-pos{background:var(--good-bg); color:var(--good-vivid);}
+.pill-neg{background:var(--crit-bg); color:var(--crit-vivid);}
+.pill-mix{background:var(--warn-bg); color:var(--warn-vivid);}
 
 /* ===== 3 column groups ===== */
 .col3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
@@ -290,9 +338,9 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 .atencao-item{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px; margin-bottom:12px; display:grid; grid-template-columns:120px 1fr; gap:16px;}
 .prio-flag{font-size:11px; font-weight:800; padding:5px 10px; border-radius:8px; text-align:center; align-self:flex-start; text-transform:uppercase;}
-.prio-critico{background:var(--crit-bg); color:var(--crit); border:1px solid var(--crit-brd);}
+.prio-critico{background:var(--crit-bg); color:var(--crit-vivid); border:1px solid var(--crit-brd);}
 .prio-alta{background:var(--warn-bg); color:var(--orange); border:1px solid var(--warn-brd);}
-.prio-atencao{background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-brd);}
+.prio-atencao{background:var(--warn-bg); color:var(--warn-vivid); border:1px solid var(--warn-brd);}
 .prio-monitorar{background:var(--neutral-bg); color:var(--neutral); border:1px solid var(--neutral-brd);}
 .atencao-body h4{margin:0 0 6px; font-size:14.5px;}
 .atencao-grid-meta{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:8px; font-size:11.8px;}
@@ -359,6 +407,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 @media (max-width:1200px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .kpi-sub-grid{grid-template-columns:repeat(2,1fr);}
   .eixos-grid{grid-template-columns:repeat(2,1fr);}
   .rank-grid{grid-template-columns:repeat(2,1fr);}
   .col3{grid-template-columns:1fr 1fr;}
@@ -390,7 +439,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   <div class="wrap">
     <div class="head-row">
       <div class="title-block">
-        <h1>VOZ DO ALUNO E DAS FAMÍLIAS</h1>
+        <h1>NPS - HEAVENLY</h1>
         <p class="sub">Painel executivo de satisfação e percepção — famílias, alunos, coordenação e autoavaliação docente.</p>
         <div class="badge-live"><span class="dot"></span> 452 NPS de famílias · 374 alunos · 154 professores</div>
       </div>
@@ -406,6 +455,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
           <button class="pill-btn" data-val="Kinder">Kinder</button>
           <button class="pill-btn" data-val="Asa Norte">Asa Norte</button>
           <button class="pill-btn" data-val="High">High</button>
+          <button class="pill-btn" data-val="Lago Sul" title="Kinder + High somados">Lago Sul</button>
         </div>
         <div class="filter-label" style="width:auto; margin-left:6px;">Segmento</div>
         <div class="pillset" id="pillsSegmento">
@@ -432,42 +482,45 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <div id="kpiSmallSample"></div>
     <div class="kpi-grid">
       <div class="kpi">
-        <div class="label">NPS Famílias</div>
-        <div class="value good" id="kpiNPS">—</div>
-        <div class="foot" id="kpiNPSfoot">Promotores − Detratores</div>
-        <span class="chip" id="kpiNPSchip" style="background:var(--good-bg); color:var(--good);">saudável</span>
+        <div class="label">Promotores (9–10)</div>
+        <div class="value good" id="kpiProm">—</div>
+        <div class="foot" id="kpiPromN">—</div>
       </div>
       <div class="kpi">
-        <div class="label">Nota média NPS (0–10)</div>
-        <div class="value" id="kpiMedia">—</div>
-        <div class="foot">Não confundir com o NPS — é a média aritmética das notas 0–10, apresentada como leitura complementar</div>
+        <div class="label">Neutros / Passivos (7–8)</div>
+        <div class="value warn" id="kpiNeu">—</div>
+        <div class="foot" id="kpiNeuN">—</div>
       </div>
       <div class="kpi">
-        <div class="label">Famílias respondentes</div>
-        <div class="value" id="kpiFamN">—</div>
-        <div class="foot">Responderam à pergunta de NPS (0–10)</div>
+        <div class="label">Detratores (0–6)</div>
+        <div class="value crit" id="kpiDet">—</div>
+        <div class="foot" id="kpiDetN">—</div>
       </div>
-      <div class="kpi">
-        <div class="label">Alunos respondentes</div>
-        <div class="value" id="kpiAlunoN">—</div>
-        <div class="foot" id="kpiAlunoFoot">Alunos não respondem a NPS — só EF II e Ensino Médio participam da pesquisa</div>
-      </div>
+    </div>
+    <div class="nps-formula" id="kpiCalcExplain">
+      <b>Como chegamos neste NPS:</b> das <b id="calcN">—</b> respostas à pergunta de recomendação (escala 0–10) neste recorte, <b id="calcPromPct" style="color:var(--good-vivid)">—</b> (<span id="calcPromN">—</span>) foram <b style="color:var(--good-vivid)">promotoras</b> (notas 9–10), <b id="calcNeuPct" style="color:var(--warn-vivid)">—</b> (<span id="calcNeuN">—</span>) <b style="color:var(--warn-vivid)">neutras</b> (notas 7–8) e <b id="calcDetPct" style="color:var(--crit-vivid)">—</b> (<span id="calcDetN">—</span>) <b style="color:var(--crit-vivid)">detratoras</b> (notas 0–6). O NPS é a diferença entre os dois extremos: % Promotores − % Detratores = <b id="calcPromPct2" style="color:var(--good-vivid)">—</b> − <b id="calcDetPct2" style="color:var(--crit-vivid)">—</b> = <b id="calcNPS">—</b>. Os neutros entram na base de cálculo, mas não somam nem subtraem do resultado.
     </div>
     <div class="kpi-sub-grid">
       <div class="kpi-mini">
-        <div class="t">Promotores (9–10)</div>
-        <div class="v" style="color:var(--good)" id="kpiProm">—</div>
-        <div class="d" id="kpiPromN">—</div>
+        <div class="t">NPS Famílias</div>
+        <div class="v good" id="kpiNPS">—</div>
+        <div class="d" id="kpiNPSfoot">Promotores − Detratores</div>
+        <span class="chip" id="kpiNPSchip" style="background:var(--good-bg); color:var(--good-vivid); margin-top:6px;">saudável</span>
       </div>
       <div class="kpi-mini">
-        <div class="t">Neutros / Passivos (7–8)</div>
-        <div class="v" style="color:var(--warn)" id="kpiNeu">—</div>
-        <div class="d" id="kpiNeuN">—</div>
+        <div class="t">Nota média NPS (0–10)</div>
+        <div class="v" id="kpiMedia">—</div>
+        <div class="d">Soma de todas as <b id="kpiMediaN">—</b> notas (0 a 10) ÷ número de respostas. Não confundir com o NPS — é a média aritmética das notas, não a diferença entre extremos.</div>
       </div>
       <div class="kpi-mini">
-        <div class="t">Detratores (0–6)</div>
-        <div class="v" style="color:var(--crit)" id="kpiDet">—</div>
-        <div class="d" id="kpiDetN">—</div>
+        <div class="t">Famílias respondentes</div>
+        <div class="v" id="kpiFamN">—</div>
+        <div class="d">Contagem direta de respostas válidas à pergunta de NPS (0–10) neste recorte — é o <b>n</b> usado como base de todos os percentuais acima.</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="t">Alunos respondentes</div>
+        <div class="v" id="kpiAlunoN">—</div>
+        <div class="d" id="kpiAlunoFoot">Alunos não respondem a NPS — só EF II e Ensino Médio participam da pesquisa</div>
       </div>
     </div>
     <div class="col2" style="margin-top:14px;" id="kpiConsolidadoBoxes">
@@ -483,26 +536,45 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   </div>
 </section>
 
+<!-- ============ GRAFICO EIXOS (02-Painel-Eixos) ============ -->
+<section id="sec-grafico-eixos">
+  <div class="section-head"><h2><span class="num-chip">2</span>Índice 0–100 por eixo e por visão</h2><span class="n-tag" id="graficoEixosScope">Recorte: Consolidado</span></div>
+  <div class="section-desc">As quatro vozes lado a lado, nos sete eixos comuns da base (fonte: aba 02-Painel-Eixos). Alunos só têm índice comparável em <b>Tutoria</b> e <b>Idioma</b> — nos demais eixos e em "Percepção geral e jornada" (pergunta exclusiva de família do Ensino Médio) a barra de aluno não existe. Reage ao filtro de <b>Unidade</b> (agrega todos os segmentos daquela unidade); não reage ao filtro de Segmento, para manter os sete eixos comparáveis lado a lado no mesmo gráfico.</div>
+  <div class="card">
+    <div class="eixo-chart-outer">
+      <div class="eixo-chart-yaxis"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
+      <div class="eixo-chart-wrap" id="graficoEixosChart"></div>
+    </div>
+    <div class="eixo-chart-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span>Famílias</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--aqua)"></span>Coordenação</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--violet)"></span>Autoavaliação</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--orange)"></span>Alunos</span>
+    </div>
+  </div>
+  <p class="footnote">Índice 0–100 (Sempre=100 / Quase sempre=75 / Às vezes=50 / Raramente=25 / Nunca=0), agregado por unidade a partir do mesmo cruzamento real usado na seção "Seis eixos prioritários". "Percepção geral e jornada" combina duas perguntas de família exclusivas do Ensino Médio (preparação para o futuro e trilhas de aprofundamento, n=87) — só existe na unidade High. Passe o mouse sobre uma barra para o valor exato e o n.</p>
+</section>
+
 <!-- ============ NPS DISTRIBUTION ============ -->
 <section id="sec-dist">
-  <div class="section-head"><h2><span class="num-chip">2</span>Distribuição do NPS — Promotores × Neutros × Detratores</h2></div>
+  <div class="section-head"><h2><span class="num-chip">3</span>Distribuição do NPS — Promotores × Neutros × Detratores</h2></div>
   <div class="card">
     <div class="nps-dist-wrap">
       <div>
         <div class="stackbar" id="stackbarMain"></div>
         <div class="legend-row">
-          <div class="legend-item"><span class="legend-dot" style="background:var(--good)"></span>Promotores (9–10) — <b id="legProm">—</b></div>
-          <div class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Neutros (7–8) — <b id="legNeu">—</b></div>
-          <div class="legend-item"><span class="legend-dot" style="background:var(--crit)"></span>Detratores (0–6) — <b id="legDet">—</b></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--good)"></span>Promotores (9–10) — <b id="legProm" style="color:var(--good-vivid)">—</b></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Neutros (7–8) — <b id="legNeu" style="color:var(--warn-vivid)">—</b></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--crit)"></span>Detratores (0–6) — <b id="legDet" style="color:var(--crit-vivid)">—</b></div>
         </div>
         <div class="nps-formula"><b>NPS = % Promotores − % Detratores.</b> Não é a média das notas — é a métrica oficial da pergunta "qual a probabilidade de recomendar a Heavenly a um amigo ou familiar?" (escala 0–10, único indicador com essa pergunta na base).</div>
       </div>
       <div>
         <table>
           <tr><th>Grupo</th><th class="num">Respostas</th><th class="num">% do total</th></tr>
-          <tr><td><span class="legend-dot" style="background:var(--good)"></span> Promotores</td><td class="num" id="tblProm">—</td><td class="num" id="tblPromPct">—</td></tr>
-          <tr><td><span class="legend-dot" style="background:var(--warn)"></span> Neutros</td><td class="num" id="tblNeu">—</td><td class="num" id="tblNeuPct">—</td></tr>
-          <tr><td><span class="legend-dot" style="background:var(--crit)"></span> Detratores</td><td class="num" id="tblDet">—</td><td class="num" id="tblDetPct">—</td></tr>
+          <tr><td><span class="legend-dot" style="background:var(--good)"></span> Promotores</td><td class="num" id="tblProm" style="color:var(--good-vivid); font-weight:700;">—</td><td class="num" id="tblPromPct" style="color:var(--good-vivid); font-weight:700;">—</td></tr>
+          <tr><td><span class="legend-dot" style="background:var(--warn)"></span> Neutros</td><td class="num" id="tblNeu" style="color:var(--warn-vivid); font-weight:700;">—</td><td class="num" id="tblNeuPct" style="color:var(--warn-vivid); font-weight:700;">—</td></tr>
+          <tr><td><span class="legend-dot" style="background:var(--crit)"></span> Detratores</td><td class="num" id="tblDet" style="color:var(--crit-vivid); font-weight:700;">—</td><td class="num" id="tblDetPct" style="color:var(--crit-vivid); font-weight:700;">—</td></tr>
           <tr><td><b>Total</b></td><td class="num" id="tblTotal"><b>—</b></td><td class="num">100%</td></tr>
         </table>
       </div>
@@ -510,14 +582,48 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   </div>
 </section>
 
+<!-- ============ PROMOTORES / NEUTROS / DETRATORES ============ -->
+<section id="sec-pnd">
+  <div class="section-head"><h2><span class="num-chip">4</span>Promotores, Neutros e Detratores — leitura qualitativa</h2></div>
+  <div class="section-desc">Os totais em cada título respondem ao filtro de unidade/segmento. Os comentários citados nas listas abaixo vêm da leitura integral da base consolidada (a granularidade da base de comentários não permite recontar cada frase por recorte) — use-os como contexto qualitativo, não como números exclusivos do recorte selecionado.</div>
+  <div class="col3">
+    <div class="group-card prom">
+      <h3 style="color:var(--good-vivid)" id="pndPromHead">Promotores (274 · 60,6%)</h3>
+      <ul>
+        <li>A identidade católica e os valores institucionais aparecem como o motivo de escolha mais citado — presente em 86 dos 209 comentários de promotores que escreveram algo (41%)</li>
+        <li>Bilinguismo, formação integral e atenção individualizada sustentam a recomendação mesmo entre famílias que apontam ressalvas pontuais</li>
+        <li>Atributos a preservar: identidade religiosa consistente, tutoria próxima, e o próprio ato de tratar "o aluno como indivíduo, não como número" — expressão recorrente nos comentários</li>
+      </ul>
+    </div>
+    <div class="group-card neu">
+      <h3 style="color:var(--warn-vivid)" id="pndNeuHead">Neutros / Passivos (128 · 28,3%)</h3>
+      <ul>
+        <li>Comunicação fragmentada é o problema mais citado por este grupo (26 dos 105 comentários de neutros)</li>
+        <li>Mensalidade e rotatividade de profissionais aparecem como fatores que impedem uma nota mais alta, sem anular a satisfação geral</li>
+        <li>Ação com maior potencial de conversão: um canal único de comunicação e devolutivas mais previsíveis — o próprio grupo já demonstra alto reconhecimento do projeto pedagógico, então o obstáculo é operacional, não de proposta</li>
+      </ul>
+    </div>
+    <div class="group-card det">
+      <h3 style="color:var(--crit-vivid)" id="pndDetHead">Detratores (50 · 11,1%)</h3>
+      <ul>
+        <li>Concentram-se proporcionalmente mais na Asa Norte — e, dentro dela, no segmento Ensino Fundamental I (a combinação com o menor NPS de toda a base, +23,3%)</li>
+        <li>Causas mais citadas: falha de comunicação, sensação de desorganização/instabilidade de gestão, e — em um pequeno número de casos graves — inclusão não efetivada e resposta lenta a incidentes</li>
+        <li>Gravidade: a maioria dos 50 casos é de insatisfação operacional recuperável; um subconjunto pequeno (2 a 3 relatos) descreve situações de maior gravidade que justificam apuração individual, não só ação de processo</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ============ COMPARATIVO UNIDADES x SEGMENTOS ============ -->
 <div id="sec-unidades-note" class="data-empty" style="display:none; margin-bottom:24px;">Comparativo entre unidades e segmentos — disponível apenas no filtro Consolidado.</div>
 <section id="sec-unidades">
-  <div class="section-head"><h2><span class="num-chip">3</span>Comparativo entre unidades e segmentos</h2><span class="n-tag">Base: NPS de famílias, n=452 (famílias com filhos em mais de uma unidade/segmento contam em cada recorte aplicável)</span></div>
+  <div class="section-head"><h2><span class="num-chip">5</span>Comparativo entre unidades e segmentos</h2><span class="n-tag">Base: NPS de famílias, n=452 (famílias com filhos em mais de uma unidade/segmento contam em cada recorte aplicável)</span></div>
   <div class="section-desc">Ranking por NPS marginal (uma unidade ou um segmento por vez) e, abaixo, o cruzamento completo Unidade × Segmento — a visão mais precisa da base, já que cada resposta está de fato ligada a uma unidade e a um segmento. Passe o mouse sobre qualquer célula para ver o detalhe.</div>
   <div class="rank-grid" id="rankUnidades"></div>
+  <p class="footnote" style="margin:-4px 0 14px;">Em cada cartão: <b>NPS</b> = % Promotores (notas 9–10) − % Detratores (notas 0–6) dentro daquela unidade/segmento; <b>Nota média</b> = média aritmética das notas 0–10 dessa mesma base — as duas usam o mesmo grupo de respostas, mas respondem perguntas diferentes (ver "Como chegamos neste NPS" na seção 1).</p>
   <div class="card" style="margin-top:16px; overflow-x:auto;">
     <div class="eyebrow">Cruzamento completo — NPS por Unidade × Segmento</div>
+    <div id="crossChart" style="margin:8px 0 20px;"></div>
     <table id="crossTable" style="min-width:640px;"></table>
     <p class="footnote">Traços (—) marcam combinações de unidade e segmento que não existem na escola (ex.: Kinder não tem Ensino Fundamental II). Valores em cinza-claro indicam amostra pequena (n&lt;10) dentro de uma combinação que existe. Passe o mouse sobre um valor para o detalhe completo, ou clique para aplicar o recorte no painel.</p>
   </div>
@@ -526,8 +632,9 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <!-- ============ ANALISE POR SEGMENTO ============ -->
 <div id="sec-segmento-note" class="data-empty" style="display:none; margin-bottom:24px;">Análise por segmento educacional — sem outros segmentos para comparar dentro deste recorte (um segmento já está selecionado).</div>
 <section id="sec-segmento">
-  <div class="section-head"><h2><span class="num-chip">4</span>Análise por segmento educacional</h2><span class="n-tag" id="segmentoNTag">Base: NPS de famílias, n=452</span></div>
+  <div class="section-head"><h2><span class="num-chip">6</span>Análise por segmento educacional</h2><span class="n-tag" id="segmentoNTag">Base: NPS de famílias, n=452</span></div>
   <div class="rank-grid" id="rankSegmentos"></div>
+  <p class="footnote" style="margin:-4px 0 14px;">Em cada cartão: <b>NPS</b> = % Promotores (notas 9–10) − % Detratores (notas 0–6) dentro daquele segmento; <b>Nota média</b> = média aritmética das notas 0–10 dessa mesma base (ver "Como chegamos neste NPS" na seção 1).</p>
   <div class="card" style="margin-top:14px;" id="segmentoLeituraCard">
     <div class="eyebrow">Leitura</div>
     <div id="segmentoLeitura">
@@ -539,8 +646,8 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ SEIS EIXOS ============ -->
 <section id="sec-eixos">
-  <div class="section-head"><h2><span class="num-chip">5</span>Seis eixos prioritários</h2><span class="n-tag">Índice 0–100 por eixo (metodologia da base: Sempre=100 / Quase sempre=75 / Às vezes=50 / Raramente=25 / Nunca=0)</span></div>
-  <div class="section-desc">Os eixos combinam a mesma pergunta (ou perguntas equivalentes) respondida por até quatro públicos: alunos, famílias, coordenação e autoavaliação docente. Alunos só respondem nos eixos com escala numérica comparável (Tutoria e Idioma) — nos demais eixos, o instrumento do aluno só permite <b>nomeação positiva de professores</b>, não uma nota. A nota de aluno some sempre que o Segmento selecionado é Ensino Infantil ou Ensino Fundamental I (esses dois nunca tiveram resposta de aluno), em qualquer unidade. Os valores abaixo respondem aos filtros de Unidade e Segmento (inclusive combinados), usando o cruzamento real de cada resposta na base — passe o mouse sobre uma barra para o detalhe.</div>
+  <div class="section-head"><h2><span class="num-chip">7</span>Seis eixos prioritários</h2><span class="n-tag">Índice 0–100 por eixo (metodologia da base: Sempre=100 / Quase sempre=75 / Às vezes=50 / Raramente=25 / Nunca=0)</span></div>
+  <div class="section-desc">Os eixos combinam a mesma pergunta (ou perguntas equivalentes) respondida por até quatro públicos: alunos, famílias, coordenação e autoavaliação docente. Alunos só respondem nos eixos com escala numérica comparável (Tutoria e Idioma) — nos demais eixos, o instrumento do aluno só permite <b>nomeação positiva de professores</b>, não uma nota. A nota de aluno some sempre que o Segmento selecionado é Ensino Infantil ou Ensino Fundamental I (esses dois nunca tiveram resposta de aluno), em qualquer unidade. Os valores abaixo respondem aos filtros de Unidade e Segmento (inclusive combinados), usando o cruzamento real de cada resposta na base — passe o mouse sobre uma barra para o detalhe. Exceção: a pesquisa de família não tem pergunta própria de <b>E3 (Ambiente, Respeito e Equidade)</b> para Ensino Fundamental I — a nota usada nesse segmento vem da avaliação por turma à professora regente/tutora (mesma base de "Professores referência"). Elogios, críticas e interpretação de cada eixo são leitura da base consolidada e só aparecem no filtro Consolidado.</div>
   <div class="eixos-grid" id="eixosGrid"></div>
 </section>
 
@@ -548,7 +655,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <!-- ============ ANALISE DOS ALUNOS ============ -->
 <div id="sec-alunos-note" class="data-empty" style="display:none; margin-bottom:24px;">Análise dos alunos — a pesquisa não inclui este recorte (alunos só respondem em Ensino Fundamental II e Ensino Médio, e essas etapas não existem no Kinder).</div>
 <section id="sec-alunos">
-  <div class="section-head"><h2><span class="num-chip">6</span>Análise dos alunos</h2><span class="n-tag">374 alunos respondentes (267 EF II · 107 EM) — pesquisa restrita a Ensino Fundamental II e Ensino Médio</span></div>
+  <div class="section-head"><h2><span class="num-chip">8</span>Análise dos alunos</h2><span class="n-tag">374 alunos respondentes (267 EF II · 107 EM) — pesquisa restrita a Ensino Fundamental II e Ensino Médio</span></div>
   <div class="col2">
     <div class="card">
       <div class="eyebrow">O que a base quantitativa mostra</div>
@@ -599,44 +706,121 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   <div class="footnote" style="margin-top:10px;">Por desenho de pesquisa, não há voz do aluno para Ensino Infantil e Ensino Fundamental I — nesses segmentos a família é a única fonte externa de avaliação. Nomes de professores citados negativamente nos comentários abertos não são reproduzidos neste painel executivo; ficam disponíveis para apuração interna a partir da base-fonte.</div>
 </section>
 
+<!-- ============ ANALISE DAS FAMILIAS ============ -->
+<div id="sec-familias-note" class="data-empty" style="display:none; margin-bottom:24px;">Análise das famílias — sem respostas de família nesta combinação exata de unidade e segmento.</div>
+<section id="sec-familias">
+  <div class="section-head"><h2><span class="num-chip">9</span>Análise das famílias</h2><span class="n-tag" id="familiasNTag">452 famílias respondentes</span></div>
+  <div class="col2">
+    <div class="card">
+      <div class="eyebrow">O que a base quantitativa mostra — nota das famílias por eixo</div>
+      <div class="barrow" id="famBar_E1"><div class="lbl">Tutoria e PDI</div><div class="track"><div class="fill" style="width:80%; background:var(--bordo);"></div></div><div class="val">80,0</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E1">n=573</div>
+      <div class="barrow" id="famBar_E2"><div class="lbl">Idioma e Bilinguismo</div><div class="track"><div class="fill" style="width:65.9%; background:var(--bordo);"></div></div><div class="val">65,9</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E2">n=441</div>
+      <div class="barrow" id="famBar_E3"><div class="lbl">Ambiente, Respeito e Equidade</div><div class="track"><div class="fill" style="width:86.6%; background:var(--bordo);"></div></div><div class="val">86,6</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E3">n=188</div>
+      <div class="barrow" id="famBar_E4"><div class="lbl">Clareza da Aprendizagem</div><div class="track"><div class="fill" style="width:78.5%; background:var(--bordo);"></div></div><div class="val">78,5</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E4">n=405</div>
+      <div class="barrow" id="famBar_E5"><div class="lbl">Inclusão e Atenção Individual</div><div class="track"><div class="fill" style="width:86.7%; background:var(--bordo);"></div></div><div class="val">86,7</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E5">n=504</div>
+      <div class="barrow" id="famBar_E6"><div class="lbl">Comunicação e Parceria</div><div class="track"><div class="fill" style="width:72.4%; background:var(--bordo);"></div></div><div class="val">72,4</div></div>
+      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E6">n=860</div>
+      <p class="footnote">Índice 0–100 (Sempre=100 / Quase sempre=75 / Às vezes=50 / Raramente=25 / Nunca=0), recalculado por unidade/segmento a partir do cruzamento real de cada resposta — mesma base da seção "Seis eixos prioritários", aqui isolada só para a voz da família.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Temas mais citados pelas famílias nos comentários abertos</div>
+      <table>
+        <tr><th>#</th><th>Tema</th><th>Polaridade</th><th class="num">Menções</th><th class="num">% da base</th></tr>
+        <tbody id="familiasTemasTop"></tbody>
+      </table>
+      <p class="footnote" id="familiasTemasFoot">Classificação temática de todo o texto livre de famílias — contagem direta, não estimativa.</p>
+    </div>
+  </div>
+  <div class="col3" style="margin-top:14px;">
+    <div class="group-card">
+      <h3>Temas positivos recorrentes</h3>
+      <ul id="familiasPos"></ul>
+    </div>
+    <div class="group-card">
+      <h3>Temas críticos recorrentes</h3>
+      <ul id="familiasNeg"></ul>
+    </div>
+    <div class="group-card">
+      <h3>Temas mistos / a monitorar</h3>
+      <ul id="familiasMix"></ul>
+    </div>
+  </div>
+  <div class="footnote" style="margin-top:10px;" id="familiasFootnote">Base = comentários com texto associados a esse recorte (uma família pode aparecer em mais de um recorte quando tem filhos em mais de uma unidade/segmento).</div>
+</section>
+
+<!-- ============ CONSULTA POR PROFESSOR ============ -->
+<section id="sec-prof-consulta">
+  <div class="section-head"><h2><span class="num-chip">10</span>Consulta por professor</h2></div>
+  <div class="section-desc">Busque um professor pelo nome para ver, num só lugar, todas as notas reais que ele recebeu na base — aluno, família, coordenação e autoavaliação, eixo por eixo, com o tamanho de amostra de cada uma. Este quadro não segue o filtro de Unidade/Segmento do topo da página — a busca já localiza o professor onde quer que ele esteja.</div>
+  <div class="card">
+    <div class="prof-search-wrap">
+      <input type="text" id="profSearchInput" class="prof-search-input" placeholder="Digite o nome de um professor..." autocomplete="off">
+      <div class="prof-search-results" id="profSearchResults"></div>
+    </div>
+  </div>
+  <div id="profConsultaEmpty" class="data-empty" style="margin-top:14px;">Busque um professor acima para ver a ficha completa.</div>
+  <div id="profConsultaCard" style="display:none; margin-top:16px;"></div>
+</section>
+
+<!-- ============ PROFESSORES REFERENCIA ============ -->
+<section id="sec-prof-referencia">
+  <div class="section-head"><h2><span class="num-chip">11</span>Professores referência</h2><span class="n-tag" id="profReferenciaScope">Recorte: Consolidado</span></div>
+  <div class="section-desc">Dois rankings independentes, cada um só com sentido dentro do seu próprio mecanismo — não devem ser comparados nota a nota entre si. <b>Ensino Fundamental II e Ensino Médio</b>: todos os professores citados pelos alunos, ordenados por Citações por aluno. <b>Ensino Infantil e Ensino Fundamental I</b> (sem citação de aluno por desenho de pesquisa): nota percentual das famílias à professora regente/tutora, atribuída pela turma que cada professor leciona.</div>
+  <div class="card" style="overflow-x:auto;" id="profReferenciaAlunoCard">
+    <div class="eyebrow">Citações por aluno — Ensino Fundamental II e Ensino Médio</div>
+    <table id="tblProfReferencia" style="min-width:700px;"></table>
+    <div id="profReferenciaEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor citado neste recorte.</div>
+    <p class="footnote">Fonte: aba 10-Prof-Mais-Citados (2) — 9.407 nomeações, 48 professores com alunos atendidos identificados na base de turmas. Tempo de empresa: calculado a partir da data de admissão na planilha "RELAÇÃO FUNCIONÁRIOS" (RH) fornecida pelo cliente até hoje (ou até a data de desligamento, quando aplicável); quando há mais de um vínculo do mesmo professor na base, usamos o vínculo ativo mais recente. Nome em <span style="color:var(--crit-vivid); font-weight:600;">vermelho</span> = professor já desligado (data de desligamento entre parênteses).</p>
+  </div>
+  <div class="card" style="overflow-x:auto; margin-top:14px;" id="profReferenciaFamiliaCard">
+    <div class="eyebrow">Nota da família à professora regente/tutora — Ensino Infantil e Ensino Fundamental I</div>
+    <table id="tblProfReferenciaFamilia" style="min-width:650px;"></table>
+    <div id="profReferenciaFamiliaEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor com nota de família neste recorte.</div>
+    <p class="footnote">Fonte: fam-resposta (pergunta "A professora regente [...] demonstra conhecer o meu filho, o que o motiva, o que o desafia.", 313 respostas válidas em 53 turmas) cruzada com o roster turma→professor fornecido, 57 professores de Ensino Infantil/Fundamental I. Turma com mais de um professor (regências por disciplina): todos recebem a mesma nota da turma. Professor em mais de uma turma: nota = média ponderada pelo n de cada turma. Tempo de empresa: calculado a partir da data de admissão na planilha "RELAÇÃO FUNCIONÁRIOS" (RH) fornecida pelo cliente até hoje (ou até a data de desligamento, quando aplicável). Nome em <span style="color:var(--crit-vivid); font-weight:600;">vermelho</span> = professor já desligado.</p>
+  </div>
+</section>
+
 <!-- ============ PROFESSORES EM ATENCAO ============ -->
 <section id="sec-prof-atencao">
-  <div class="section-head"><h2><span class="num-chip">7</span>Professores que precisam de maior atenção</h2><span class="n-tag" id="profAtencaoScope">Recorte: Consolidado</span></div>
-  <div class="section-desc">Cruza as três fontes que avaliam professores. Um professor entra nesta lista quando uma voz externa à coordenação — <b>alunos</b> (Tutoria/Idioma) ou <b>famílias</b> (Tutoria/Comunicação, só para tutores) — o avalia <b>abaixo de 80 pontos</b> <b>e</b> isso é corroborado por família e/ou coordenação também abaixo de 80 no mesmo eixo. A coluna <b>Motivo</b> explica a conta de cada linha. Não é uma nota de desempenho — é uma lista de conversas de calibragem prioritárias.</div>
-  <div class="card" style="overflow-x:auto;">
-    <table id="tblProfAtencao" style="min-width:1000px;"></table>
-    <div id="profAtencaoEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor atinge o critério de atenção (abaixo de 80, corroborado) neste recorte.</div>
+  <div class="section-head"><h2><span class="num-chip">12</span>Professores que precisam de maior atenção</h2><span class="n-tag" id="profAtencaoScope">Recorte: Consolidado</span></div>
+  <div class="section-desc">Os mesmos dois rankings da seção "Professores referência" (seção 9), aqui do <b>pior para o melhor</b>, para localizar rápido quem precisa de mais atenção em cada mecanismo. <b>Ensino Fundamental II e Ensino Médio</b>: todos os professores citados pelos alunos, da menor Citações por aluno para a maior. <b>Ensino Infantil e Ensino Fundamental I</b> (sem citação de aluno por desenho de pesquisa): nota percentual das famílias à professora regente/tutora, da menor para a maior.</div>
+  <div class="card" style="overflow-x:auto;" id="profAtencaoAlunoCard">
+    <div class="eyebrow">Citações por aluno — Ensino Fundamental II e Ensino Médio (do menor para o maior)</div>
+    <table id="tblProfAtencao" style="min-width:700px;"></table>
+    <div id="profAtencaoEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor citado neste recorte.</div>
+    <p class="footnote">Fonte: aba 10-Prof-Mais-Citados (2) — mesma base da seção "Professores referência". Tempo de empresa: calculado a partir da data de admissão na planilha "RELAÇÃO FUNCIONÁRIOS" (RH) fornecida pelo cliente até hoje (ou até a data de desligamento, quando aplicável). Nome em <span style="color:var(--crit-vivid); font-weight:600;">vermelho</span> = professor já desligado (data de desligamento entre parênteses).</p>
   </div>
-  <p class="footnote">Critério aplicado por eixo (E1 Tutoria, E2 Idioma, E6 Comunicação — os únicos com nota comparável de aluno e/ou família); mostra o pior eixo de cada professor e sinaliza quando há mais de um eixo afetado. Amostras pequenas (n&lt;5 em qualquer fonte) são sinalizadas — leia como direção para conversa, não como avaliação de desempenho fechada.</p>
+  <div class="card" style="overflow-x:auto; margin-top:14px;" id="profAtencaoFamiliaCard">
+    <div class="eyebrow">Nota da família à professora regente/tutora — Ensino Infantil e Ensino Fundamental I (do menor para o maior)</div>
+    <table id="tblProfAtencaoFamilia" style="min-width:650px;"></table>
+    <div id="profAtencaoFamiliaEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor com nota de família neste recorte.</div>
+    <p class="footnote">Fonte: fam-resposta cruzada com o roster turma→professor — mesma base da seção "Professores referência". Tempo de empresa: calculado a partir da data de admissão na planilha "RELAÇÃO FUNCIONÁRIOS" (RH) fornecida pelo cliente até hoje (ou até a data de desligamento, quando aplicável). Nome em <span style="color:var(--crit-vivid); font-weight:600;">vermelho</span> = professor já desligado.</p>
+  </div>
 </section>
 
 <!-- ============ CITACOES x TUTORIA (11-Citações-x-Tutoria) ============ -->
 <div id="sec-citacoes-tutoria-note" class="data-empty" style="display:none; margin-bottom:24px;">Tutores em atenção nas duas frentes — a pesquisa não inclui este recorte (métricas vêm de alunos, que só respondem em Ensino Fundamental II e Ensino Médio).</div>
 <section id="sec-citacoes-tutoria">
-  <div class="section-head"><h2><span class="num-chip">8</span>Tutores em atenção nas duas frentes</h2><span class="n-tag" id="citacoesTutoriaScope">Recorte: Consolidado</span></div>
+  <div class="section-head"><h2><span class="num-chip">13</span>Tutores em atenção nas duas frentes</h2><span class="n-tag" id="citacoesTutoriaScope">Recorte: Consolidado</span></div>
   <div class="section-desc">Cruzamento independente do anterior — usa só evidência de alunos, mas de <b>dois instrumentos diferentes</b>: quanto o tutor é citado como referência em sala pela turma inteira (aba 10) e a nota que os próprios tutorandos dão à tutoria (aba 05, Bloco 5). A coluna <b>Leitura cruzada</b> da base classifica cada tutor comparando as duas medidas com a <b>mediana</b> dos 34 tutores com as duas informações — abaixo mostramos só quem ficou <b>abaixo da mediana nas duas</b>, rótulo original "Atenção nas duas frentes".</div>
   <div class="card" style="overflow-x:auto;">
+    <div class="eyebrow">Dispersão — citações em sala × nota de tutoria (todos os tutores com as duas medidas, neste recorte)</div>
+    <div id="citacoesScatter" style="margin:8px 0 20px;"></div>
     <table id="tblCitacoesTutoria" style="min-width:900px;"></table>
     <div id="citacoesTutoriaEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum tutor com "Atenção nas duas frentes" neste recorte.</div>
   </div>
   <p class="footnote">Medianas de corte na base completa: citações por aluno = 1,18; Tutoria — Alunos = 78,7. Correlação entre as duas medidas nos 34 tutores com ambas: r = 0,50 (moderada — medem coisas relacionadas, mas não a mesma coisa: referência em sala é sobre toda a turma; tutoria é sobre o acompanhamento individual só dos tutorandos). Tutores com poucos tutorandos/respostas (ver colunas Tutorandos e Respostas) têm índice mais instável.</p>
 </section>
 
-<!-- ============ PROFESSORES REFERENCIA ============ -->
-<section id="sec-prof-referencia">
-  <div class="section-head"><h2><span class="num-chip">9</span>Professores referência</h2><span class="n-tag" id="profReferenciaScope">Recorte: Consolidado</span></div>
-  <div class="section-desc">O espelho positivo da seção anterior: professores em que uma voz externa — <b>aluno</b> (Tutoria/Idioma) ou <b>família</b> (Tutoria/Comunicação, via tutor) — dá nota <b>igual ou acima de 85</b>, corroborada por família e/ou coordenação também em 85+ no mesmo eixo. A coluna <b>Como chegou nesta nota</b> mostra a conta exata.</div>
-  <div class="card" style="overflow-x:auto;">
-    <table id="tblProfReferencia" style="min-width:1000px;"></table>
-    <div id="profReferenciaEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor atinge o critério de referência (85+, corroborado) neste recorte.</div>
-  </div>
-  <p class="footnote">Mesmo critério da tabela de atenção, espelhado: exige nota alta convergente entre pelo menos duas fontes, não apenas uma nota isolada — reduz o risco de destacar alguém por uma amostra pequena e favorável.</p>
-</section>
-
 <!-- ============ PROFESSORES: NOTAS E GAPS POR EIXO ============ -->
 <section id="sec-prof-matriz">
-  <div class="section-head"><h2><span class="num-chip">10</span>Professores — notas e gaps por eixo</h2><span class="n-tag" id="profMatrizScope">Recorte: Consolidado</span></div>
-  <div class="section-desc">Nota (índice 0–100) de cada professor nas quatro vozes, por eixo, e os cinco gaps solicitados. Em <b>Tutoria (E1)</b> e <b>Idioma (E2)</b> a coluna Aluno é um índice 0–100 comparável, com gap. Em <b>Ambiente (E3)</b>, <b>Clareza (E4)</b> e <b>Inclusão (E5)</b> o aluno não dá nota — só nomeia professores-referência — então mostramos a <b>taxa de nomeação</b> desse professor como coluna informativa, sem gap (escala diferente de um índice 0–100, calculá-lo misturaria duas medidas distintas). Colunas de Família só existem em E1 e E6, os únicos eixos vinculáveis ao professor via a tutoria (a família não identifica o professor de cada disciplina — checamos a base aluno-professor e a pergunta de família não permite essa ligação nos demais eixos, ver nota metodológica abaixo).</div>
+  <div class="section-head"><h2><span class="num-chip">14</span>Professores — notas e gaps por eixo</h2><span class="n-tag" id="profMatrizScope">Recorte: Consolidado</span></div>
+  <div class="section-desc">Nota (índice 0–100) de cada professor nas quatro vozes, por eixo, e os cinco gaps solicitados. Em <b>Tutoria (E1)</b> e <b>Idioma (E2)</b> a coluna Aluno é um índice 0–100 comparável, com gap. Em <b>Ambiente (E3)</b>, <b>Clareza (E4)</b> e <b>Inclusão (E5)</b> o aluno não dá nota — só nomeia professores-referência — então mostramos a <b>taxa de nomeação</b> desse professor como coluna informativa, sem gap (escala diferente de um índice 0–100, calculá-lo misturaria duas medidas distintas). Colunas de Família só existem em E1 e E6, os únicos eixos vinculáveis ao professor via a tutoria (a família não identifica o professor de cada disciplina — checamos a base aluno-professor e a pergunta de família não permite essa ligação nos demais eixos, ver nota metodológica abaixo). Quando um professor não tem nota de família direta nesses dois eixos (comum em Ensino Infantil/Fund. I, sem vínculo via tutoria), a coluna Família usa a <b>Aval. Família (Turma)</b> como substituta — marcada "via turma" — só para permitir um gap de referência contra Coordenação/Autoavaliação.</div>
   <div class="tabs" id="profEixoTabs">
     <button class="tab-btn active" data-eixo="E1">E1 · Tutoria</button>
     <button class="tab-btn" data-eixo="E2">E2 · Idioma</button>
@@ -645,9 +829,10 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <button class="tab-btn" data-eixo="E5">E5 · Inclusão</button>
     <button class="tab-btn" data-eixo="E6">E6 · Comunicação</button>
   </div>
+  <div id="profMatrizEixoNote" class="data-warn" style="display:none;"></div>
   <div class="card" style="overflow-x:auto;">
     <table id="tblProfMatriz" style="min-width:1100px;"></table>
-    <div id="profMatrizEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor com dado neste eixo, para este recorte de unidade/segmento.</div>
+    <div id="profMatrizEmpty" class="data-empty" style="display:none; margin-top:10px;">Nenhum professor vinculado a este recorte de unidade/segmento.</div>
   </div>
   <p class="footnote">Gap = segunda voz − primeira voz no nome da coluna (ex.: "Aluno × Coord." = Coordenação − Aluno). Positivo = a segunda voz avalia acima; negativo = avalia abaixo. Células sem dado aparecem como "—". Tabela ordenável — clique no cabeçalho de uma coluna de nota ou gap.</p>
   <div class="data-warn">Consulta feita para vincular família a professor além do tutor: cruzamos fam-dados (CPF do responsável → filhos) com alun-Usuários_V2 (aluno → professor por disciplina) — a ligação técnica existe. Mas as perguntas de família nos eixos E2 a E5 (ex.: "meu filho demonstra sentir-se pertencente e acolhido") avaliam a experiência geral do filho, não um professor específico — um filho tem de 6 a 10 professores diferentes. Atribuir essa mesma resposta a cada um deles faria todos os professores de uma mesma turma receberem a nota idêntica da família, o que não mede a prática de nenhum professor em particular — seria um número fabricado, não uma medição. Por isso a coluna Família só existe onde a pergunta identifica o professor: Tutoria (E1) e Comunicação (E6), sempre via o vínculo real família↔tutor.</div>
@@ -655,7 +840,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ COORDENADORES: CALIBRAGEM ============ -->
 <section id="sec-coordenadores">
-  <div class="section-head"><h2><span class="num-chip">11</span>Coordenadores — calibragem de notas</h2><span class="n-tag" id="coordScope">Recorte: Consolidado</span></div>
+  <div class="section-head"><h2><span class="num-chip">15</span>Coordenadores — calibragem de notas</h2><span class="n-tag" id="coordScope">Recorte: Consolidado</span></div>
   <div class="section-desc">Cada coordenador avalia um grupo diferente de professores — comparar a nota bruta entre eles não diz muito por si só. Esta tabela mostra o índice médio que cada coordenador atribui e o compara com dois grupos de referência: a <b>média da própria unidade</b> (pares que avaliam o mesmo tipo de contexto) e a <b>média de toda a rede</b> (os 18 avaliadores). Desvios grandes em qualquer direção — rigor ou leniência — pedem alinhamento de critério antes de comparar professores entre coordenadores diferentes.</div>
   <div class="card" style="overflow-x:auto;">
     <table id="tblCoordenadores" style="min-width:1150px;"></table>
@@ -665,7 +850,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ ANALISE QUALITATIVA ============ -->
 <section id="sec-qualitativa">
-  <div class="section-head"><h2><span class="num-chip">12</span>Análise qualitativa dos comentários</h2><span class="n-tag" id="themeScope">Recorte: Consolidado</span></div>
+  <div class="section-head"><h2><span class="num-chip">16</span>Análise qualitativa dos comentários</h2><span class="n-tag" id="themeScope">Recorte: Consolidado</span></div>
   <div class="section-desc">Classificação temática de todo o texto livre da base (não é nuvem de palavras). Cada tema foi contado por padrão de menção nos comentários originais — os números abaixo são contagens diretas, não estimativas, e respondem ao filtro de unidade/segmento.</div>
   <div class="card" style="overflow-x:auto;">
     <table id="tblThemes" style="min-width:700px;"></table>
@@ -692,53 +877,21 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   </div>
 </section>
 
-<!-- ============ PROMOTORES / NEUTROS / DETRATORES ============ -->
-<section id="sec-pnd">
-  <div class="section-head"><h2><span class="num-chip">13</span>Promotores, Neutros e Detratores — leitura qualitativa</h2></div>
-  <div class="section-desc">Os totais em cada título respondem ao filtro de unidade/segmento. Os comentários citados nas listas abaixo vêm da leitura integral da base consolidada (a granularidade da base de comentários não permite recontar cada frase por recorte) — use-os como contexto qualitativo, não como números exclusivos do recorte selecionado.</div>
-  <div class="col3">
-    <div class="group-card prom">
-      <h3 style="color:var(--good)" id="pndPromHead">Promotores (274 · 60,6%)</h3>
-      <ul>
-        <li>A identidade católica e os valores institucionais aparecem como o motivo de escolha mais citado — presente em 86 dos 209 comentários de promotores que escreveram algo (41%)</li>
-        <li>Bilinguismo, formação integral e atenção individualizada sustentam a recomendação mesmo entre famílias que apontam ressalvas pontuais</li>
-        <li>Atributos a preservar: identidade religiosa consistente, tutoria próxima, e o próprio ato de tratar "o aluno como indivíduo, não como número" — expressão recorrente nos comentários</li>
-      </ul>
-    </div>
-    <div class="group-card neu">
-      <h3 style="color:var(--warn)" id="pndNeuHead">Neutros / Passivos (128 · 28,3%)</h3>
-      <ul>
-        <li>Comunicação fragmentada é o problema mais citado por este grupo (26 dos 105 comentários de neutros)</li>
-        <li>Mensalidade e rotatividade de profissionais aparecem como fatores que impedem uma nota mais alta, sem anular a satisfação geral</li>
-        <li>Ação com maior potencial de conversão: um canal único de comunicação e devolutivas mais previsíveis — o próprio grupo já demonstra alto reconhecimento do projeto pedagógico, então o obstáculo é operacional, não de proposta</li>
-      </ul>
-    </div>
-    <div class="group-card det">
-      <h3 style="color:var(--crit)" id="pndDetHead">Detratores (50 · 11,1%)</h3>
-      <ul>
-        <li>Concentram-se proporcionalmente mais na Asa Norte — e, dentro dela, no segmento Ensino Fundamental I (a combinação com o menor NPS de toda a base, +23,3%)</li>
-        <li>Causas mais citadas: falha de comunicação, sensação de desorganização/instabilidade de gestão, e — em um pequeno número de casos graves — inclusão não efetivada e resposta lenta a incidentes</li>
-        <li>Gravidade: a maioria dos 50 casos é de insatisfação operacional recuperável; um subconjunto pequeno (2 a 3 relatos) descreve situações de maior gravidade que justificam apuração individual, não só ação de processo</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
 <!-- ============ FORÇAS ============ -->
 <section id="sec-forcas">
-  <div class="section-head"><h2><span class="num-chip">14</span>O que estamos fazendo bem</h2></div>
+  <div class="section-head"><h2><span class="num-chip">17</span>O que estamos fazendo bem</h2></div>
   <div class="col3" id="forcasGrid"></div>
 </section>
 
 <!-- ============ PONTOS DE ATENCAO ============ -->
 <section id="sec-atencao">
-  <div class="section-head"><h2><span class="num-chip">15</span>Onde precisamos melhorar</h2></div>
+  <div class="section-head"><h2><span class="num-chip">18</span>Onde precisamos melhorar</h2></div>
   <div id="atencaoList"></div>
 </section>
 
 <!-- ============ MATRIZ IMPACTO x RECORRENCIA ============ -->
 <section id="sec-impacto">
-  <div class="section-head"><h2><span class="num-chip">16</span>Matriz Impacto × Recorrência</h2></div>
+  <div class="section-head"><h2><span class="num-chip">19</span>Matriz Impacto × Recorrência</h2></div>
   <div class="card">
     <div style="display:grid; grid-template-columns:24px 1fr; gap:8px;">
       <div style="display:flex; align-items:center; justify-content:center;"><div style="writing-mode:vertical-rl; transform:rotate(180deg); font-size:11px; font-weight:700; color:var(--ink-3);">IMPACTO NA EXPERIÊNCIA →</div></div>
@@ -750,7 +903,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
             <ul>
               <li>Comunicação escola–família fragmentada (40 menções, 95% de neutros/detratores)</li>
               <li>Divergência de 22 pontos entre alunos/famílias e coordenação/professores sobre Idioma (E2)</li>
-              <li>Combinação Asa Norte + Ensino Fundamental I (NPS +23,3%, n=129)</li>
+              <li data-scope="Asa Norte,Ensino Fundamental I">Combinação Asa Norte + Ensino Fundamental I (NPS +23,3%, n=129)</li>
             </ul>
           </div>
           <div class="quad quad-invest">
@@ -759,15 +912,15 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
             <ul>
               <li>PEI/PDI não implementado para aluno com neurodivergência (caso documentado)</li>
               <li>Relato de violência entre alunos sem retorno percebido (nota 0)</li>
-              <li>Percepção de tratamento desigual por professor específico (14 relatos concentrados em poucas turmas)</li>
+              <li data-scope="Asa Norte,High,Ensino Fundamental II">Percepção de tratamento desigual por professor específico (14 relatos concentrados em poucas turmas)</li>
             </ul>
           </div>
           <div class="quad quad-oper">
             <h4>Alta recorrência + Baixo impacto</h4>
             <div class="sub">Melhorias operacionais</div>
             <ul>
-              <li>Rotatividade de profissionais, concentrada na Asa Norte (8/10 menções)</li>
-              <li>Estrutura física / turmas cheias, concentrada na Asa Norte e Kinder</li>
+              <li data-scope="Asa Norte">Rotatividade de profissionais, concentrada na Asa Norte (8/10 menções)</li>
+              <li data-scope="Asa Norte,Kinder">Estrutura física / turmas cheias, concentrada na Asa Norte e Kinder</li>
               <li>Percepção sobre valor da mensalidade (a maioria de quem cita ainda recomenda a escola)</li>
             </ul>
           </div>
@@ -775,9 +928,9 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
             <h4>Baixa recorrência + Baixo impacto</h4>
             <div class="sub">Monitoramento</div>
             <ul>
-              <li>Disciplina percebida como permissiva (7 menções)</li>
-              <li>Conteúdo percebido como pouco aprofundado (9 menções, sem concentração clara)</li>
-              <li>Regra de pontos comportamentais associada à ida ao banheiro (11 relatos de alunos, turmas específicas)</li>
+              <li data-scope="Kinder,Ensino Fundamental I">Disciplina percebida como permissiva (7 menções)</li>
+              <li data-scope="Ensino Fundamental I,Ensino Fundamental II">Conteúdo percebido como pouco aprofundado (9 menções, sem concentração clara)</li>
+              <li data-scope="Ensino Fundamental II">Regra de pontos comportamentais associada à ida ao banheiro (11 relatos de alunos, turmas específicas)</li>
             </ul>
           </div>
         </div>
@@ -789,24 +942,22 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ OPORTUNIDADES ============ -->
 <section id="sec-oportunidades">
-  <div class="section-head"><h2><span class="num-chip">17</span>Oportunidades de melhoria</h2></div>
+  <div class="section-head"><h2><span class="num-chip">20</span>Oportunidades de melhoria</h2></div>
   <div class="card">
     <ul id="listOportunidades" style="margin:0; padding-left:20px; font-size:13.3px;">
       <li style="margin-bottom:10px;"><b>Consolidar os canais de comunicação em um único aplicativo/canal oficial</b>, com desativação explícita dos demais — reduz a causa nº1 de insatisfação (40 menções) e é a ação com maior potencial de mover neutros para promotores.</li>
       <li style="margin-bottom:10px;"><b>Instituir devolutiva periódica padronizada às famílias</b> sobre evolução acadêmica e socioemocional, com frequência definida (ex.: bimestral) e responsável identificado (tutor), reduzindo o eixo mais baixo da família (Comunicação, 72,4 pontos).</li>
       <li style="margin-bottom:10px;" data-scope="Asa Norte,Ensino Fundamental I"><b>Tratar Asa Norte + Ensino Fundamental I como uma combinação prioritária isolada</b>, não apenas como parte da unidade — é a única célula do cruzamento com NPS abaixo de +25 e amostra robusta (n=129) para agir.</li>
-      <li style="margin-bottom:10px;"><b>Auditar a pergunta de Idioma respondida por coordenação e professores</b>, redesenhando o item para medir interação real em vez de presença do idioma — hoje mede algo diferente do que alunos e famílias percebem, gerando o gap de 22 pontos mais citado no diagnóstico da própria base.</li>
       <li style="margin-bottom:10px;" data-scope="Asa Norte"><b>Reduzir a rotatividade de profissionais na Asa Norte</b> com plano de retenção específico para a unidade.</li>
       <li style="margin-bottom:10px;"><b>Padronizar critérios de avaliação atitudinal/comportamental entre professores de uma mesma turma</b>, incluindo regras de saída de sala (ida ao banheiro), para responder às 11 menções de alunos sobre o tema e à percepção de tratamento desigual (14 menções).</li>
-      <li style="margin-bottom:10px;"><b>Criar protocolo formal de resposta a incidentes graves</b> (relatos de violência entre alunos, PEI/PDI não implementado), com prazo de retorno à família definido e follow-up registrado.</li>
-      <li data-scope="Kinder,Ensino Fundamental I"><b>Estender a pesquisa de alunos para Ensino Fundamental I</b> (com instrumento adaptado à idade), fechando a lacuna de voz discente que hoje atinge metade dos segmentos da escola.</li>
+      <li><b>Criar protocolo formal de resposta a incidentes graves</b> (relatos de violência entre alunos, PEI/PDI não implementado), com prazo de retorno à família definido e follow-up registrado.</li>
     </ul>
   </div>
 </section>
 
 <!-- ============ PLANO DE ACAO ============ -->
 <section id="sec-plano">
-  <div class="section-head"><h2><span class="num-chip">18</span>Plano de ação executivo</h2></div>
+  <div class="section-head"><h2><span class="num-chip">21</span>Plano de ação executivo</h2></div>
   <div class="card" style="overflow-x:auto;">
     <table id="tblPlano" style="min-width:1000px;">
       <tr><th>Prioridade</th><th>Problema</th><th>Evidência</th><th>Ação proposta</th><th>Responsável sugerido</th><th>Prazo</th><th>Indicador</th></tr>
@@ -816,19 +967,17 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
       <tr data-scope="Asa Norte"><td><span class="tag-prazo">Curto prazo</span></td><td>Rotatividade de profissionais na Asa Norte</td><td>8/10 menções de rotatividade concentradas na unidade</td><td>Plano de retenção específico da unidade (pesquisa de saída, revisão de processos de coordenação)</td><td>RH + Direção da unidade</td><td>1 semestre</td><td>Reduzir menções de rotatividade nos próximos comentários de NPS</td></tr>
       <tr><td><span class="tag-prazo">Médio prazo</span></td><td>Tratamento desigual percebido / regras de sala inconsistentes</td><td>14 relatos de favoritismo; 11 sobre regras de banheiro/pontos</td><td>Padronizar critérios atitudinais e regras básicas de sala entre professores de uma mesma turma</td><td>Coordenação Pedagógica por segmento</td><td>2 semestres</td><td>Reduzir menções do tema nos comentários abertos de alunos</td></tr>
       <tr><td><span class="tag-prazo">Médio prazo</span></td><td>Gap entre autoavaliação e coordenação em todos os eixos comparáveis</td><td>Gaps de −1,3 a +12,2 pontos</td><td>Sessão de calibragem da escala entre coordenadores antes do ciclo de devolutivas individuais</td><td>Direção Pedagógica</td><td>Próximo ciclo avaliativo</td><td>Reduzir dispersão do desvio de calibragem entre avaliadores</td></tr>
-      <tr><td><span class="tag-prazo">Estruturante</span></td><td>Gap de 22 pontos sobre Idioma entre olhares interno e externo</td><td>Alunos/família = 65,9 · Coordenação/Auto = 86–88</td><td>Redesenhar a pergunta de idioma da coordenação para medir interação real, não presença do idioma</td><td>Direção Pedagógica + Coordenação de Idiomas</td><td>Próximo ciclo de pesquisa</td><td>Reduzir o gap de 22 para menos de 10 pontos</td></tr>
-      <tr data-scope="Kinder,Ensino Fundamental I"><td><span class="tag-prazo">Estruturante</span></td><td>Ausência de voz do aluno em Infantil e EF I</td><td>Metade do quadro docente sem contraponto discente</td><td>Desenhar e pilotar instrumento de pesquisa adaptado para EF I</td><td>Direção Pedagógica</td><td>Próximo ano letivo</td><td>Cobertura de pesquisa de alunos incluindo EF I</td></tr>
     </table>
   </div>
 </section>
 
 <!-- ============ TOP 5 ============ -->
 <section id="sec-top5">
-  <div class="section-head"><h2><span class="num-chip">19</span>TOP 5 PRIORIDADES</h2></div>
+  <div class="section-head"><h2><span class="num-chip">22</span>TOP 5 PRIORIDADES</h2></div>
   <div class="top5-grid">
     <div class="top5-card"><div class="num">1</div><h4>Unificar os canais de comunicação escola–família</h4><p>Maior tema de atrito da base (40 menções, 95% negativas), concentrado na Asa Norte. Alta viabilidade: é uma mudança operacional, não pedagógica.</p></div>
     <div class="top5-card" data-scope="Asa Norte,Ensino Fundamental I"><div class="num">2</div><h4>Estabilizar a combinação Asa Norte + Ensino Fundamental I</h4><p>É a célula com o pior NPS da base inteira (+23,3%, n=129) — pior que a unidade e que o segmento isoladamente. Requer plano específico, não apenas ação genérica de unidade.</p></div>
-    <div class="top5-card"><div class="num">3</div><h4>Investigar o gap de 22 pontos sobre Idioma</h4><p>Alunos e famílias convergem entre si (65,9) e divergem fortemente de coordenação/autoavaliação (86–88). Ameaça o diferencial mais citado pelos promotores.</p></div>
+    <div class="top5-card" data-scope="Asa Norte"><div class="num">3</div><h4>Reduzir a rotatividade de profissionais na Asa Norte</h4><p>8 das 10 menções de rotatividade na base vêm dessa unidade — plano de retenção específico, com pesquisa de saída e revisão de processos de coordenação.</p></div>
     <div class="top5-card"><div class="num">4</div><h4>Padronizar critérios de avaliação atitudinal entre professores</h4><p>Reduz simultaneamente o gap de calibragem coordenação–autoavaliação e as queixas de tratamento desigual relatadas por alunos em turmas específicas.</p></div>
     <div class="top5-card"><div class="num">5</div><h4>Criar protocolo formal para casos graves</h4><p>Baixa recorrência, mas altíssimo impacto e risco reputacional — exige resposta rastreável, não apenas boa vontade individual.</p></div>
   </div>
@@ -836,7 +985,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ INSIGHTS ============ -->
 <section id="sec-insights">
-  <div class="section-head"><h2><span class="num-chip">20</span>Insights para a Diretoria</h2></div>
+  <div class="section-head"><h2><span class="num-chip">23</span>Insights para a Diretoria</h2></div>
   <div class="insight-list">
     <div class="insight-item"><span class="ix">1</span><span>O NPS geral é saudável (+49,6, nota média 8,57), mas o cruzamento revela uma diferença de mais de 65 pontos entre a melhor combinação com amostra robusta (High + Ensino Médio, +81,4) e a pior (Asa Norte + Ensino Fundamental I, +23,3) — a leitura cruzada é mais útil para ação do que o número consolidado ou mesmo os recortes isolados.</span></div>
     <div class="insight-item"><span class="ix">2</span><span>A identidade católica/valores é o ativo mais mencionado da escola (97 menções) — qualquer decisão que reduza a ênfase institucional nesse aspecto carrega risco direto sobre a base de promotores.</span></div>
@@ -853,20 +1002,20 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 
 <!-- ============ CONCLUSAO ============ -->
 <section id="sec-conclusao">
-  <div class="section-head"><h2><span class="num-chip">21</span>Conclusão executiva</h2></div>
+  <div class="section-head"><h2><span class="num-chip">24</span>Conclusão executiva</h2></div>
   <div class="conclusao-grid">
     <div class="conclusao-item"><h4>O que estamos fazendo bem?</h4><p>A proposta de formação integral, a identidade católica e o cuidado individualizado com o aluno são reconhecidos de forma consistente por famílias e alunos — são o motivo de recomendação mais citado e sustentam um NPS saudável (+49,6).</p></div>
-    <div class="conclusao-item"><h4>Onde estão os principais problemas?</h4><p>Comunicação fragmentada entre escola e família, rotatividade de profissionais e um gap relevante entre a percepção interna e externa sobre a entrega do idioma — todos concentrados, com maior intensidade, na combinação Asa Norte + Ensino Fundamental I.</p></div>
+    <div class="conclusao-item" data-scope="Asa Norte,Ensino Fundamental I"><h4>Onde estão os principais problemas?</h4><p>Comunicação fragmentada entre escola e família, rotatividade de profissionais e um gap relevante entre a percepção interna e externa sobre a entrega do idioma — todos concentrados, com maior intensidade, na combinação Asa Norte + Ensino Fundamental I.</p></div>
     <div class="conclusao-item"><h4>O que mais influencia negativamente o NPS?</h4><p>Falhas operacionais — não a proposta pedagógica. Os detratores concentram-se onde comunicação e estabilidade de equipe são mais frágeis, não onde a identidade institucional é questionada.</p></div>
     <div class="conclusao-item"><h4>Qual a principal diferença entre a percepção de famílias e de alunos?</h4><p>Nos dois eixos com comparação numérica direta (Tutoria e Idioma), a diferença é pequena — famílias e alunos concordam entre si. A divergência real está entre essas duas vozes e o olhar interno da escola (coordenação e autoavaliação), especialmente em Idioma.</p></div>
-    <div class="conclusao-item"><h4>Onde estão as maiores oportunidades?</h4><p>Converter neutros em promotores por meio de ações operacionais de baixo custo relativo (canal único de comunicação, devolutivas padronizadas), com prioridade explícita para Asa Norte + Ensino Fundamental I.</p></div>
-    <div class="conclusao-item"><h4>Quais devem ser as cinco prioridades institucionais?</h4><p>(1) Unificar a comunicação escola–família; (2) estabilizar Asa Norte + Ensino Fundamental I; (3) investigar o gap de Idioma; (4) padronizar critérios de avaliação atitudinal; (5) formalizar protocolo de resposta a casos graves.</p></div>
+    <div class="conclusao-item" data-scope="Asa Norte,Ensino Fundamental I"><h4>Onde estão as maiores oportunidades?</h4><p>Converter neutros em promotores por meio de ações operacionais de baixo custo relativo (canal único de comunicação, devolutivas padronizadas), com prioridade explícita para Asa Norte + Ensino Fundamental I.</p></div>
+    <div class="conclusao-item"><h4>Quais devem ser as cinco prioridades institucionais?</h4><p>(1) Unificar a comunicação escola–família; (2) estabilizar as combinações unidade+segmento mais críticas do cruzamento; (3) reduzir a rotatividade de profissionais nas unidades mais afetadas; (4) padronizar critérios de avaliação atitudinal; (5) formalizar protocolo de resposta a casos graves.</p></div>
   </div>
 </section>
 
 <!-- ============ METODOLOGIA / INCONGRUENCIAS ============ -->
 <section id="sec-metodologia">
-  <div class="section-head"><h2><span class="num-chip">22</span>Notas metodológicas e limites da base</h2></div>
+  <div class="section-head"><h2><span class="num-chip">25</span>Notas metodológicas e limites da base</h2></div>
   <div class="card">
     <ul style="margin:0; padding-left:20px; font-size:12.8px; color:var(--ink-2);">
       <li style="margin-bottom:6px;">Alunos só respondem à pesquisa em Ensino Fundamental II e Ensino Médio; não há voz do aluno para Educação Infantil e Ensino Fundamental I.</li>
@@ -894,6 +1043,21 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 const UNIDADES = ["Kinder","Asa Norte","High"];
 const SEGMENTOS = ["Ensino Infantil","Ensino Fundamental I","Ensino Fundamental II","Ensino Médio"];
 const SEG_SHORT = {"Ensino Infantil":"Infantil","Ensino Fundamental I":"EF I","Ensino Fundamental II":"EF II","Ensino Médio":"EM"};
+
+// "Lago Sul" é um filtro derivado (campus): soma Kinder + High, as duas unidades do campus Lago Sul —
+// Asa Norte é um campus à parte. Não é uma 4ª unidade física da base-fonte: os números de "Lago Sul" são
+// sempre recalculados a partir dos números reais de Kinder e High (ver bloco de agregação após E7_FAMILIA),
+// nunca digitados à mão. UNIDADES continua sendo só as 3 unidades físicas reais — usado em todo lugar que
+// soma "todas as unidades" (Consolidado) para não contar Kinder/High em dobro através de "Lago Sul".
+// UNIDADES_PILL é a lista completa de opções do filtro (usada só para decidir quais pills aparecem).
+const UNIDADE_GROUPS = { "Lago Sul": ["Kinder","High"] };
+const UNIDADES_PILL = UNIDADES.concat(Object.keys(UNIDADE_GROUPS));
+function unidadeMatches(itemUnidade, filterUnidade){
+  if(filterUnidade==='Consolidado') return true;
+  const group = UNIDADE_GROUPS[filterUnidade];
+  if(group) return group.includes(itemUnidade);
+  return itemUnidade === filterUnidade;
+}
 
 const NPS_DATA = {
   overall: { n:452, prom:274, neu:128, det:50, nps:49.6, media:8.57 },
@@ -934,10 +1098,12 @@ const NPS_DATA = {
 const UNIT_SEGMENTS = {
   "Kinder":    ["Ensino Infantil","Ensino Fundamental I"],
   "Asa Norte": ["Ensino Infantil","Ensino Fundamental I","Ensino Fundamental II"],
-  "High":      ["Ensino Fundamental II","Ensino Médio"]
+  "High":      ["Ensino Fundamental II","Ensino Médio"],
+  // Lago Sul = Kinder ∪ High (sem sobreposição de segmento entre as duas) — cobre os 4 segmentos.
+  "Lago Sul":  ["Ensino Infantil","Ensino Fundamental I","Ensino Fundamental II","Ensino Médio"]
 };
 const SEGMENT_UNITS = {};
-SEGMENTOS.forEach(s=>{ SEGMENT_UNITS[s] = UNIDADES.filter(u => UNIT_SEGMENTS[u].includes(s)); });
+SEGMENTOS.forEach(s=>{ SEGMENT_UNITS[s] = UNIDADES_PILL.filter(u => UNIT_SEGMENTS[u].includes(s)); });
 
 const ALUNO_N = {
   overall: 374,
@@ -995,9 +1161,13 @@ const EIXO_CROSS = {
     }
   },
   E3: {
+    // Família em Ensino Fundamental I: a pesquisa de família (pública "k5a5") não tem pergunta própria de E3
+    // (Ambiente/Respeito/Equidade) para esse segmento — só existe para Ensino Infantil (k2k4) e Fund. II (f2).
+    // Nota usada aqui é a média real por turma (pergunta da regente/tutora, fam-resposta × roster turma→professor,
+    // mesma base da seção "Professores referência"), agregada por unidade: Kinder n=96 idx=83.33, Asa Norte n=119 idx=76.05.
     familia: {
-      "Kinder":{"Ensino Infantil":{n:46,idx:83.15},"Ensino Fundamental I":{n:0,idx:null},"Ensino Fundamental II":{n:0,idx:null},"Ensino Médio":{n:0,idx:null}},
-      "Asa Norte":{"Ensino Infantil":{n:53,idx:91.51},"Ensino Fundamental I":{n:0,idx:null},"Ensino Fundamental II":{n:27,idx:83.33},"Ensino Médio":{n:0,idx:null}},
+      "Kinder":{"Ensino Infantil":{n:46,idx:83.15},"Ensino Fundamental I":{n:96,idx:83.33},"Ensino Fundamental II":{n:0,idx:null},"Ensino Médio":{n:0,idx:null}},
+      "Asa Norte":{"Ensino Infantil":{n:53,idx:91.51},"Ensino Fundamental I":{n:119,idx:76.05},"Ensino Fundamental II":{n:27,idx:83.33},"Ensino Médio":{n:0,idx:null}},
       "High":{"Ensino Infantil":{n:0,idx:null},"Ensino Fundamental I":{n:0,idx:null},"Ensino Fundamental II":{n:62,idx:86.29},"Ensino Médio":{n:0,idx:null}}
     },
     coord: {
@@ -1077,7 +1247,7 @@ const EIXOS = [
     elogios:"Bilinguismo é citado 48 vezes nos comentários de NPS como motivo de recomendação.",
     criticas:"Alunos e famílias convergem em nota bem mais baixa que coordenação/autoavaliação — divergência de 22 pontos, o maior desalinhamento da base.",
     interpretacao:"A pergunta da coordenação mede presença do idioma, não imersão real. Alunos e famílias avaliam a interação de fato — por isso concordam entre si e divergem do olhar interno." },
-  { id:"E3", nome:"Ambiente, Respeito e Equidade", overall:{alunoTaxa:19.8, familia:86.6,familiaN:188,coord:85.6,coordN:1052,auto:95.7,autoN:815}, alunoComparavel:false,
+  { id:"E3", nome:"Ambiente, Respeito e Equidade", overall:{alunoTaxa:19.8, familia:82.69,familiaN:403,coord:85.6,coordN:1052,auto:95.7,autoN:815}, alunoComparavel:false,
     elogios:"Famílias e coordenação avaliam bem o eixo; autoavaliação próxima do teto (95,7).",
     criticas:"Autoavaliação tão alta que perde valor formativo.",
     interpretacao:"Sem escala comparável para o aluno neste eixo (desenho de nomeação). Leitura via taxa de nomeação (19,8%) e comentários abertos." },
@@ -1247,13 +1417,14 @@ function renderKPI(unidade, segmento){
 
   const kpiNPS = document.getElementById('kpiNPS');
   kpiNPS.textContent = (d.nps>=0?'+':'') + fmtPct(d.nps);
-  kpiNPS.className = 'value ' + (d.nps>=50?'good':(d.nps>=20?'':'warn'));
+  kpiNPS.className = 'v ' + (d.nps>=50?'good':(d.nps>=20?'':'warn'));
   const chip = document.getElementById('kpiNPSchip');
-  if(d.nps>=50){ chip.textContent='saudável'; chip.style.background='var(--good-bg)'; chip.style.color='var(--good)'; }
-  else if(d.nps>=30){ chip.textContent='estável, com espaço de melhora'; chip.style.background='var(--warn-bg)'; chip.style.color='var(--warn)'; }
-  else { chip.textContent='requer atenção'; chip.style.background='var(--crit-bg)'; chip.style.color='var(--crit)'; }
+  if(d.nps>=50){ chip.textContent='saudável'; chip.style.background='var(--good-bg)'; chip.style.color='var(--good-vivid)'; }
+  else if(d.nps>=30){ chip.textContent='estável, com espaço de melhora'; chip.style.background='var(--warn-bg)'; chip.style.color='var(--warn-vivid)'; }
+  else { chip.textContent='requer atenção'; chip.style.background='var(--crit-bg)'; chip.style.color='var(--crit-vivid)'; }
 
   document.getElementById('kpiMedia').textContent = fmtNum(d.media);
+  document.getElementById('kpiMediaN').textContent = d.n.toLocaleString('pt-BR');
   document.getElementById('kpiFamN').textContent = d.n.toLocaleString('pt-BR');
 
   {
@@ -1279,6 +1450,17 @@ function renderKPI(unidade, segmento){
   document.getElementById('kpiDet').textContent = fmtPct(detPct);
   document.getElementById('kpiDetN').textContent = d.det + ' de ' + d.n + ' respostas';
 
+  document.getElementById('calcN').textContent = d.n.toLocaleString('pt-BR');
+  document.getElementById('calcPromPct').textContent = fmtPct(promPct);
+  document.getElementById('calcPromN').textContent = d.prom + ' respostas';
+  document.getElementById('calcNeuPct').textContent = fmtPct(neuPct);
+  document.getElementById('calcNeuN').textContent = d.neu + ' respostas';
+  document.getElementById('calcDetPct').textContent = fmtPct(detPct);
+  document.getElementById('calcDetN').textContent = d.det + ' respostas';
+  document.getElementById('calcPromPct2').textContent = fmtPct(promPct);
+  document.getElementById('calcDetPct2').textContent = fmtPct(detPct);
+  document.getElementById('calcNPS').textContent = (d.nps>=0?'+':'') + fmtPct(d.nps);
+
   const stackbar = document.getElementById('stackbarMain');
   stackbar.innerHTML = `
     <div class="seg-prom" style="width:${promPct}%">${promPct>=10?fmtPct(promPct):''}</div>
@@ -1302,16 +1484,19 @@ function renderKPI(unidade, segmento){
 
 /* ============ RENDER: RANKINGS (marginais) ============ */
 function renderRankings(){
-  const unidades = Object.entries(NPS_DATA.byUnidade).sort((a,b)=>b[1].nps-a[1].nps);
+  // Só as 3 unidades físicas reais — "Lago Sul" é um recorte derivado (Kinder+High) e não deve
+  // aparecer aqui como se fosse uma 4ª unidade comparável, já que duplicaria Kinder e High num
+  // quadro cujo objetivo é comparar as unidades físicas entre si.
+  const unidades = UNIDADES.map(u=>[u, NPS_DATA.byUnidade[u]]).sort((a,b)=>b[1].nps-a[1].nps);
   document.getElementById('rankUnidades').innerHTML = unidades.map(([nome,d],i)=>`
     <div class="rank-card" data-unit="${nome}">
       <div class="pos">#${i+1}</div>
       <h4>${nome}</h4>
-      <div class="nps-big" style="color:${d.nps>=50?'var(--good)':(d.nps>=35?'var(--warn)':'var(--crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
+      <div class="nps-big" style="color:${d.nps>=50?'var(--good-vivid)':(d.nps>=35?'var(--warn-vivid)':'var(--crit-vivid)')}; background:${d.nps>=50?'var(--vivid-bg-good)':(d.nps>=35?'var(--vivid-bg-warn)':'var(--vivid-bg-crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
       <div style="font-size:11.5px;color:var(--ink-3)">NPS · n=${d.n}</div>
       <div class="row-mini"><span>Nota média</span><b>${fmtNum(d.media)}</b></div>
-      <div class="row-mini"><span>% Promotores</span><b style="color:var(--good)">${fmtPct(d.prom/d.n*100)}</b></div>
-      <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit)">${fmtPct(d.det/d.n*100)}</b></div>
+      <div class="row-mini"><span>% Promotores</span><b style="color:var(--good-vivid)">${fmtPct(d.prom/d.n*100)}</b></div>
+      <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit-vivid)">${fmtPct(d.det/d.n*100)}</b></div>
     </div>`).join('');
   document.querySelectorAll('#rankUnidades .rank-card').forEach(card=>{
     card.style.cursor='pointer';
@@ -1344,7 +1529,6 @@ function renderSegmentComparison(unidade, segmento){
       .map(s => [s, NPS_DATA.cross[unidade] ? NPS_DATA.cross[unidade][s] : null])
       .filter(([s,d]) => d && d.n>0)
       .sort((a,b)=>b[1].nps-a[1].nps);
-    const totalN = entries.reduce((s,[,d])=>s+d.n,0);
     ntagText = `Base: NPS de famílias em ${unidade}, ${entries.length} segmento(s) com resposta`;
     if(entries.length===0){
       leituraHtml = `<p style="margin:0;">Nenhum segmento com respostas de NPS suficientes em ${unidade}.</p>`;
@@ -1363,11 +1547,11 @@ function renderSegmentComparison(unidade, segmento){
     <div class="rank-card" data-seg="${nome}">
       <div class="pos">#${i+1}</div>
       <h4>${nome}</h4>
-      <div class="nps-big" style="color:${d.nps>=50?'var(--good)':(d.nps>=35?'var(--warn)':'var(--crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
+      <div class="nps-big" style="color:${d.nps>=50?'var(--good-vivid)':(d.nps>=35?'var(--warn-vivid)':'var(--crit-vivid)')}; background:${d.nps>=50?'var(--vivid-bg-good)':(d.nps>=35?'var(--vivid-bg-warn)':'var(--vivid-bg-crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
       <div style="font-size:11.5px;color:var(--ink-3)">NPS · n=${d.n}</div>
       <div class="row-mini"><span>Nota média</span><b>${fmtNum(d.media)}</b></div>
-      <div class="row-mini"><span>% Promotores</span><b style="color:var(--good)">${fmtPct(d.prom/d.n*100)}</b></div>
-      <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit)">${fmtPct(d.det/d.n*100)}</b></div>
+      <div class="row-mini"><span>% Promotores</span><b style="color:var(--good-vivid)">${fmtPct(d.prom/d.n*100)}</b></div>
+      <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit-vivid)">${fmtPct(d.det/d.n*100)}</b></div>
     </div>`).join('');
   document.querySelectorAll('#rankSegmentos .rank-card').forEach(card=>{
     card.style.cursor='pointer';
@@ -1385,7 +1569,7 @@ function renderCrossTable(){
       if(!c || c.n===0){
         html += `<td class="num" style="color:var(--ink-3)">—</td>`;
       } else {
-        const color = c.n<10 ? 'var(--ink-3)' : (c.nps>=50?'var(--good)':(c.nps>=30?'var(--warn)':'var(--crit)'));
+        const color = c.n<10 ? 'var(--ink-3)' : (c.nps>=50?'var(--good-vivid)':(c.nps>=30?'var(--warn-vivid)':'var(--crit-vivid)'));
         html += `<td class="num cross-cell" data-u="${u}" data-s="${s}" style="color:${color}; font-weight:700; cursor:pointer;">${(c.nps>=0?'+':'')+fmtPct(c.nps)}</td>`;
       }
     });
@@ -1405,6 +1589,71 @@ function renderCrossTable(){
       ['Nota média', fmtNum(c.media)]
     ], c.n<10 ? 'Amostra pequena — leia como referência.' : 'Clique para aplicar este recorte no painel.');
     td.addEventListener('click', ()=> applyScope(u, s));
+  });
+}
+
+/* ============ RENDER: GRÁFICO Unidade × Segmento (barras agrupadas, SVG) ============ */
+function renderCrossChart(){
+  const el = document.getElementById('crossChart');
+  if(!el) return;
+  const unitColor = {"Kinder":"var(--blue)", "Asa Norte":"var(--orange)", "High":"var(--aqua)"};
+  const groups = SEGMENTOS.map(s => ({
+    seg: s,
+    bars: UNIDADES.filter(u => UNIT_SEGMENTS[u].includes(s)).map(u => ({u, c: NPS_DATA.cross[u][s]}))
+  })).filter(g => g.bars.some(b => b.c && b.c.n > 0));
+
+  const W = 900, H = 300, padL = 40, padR = 16, padT = 18, padB = 40;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const allVals = groups.flatMap(g => g.bars.map(b => b.c.nps)).filter(v => v != null);
+  const niceMax = Math.max(20, Math.ceil(Math.max(80, ...allVals) / 20) * 20);
+  const y0 = padT + plotH;
+  const yScale = v => padT + plotH - (v / niceMax) * plotH;
+  const groupW = plotW / groups.length;
+  const barGap = 8;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;">`;
+  for(let i=0;i<=4;i++){
+    const v = niceMax * i/4;
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border)" stroke-width="1"/>`;
+    svg += `<text x="${padL-8}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--ink-3)">${Math.round(v)}</text>`;
+  }
+  groups.forEach((g,gi)=>{
+    const bars = g.bars.filter(b => b.c && b.c.n > 0);
+    const n = bars.length;
+    const barW = Math.min(70, (groupW - barGap*(n+1)) / n);
+    const totalBarsW = barW*n + barGap*(n-1);
+    const gx0 = padL + gi*groupW + (groupW - totalBarsW)/2;
+    bars.forEach((b,bi)=>{
+      const x = gx0 + bi*(barW+barGap);
+      const v = b.c.nps;
+      const y = yScale(v);
+      const h = y0 - y;
+      const smallN = b.c.n < 10;
+      const labelColor = smallN ? 'var(--ink-3)' : (v>=50?'var(--good-vivid)':(v>=30?'var(--warn-vivid)':'var(--crit-vivid)'));
+      svg += `<rect class="cross-bar" data-u="${b.u}" data-s="${g.seg}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${unitColor[b.u]}" fill-opacity="${smallN?0.5:0.92}" style="cursor:pointer;"/>`;
+      svg += `<text x="${(x+barW/2).toFixed(1)}" y="${(y-6).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="800" fill="${labelColor}">${(v>=0?'+':'')+fmtPct(v)}</text>`;
+    });
+    svg += `<text x="${(padL+gi*groupW+groupW/2).toFixed(1)}" y="${H-padB+20}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink-2)">${SEG_SHORT[g.seg]}</text>`;
+  });
+  svg += `<line x1="${padL}" y1="${y0.toFixed(1)}" x2="${W-padR}" y2="${y0.toFixed(1)}" stroke="var(--border-2)" stroke-width="1.5"/>`;
+  svg += `</svg>`;
+
+  const legend = UNIDADES.map(u=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink-2);margin-right:16px;"><span style="width:11px;height:11px;border-radius:3px;background:${unitColor[u]};display:inline-block;"></span>${u}</span>`).join('');
+  el.innerHTML = svg + `<div style="margin-top:4px;">${legend}<span style="font-size:10.5px;color:var(--ink-3);margin-left:4px;">Barras foscas = amostra pequena (n&lt;10). Clique numa barra para aplicar o recorte.</span></div>`;
+
+  el.querySelectorAll('.cross-bar').forEach(rect=>{
+    const u = rect.dataset.u, s = rect.dataset.s;
+    const c = NPS_DATA.cross[u][s];
+    wireTip(rect, u + ' · ' + s, [
+      ['NPS', (c.nps>=0?'+':'')+fmtPct(c.nps)],
+      ['Respostas (n)', c.n],
+      ['Promotores', c.prom],
+      ['Neutros', c.neu],
+      ['Detratores', c.det],
+      ['Nota média', fmtNum(c.media)]
+    ], c.n<10 ? 'Amostra pequena — leia como referência.' : 'Clique para aplicar este recorte no painel.');
+    rect.addEventListener('click', ()=> applyScope(u, s));
   });
 }
 
@@ -1477,9 +1726,10 @@ function renderEixos(unidade, segmento){
       </div>
       <div class="eixo-meta" data-eixo="${e.id}">Recorte: ${scopeLabel} ${showAluno&&alunoCell&&alunoCell.n? '· n aluno='+alunoCell.n : ''} ${famCell&&famCell.n? '· n família='+famCell.n : ''} ${coordCell&&coordCell.n? '· n coord.='+coordCell.n : ''} ${autoCell&&autoCell.n? '· n auto.='+autoCell.n : ''}</div>
       <div class="eixo-bars">${barsHtml}</div>
+      ${isFiltered ? `<div class="eixo-block" style="color:var(--ink-3); font-style:italic;">Elogios, críticas e interpretação são leitura da base consolidada — não recalculados por unidade/segmento. Veja no filtro Consolidado.</div>` : `
       <div class="eixo-block"><b>Elogios recorrentes</b>${e.elogios}</div>
       <div class="eixo-block"><b>Críticas recorrentes</b>${e.criticas}</div>
-      <div class="eixo-interp">${e.interpretacao}</div>
+      <div class="eixo-interp">${e.interpretacao}</div>`}
     </div>`;
   }).join('');
 
@@ -1516,6 +1766,160 @@ function renderEixos(unidade, segmento){
   });
 }
 
+/* ============ GRÁFICO: ÍNDICE 0–100 POR EIXO E POR VISÃO (02-Painel-Eixos) ============ */
+// E7 — Percepção geral e jornada: só existe como pergunta de família do Ensino Médio ("em"), que só existe na
+// unidade High — por isso não há EIXO_CROSS para E7 (nunca varia por segmento dentro de uma unidade).
+const E7_FAMILIA = { overall:{idx:80.34, n:87}, byUnidade:{ "Kinder":null, "Asa Norte":null, "High":{idx:80.34, n:87} } };
+
+// ============ AGREGAÇÃO DO FILTRO DERIVADO "LAGO SUL" (Kinder + High) ============
+// Preenche a chave "Lago Sul" em cada estrutura indexada por unidade, somando os números reais de
+// Kinder e High (nunca digitados à mão) — assim todo o resto do painel (resolveScope, cellFor,
+// eixoUnidadeCell, itemMatchesScope etc.) passa a reconhecer "Lago Sul" automaticamente, do mesmo jeito
+// que já reconhece Kinder/Asa Norte/High, sem precisar de um caminho de código especial em cada quadro.
+(function bootstrapLagoSul(){
+  function mergeIdxCell(a, b){
+    const an = (a && a.n) || 0, bn = (b && b.n) || 0;
+    const totalN = an + bn;
+    if(totalN===0) return {n:0, idx:null};
+    const aIdx = (a && a.idx!=null) ? a.idx : 0, bIdx = (b && b.idx!=null) ? b.idx : 0;
+    return { n: totalN, idx: Math.round(((aIdx*an + bIdx*bn)/totalN)*100)/100 };
+  }
+  function mergeNpsCell(a, b){
+    const prom = (a?a.prom:0) + (b?b.prom:0);
+    const neu = (a?a.neu:0) + (b?b.neu:0);
+    const det = (a?a.det:0) + (b?b.det:0);
+    const an = (a && a.n) || 0, bn = (b && b.n) || 0;
+    const totalN = an + bn;
+    if(totalN===0) return { n:0, prom:0, neu:0, det:0, nps:null, media:null };
+    const aMedia = (a && a.media!=null) ? a.media : 0, bMedia = (b && b.media!=null) ? b.media : 0;
+    return {
+      n: totalN, prom: prom, neu: neu, det: det,
+      nps: Math.round(((prom-det)/totalN*100)*100)/100,
+      media: Math.round(((aMedia*an + bMedia*bn)/totalN)*100)/100
+    };
+  }
+
+  const members = UNIDADE_GROUPS["Lago Sul"]; // ["Kinder","High"]
+  const gU1 = members[0], gU2 = members[1];
+
+  NPS_DATA.byUnidade["Lago Sul"] = mergeNpsCell(NPS_DATA.byUnidade[gU1], NPS_DATA.byUnidade[gU2]);
+  NPS_DATA.cross["Lago Sul"] = {};
+  SEGMENTOS.forEach(function(s){
+    NPS_DATA.cross["Lago Sul"][s] = mergeNpsCell(NPS_DATA.cross[gU1][s], NPS_DATA.cross[gU2][s]);
+  });
+
+  // ALUNO_N.cross: soma simples de contagem de respondentes (n bruto, não é nota — sem ponderação).
+  ALUNO_N.cross["Lago Sul"] = {};
+  const alunoSegsSet = {};
+  Object.keys(ALUNO_N.cross[gU1] || {}).forEach(function(s){ alunoSegsSet[s]=true; });
+  Object.keys(ALUNO_N.cross[gU2] || {}).forEach(function(s){ alunoSegsSet[s]=true; });
+  Object.keys(alunoSegsSet).forEach(function(s){
+    const av = (ALUNO_N.cross[gU1] && ALUNO_N.cross[gU1][s]) || 0;
+    const bv = (ALUNO_N.cross[gU2] && ALUNO_N.cross[gU2][s]) || 0;
+    ALUNO_N.cross["Lago Sul"][s] = av + bv;
+  });
+
+  // EIXO_CROSS: eixo -> voz -> unidade -> segmento -> {n, idx}
+  Object.keys(EIXO_CROSS).forEach(function(eid){
+    const eixo = EIXO_CROSS[eid];
+    ['familia','coord','auto','aluno'].forEach(function(voice){
+      const vObj = eixo[voice];
+      if(!vObj) return; // ex.: aluno=null em eixos sem pergunta própria a alunos
+      const a = vObj[gU1], b = vObj[gU2];
+      const segsSet = {};
+      Object.keys(a || {}).forEach(function(s){ segsSet[s]=true; });
+      Object.keys(b || {}).forEach(function(s){ segsSet[s]=true; });
+      const merged = {};
+      Object.keys(segsSet).forEach(function(s){
+        merged[s] = mergeIdxCell(a ? a[s] : null, b ? b[s] : null);
+      });
+      vObj["Lago Sul"] = merged;
+    });
+  });
+
+  // E7_FAMILIA.byUnidade: Kinder=null nesse eixo (High-only por desenho de pesquisa) — resultado = o próprio valor do High.
+  E7_FAMILIA.byUnidade["Lago Sul"] = mergeIdxCell(E7_FAMILIA.byUnidade[gU1], E7_FAMILIA.byUnidade[gU2]);
+})();
+
+const GRAFICO_EIXOS_ORDEM = ['E1','E2','E3','E4','E5','E6','E7'];
+const GRAFICO_EIXOS_LABELS = {E1:'Tutoria e PDI', E2:'Idioma e bilinguismo', E3:'Ambiente, respeito e equidade', E4:'Clareza de aprendizagem e devolutivas', E5:'Inclusão e atenção individual', E6:'Comunicação e parceria com a família', E7:'Percepção geral e jornada'};
+const GRAFICO_EIXOS_VOICES = [
+  {key:'familia', label:'Famílias', color:'var(--blue)'},
+  {key:'coord', label:'Coordenação', color:'var(--aqua)'},
+  {key:'auto', label:'Autoavaliação', color:'var(--violet)'},
+  {key:'aluno', label:'Alunos', color:'var(--orange)'}
+];
+function eixoUnidadeCell(cross, unidade){
+  // Agrega um voice (familia/coord/auto/aluno) por unidade, somando todos os segmentos dessa unidade
+  // (ou da rede inteira, se Consolidado) — mesma lógica de agregação ponderada por n usada em cellFor().
+  if(!cross) return null;
+  const unidadesAlvo = unidade==='Consolidado' ? UNIDADES : [unidade];
+  let sumN=0, sumNIdx=0;
+  unidadesAlvo.forEach(u=>{
+    const uObj = cross[u];
+    if(!uObj) return;
+    SEGMENTOS.forEach(s=>{
+      const c = uObj[s];
+      if(c && c.n>0 && c.idx!=null){ sumN += c.n; sumNIdx += c.n*c.idx; }
+    });
+  });
+  if(sumN===0) return null;
+  return {n:sumN, idx:Math.round((sumNIdx/sumN)*100)/100};
+}
+function graficoEixosCells(eid, unidade){
+  if(eid==='E7'){
+    const c = unidade==='Consolidado' ? E7_FAMILIA.overall : E7_FAMILIA.byUnidade[unidade];
+    return {familia:c, coord:null, auto:null, aluno:null};
+  }
+  if(unidade==='Consolidado'){
+    // Mesma fonte da seção "Seis eixos prioritários" no Consolidado (EIXOS.overall) — não re-somar via
+    // EIXO_CROSS aqui, que cobre só a pergunta específica de cada eixo por unidade/segmento e pode ter uma
+    // base diferente do overall (ex.: E6 combina NPS + onboarding + comunicação, cross só tem comunicação).
+    const eixoDef = EIXOS.find(x=>x.id===eid);
+    const o = eixoDef.overall;
+    return {
+      familia: o.familiaN ? {n:o.familiaN, idx:o.familia} : null,
+      coord: o.coordN ? {n:o.coordN, idx:o.coord} : null,
+      auto: o.autoN ? {n:o.autoN, idx:o.auto} : null,
+      aluno: (EIXO_ALUNO_MODE[eid]==='index' && o.alunoN) ? {n:o.alunoN, idx:o.aluno} : null
+    };
+  }
+  const cross = EIXO_CROSS[eid];
+  return {
+    familia: eixoUnidadeCell(cross.familia, unidade),
+    coord: eixoUnidadeCell(cross.coord, unidade),
+    auto: eixoUnidadeCell(cross.auto, unidade),
+    aluno: (EIXO_ALUNO_MODE[eid]==='index') ? eixoUnidadeCell(cross.aluno, unidade) : null
+  };
+}
+function renderGraficoEixos(unidade){
+  document.getElementById('graficoEixosScope').textContent = 'Recorte: ' + unidade;
+
+  const groupsHtml = GRAFICO_EIXOS_ORDEM.map(eid=>{
+    const cells = graficoEixosCells(eid, unidade);
+    const barsHtml = GRAFICO_EIXOS_VOICES.map(v=>{
+      const cell = cells[v.key];
+      if(!cell || cell.idx==null) return '';
+      return `<div class="eixo-chart-bar" id="gbar-${eid}-${v.key}" style="height:${Math.max(cell.idx,1)}%; background:${v.color};"></div>`;
+    }).join('');
+    return `<div class="eixo-chart-group">
+      <div class="eixo-chart-bars">${barsHtml}</div>
+      <div class="eixo-chart-label">${GRAFICO_EIXOS_LABELS[eid]}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('graficoEixosChart').innerHTML = groupsHtml;
+
+  GRAFICO_EIXOS_ORDEM.forEach(eid=>{
+    const cells = graficoEixosCells(eid, unidade);
+    GRAFICO_EIXOS_VOICES.forEach(v=>{
+      const cell = cells[v.key];
+      if(!cell || cell.idx==null) return;
+      const el = document.getElementById(`gbar-${eid}-${v.key}`);
+      if(!el) return;
+      wireTip(el, GRAFICO_EIXOS_LABELS[eid] + ' — ' + v.label, [['Índice', fmtNum(cell.idx)], ['Respostas (n)', cell.n]]);
+    });
+  });
+}
 
 /* ============ SEÇÃO ALUNOS: barras + professores mais citados ============ */
 // Fonte: aba 10-Prof-Mais-Citados (2), coluna F "Citações por aluno" = nomeações totais ÷ alunos atendidos.
@@ -1571,6 +1975,72 @@ const CITACOES = [
   {nome:"Raquel Santos Bracarense", segmento:"Ensino Fundamental II", unidade:null, ratio:0.09, n:18}
 ];
 
+// Fonte: nota das famílias à professora regente/tutora ("A professora regente [...] demonstra conhecer o meu filho,
+// o que o motiva, o que o desafia." — fam-resposta, blocos k2k4/k5a5), agregada por turma e cruzada com o roster
+// TURMA→professor fornecido para Ensino Infantil e Ensino Fundamental I (mecanismo de citação de aluno não existe
+// nesses segmentos). Quando uma turma tem mais de um professor (regências por disciplina), todos recebem a mesma
+// nota da turma; quando um professor dá aula em mais de uma turma, a nota é a média ponderada pelo n de cada turma.
+const PROF_FAMILIA_REGENTE = [
+  {nome:"Samires dos Santos Queiroz", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 4 A AN", n:5, media:100},
+  {nome:"Manuela Resende Mascarenhas", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 2 A AN", n:6, media:100},
+  {nome:"Samara Fernandes dos Santos", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 4 B LS", n:1, media:100},
+  {nome:"Beatriz Dafne de Melo", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 3 B LS", n:10, media:97.5},
+  {nome:"Cinthia Neves Liberato de Matos", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"1º Ano A LS / 1º Ano C LS", n:9, media:97.22},
+  {nome:"Carla de Queiroz Aires Habib", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"1º Ano A LS / 1º Ano C LS", n:9, media:97.22},
+  {nome:"Daniele Izabel Martini Machado", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 4 C LS", n:6, media:95.83},
+  {nome:"Welileni Santos Maciel", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"Kinder 5 B AN", n:9, media:94.44},
+  {nome:"Karine Coutinho Lima", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 2 B AN", n:4, media:93.75},
+  {nome:"Amanda Nogueira Pereira", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 4 D LS", n:6, media:91.67},
+  {nome:"Jessica Meire de Almeida Gomes", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 3 B AN", n:9, media:91.67},
+  {nome:"Raiane Vieira Penha", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 3 A AN", n:3, media:91.67},
+  {nome:"Micaelly Silva Susuki", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"1º Ano A AN / 1º Ano C AN", n:11, media:90.91},
+  {nome:"Thalita Bezerra de Oliveira", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"1º Ano A AN / 1º Ano C AN", n:11, media:90.91},
+  {nome:"Steli Larissa Lima Ferreira Rios", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 2 B LS", n:8, media:90.62},
+  {nome:"Nathasha Karenina Zemuner Lemos", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 3 C AN", n:5, media:90},
+  {nome:"Natalia Roncisvalle Avanzi", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 2 A LS", n:2, media:87.5},
+  {nome:"Natalia Saraiva do Amaral", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"3º Ano A LS / 3º Ano C LS", n:10, media:87.5},
+  {nome:"Juliana Cristina Amaral de Souza Pardini", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"3º Ano A LS / 3º Ano C LS", n:10, media:87.5},
+  {nome:"Mylena da Silva Guimaraes", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"Kinder 5 B LS", n:13, media:86.54},
+  {nome:"Gabriela Souza Neiva", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"Kinder 5 A AN / Kinder 5 C AN", n:13, media:86.54},
+  {nome:"Heloisa Alves de Magalhaes", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"1º Ano B LS / 2º Ano B LS", n:5, media:85},
+  {nome:"Juliane Ribeiro Zottich", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"1º Ano B LS / 2º Ano B LS", n:5, media:85},
+  {nome:"Carla Conceicao Cavalcanti", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"3º Ano B AN / 3º Ano C AN", n:16, media:84.38},
+  {nome:"Thais Baumgartner", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"3º Ano B AN / 3º Ano C AN", n:16, media:84.38},
+  {nome:"Teresa Raquel Matos de Sousa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"2º Ano A LS / 2º Ano C LS", n:14, media:83.93},
+  {nome:"Daniele Lacerda da Costa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"2º Ano A LS / 2º Ano C LS", n:14, media:83.93},
+  {nome:"Lorena Eufrasio Cardoso", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 4 D AN", n:3, media:83.33},
+  {nome:"Luisa Matos Lopes", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 4 A LS", n:6, media:83.33},
+  {nome:"Brenda Paula Marinho Alves", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 3 C LS", n:3, media:83.33},
+  {nome:"Marta Guedes da Costa Scarano", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 4 D AN", n:3, media:83.33},
+  {nome:"Larissa Goncalves Brito Rosa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"Kinder 5 B LS", n:13, media:86.54},
+  {nome:"Larissa Goncalves Brito Rosa", segmento:"Ensino Infantil", unidade:"Kinder", turma:"Kinder 3 A LS", n:3, media:66.67},
+  {nome:"Meyre Helen Nunes de Andrade", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"4º Ano A LS / 4º Ano C LS", n:13, media:82.69},
+  {nome:"Claudioneth Mateus Nascimento", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"4º Ano A LS / 4º Ano C LS", n:13, media:82.69},
+  {nome:"Julia Verdade Costa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"Kinder 5 A LS / Kinder 5 C LS", n:6, media:79.17},
+  {nome:"Roberta Lussac do Espirito Santo", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"Kinder 5 A LS / Kinder 5 C LS", n:6, media:79.17},
+  {nome:"Bruna Coelho de Miranda", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano B AN / 3º Ano B AN / 3º Ano C AN", n:24, media:78.12},
+  {nome:"Jhenifer Cristina Texeira dos Santos", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"3º Ano B LS / 4º Ano B LS", n:10, media:77.5},
+  {nome:"Ana Carolina Tosta Duarte Rocco Froes", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 4 B AN", n:10, media:77.5},
+  {nome:"Raquel Batista de Souza Maciel Neto Barbosa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"3º Ano B LS / 4º Ano B LS", n:10, media:77.5},
+  {nome:"Luciana Rosa Almeida Lopes", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"5º Ano A LS / 5º Ano B LS / 5º Ano C LS", n:16, media:75},
+  {nome:"Fernanda Beatriz Aguiar de Carvalho", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"5º Ano A LS / 5º Ano B LS / 5º Ano C LS", n:16, media:75},
+  {nome:"Isabela Silva de Albuquerque", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"5º Ano A LS / 5º Ano B LS / 5º Ano C LS", n:16, media:75},
+  {nome:"Aline Fernandes Caldeira de Souza Santos", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"5º Ano A AN / 5º Ano B AN", n:17, media:75},
+  {nome:"Douglas Hudson Lima de Sousa", segmento:"Ensino Fundamental I", unidade:"Kinder", turma:"5º Ano A LS / 5º Ano B LS / 5º Ano C LS", n:16, media:75},
+  {nome:"Olivia Luisa Fernandes Silveira", segmento:"Ensino Infantil", unidade:"Asa Norte", turma:"Kinder 4 C AN", n:8, media:75},
+  {nome:"Matheus Pontes Silva", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"5º Ano A AN / 5º Ano B AN", n:17, media:75},
+  {nome:"Andrea de Sousa Cordeiro", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"1º Ano B AN / 1º Ano D AN", n:11, media:72.73},
+  {nome:"Ligia Monteiro da Silva", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"1º Ano B AN / 1º Ano D AN", n:11, media:72.73},
+  {nome:"Danielle Nathalie Costa Justen", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano C AN / 3º Ano A AN", n:12, media:64.58},
+  {nome:"Larissa Costa Fernandes de Souza", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano C AN / 3º Ano A AN", n:12, media:64.58},
+  {nome:"Laisla Francielle Borges de Sousa", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano C AN / 3º Ano A AN", n:12, media:64.58},
+  {nome:"Kátia Regina França Faria e Souza Martins", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"4º Ano A AN / 4º Ano B AN", n:18, media:63.89},
+  {nome:"Rosane Mesquita Pontes", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"4º Ano A AN / 4º Ano B AN", n:18, media:63.89},
+  {nome:"Renne Nascimento Souza Rodrigues", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"4º Ano A AN / 4º Ano B AN", n:18, media:63.89},
+  {nome:"Luisa de Oliveira Rosa", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano A AN / 2º Ano B AN", n:12, media:60.41},
+  {nome:"Rejane Cristina dos Santos Serpa Canabarro", segmento:"Ensino Fundamental I", unidade:"Asa Norte", turma:"2º Ano A AN / 2º Ano B AN", n:12, media:60.41}
+];
+
 function renderAlunoSection(unidade, segmento){
   const isFiltered = !(unidade==='Consolidado' && segmento==='Consolidado');
   ['E1','E2'].forEach(eid=>{
@@ -1590,13 +2060,13 @@ function renderAlunoSection(unidade, segmento){
   const container = document.getElementById('citacoesTop');
   if(container){
     let list = CITACOES;
-    if(unidade!=='Consolidado') list = list.filter(c => c.unidade===unidade);
+    if(unidade!=='Consolidado') list = list.filter(c => unidadeMatches(c.unidade, unidade));
     if(segmento!=='Consolidado') list = list.filter(c => c.segmento===segmento);
     list = list.slice().sort((a,b)=>b.ratio-a.ratio).slice(0,5);
     if(list.length===0){
       container.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--ink-3); padding:14px;">Sem professores citados o suficiente neste recorte (a pesquisa de alunos só cobre Asa Norte/EF II e High/EF II+EM).</td></tr>';
     } else {
-      container.innerHTML = list.map((c,i)=>`<tr><td>${i+1}</td><td>${c.nome}</td><td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'multi-unidade'}</td><td class="num">${fmtNum(c.ratio)}</td></tr>`).join('');
+      container.innerHTML = list.map((c,i)=>`<tr><td>${i+1}</td><td>${profNameHtml(c.nome)}</td><td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'multi-unidade'}</td><td class="num">${fmtNum(c.ratio)}</td></tr>`).join('');
     }
   }
 }
@@ -1642,10 +2112,184 @@ const CITACOES_TUTORIA = [
   {nome:"Rogerio Dutra Pereira", segmento:"Ensino Médio", unidade:null, tutorandos:10, respostas:20, citacoesPorAluno:null, tutoriaAlunos:55.6, leitura:"sem base nas duas frentes"}
 ];
 
+// Fonte: planilha "RELAÇÃO FUNCIONÁRIOS" (RH), fornecida pelo cliente — data de admissão e desligamento por
+// colaborador. Quando um professor tem mais de um vínculo na base (reingresso, mudança de cargo/unidade), usamos
+// o vínculo ativo mais recente (sem data de desligamento); se não há nenhum vínculo ativo, usamos o vínculo mais
+// recente e marcamos como desligado. Chaves em maiúsculas sem acento (ver stripAccents) para casar com os nomes
+// já usados nas demais bases do site, que têm grafia variável de acentuação.
+const PROF_ADMISSAO = {
+  "ALINE FERNANDES CALDEIRA DE SOUZA SANTOS": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "AMANDA NOGUEIRA PEREIRA": {admissao:"23/01/2019", desligado:false, desligamento:null},
+  "ANA BARBARA DA SILVA NASCIMENTO": {admissao:"22/02/2021", desligado:false, desligamento:null},
+  "ANA CAROLINA TOSTA DUARTE ROCCO FROES": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "ANDREA DE SOUSA CORDEIRO": {admissao:"16/04/2026", desligado:false, desligamento:null},
+  "ANDRESSA MAGALHAES BAEZA LASNEAUX": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "ANNE CAROLINE BRAGA NEROSKY": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "ANNY CAROLINE GOMES NOLASCO": {admissao:"17/12/2024", desligado:false, desligamento:null},
+  "ARTHUR MARQUES PEREIRA": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "AVANNY DALMASCHIO GALVAO NASSER BUZAID": {admissao:"23/01/2019", desligado:false, desligamento:null},
+  "BEATRIZ DAFNE DE MELO": {admissao:"06/03/2018", desligado:false, desligamento:null},
+  "BEATRIZ MACEDO BUCHMANN": {admissao:"15/01/2024", desligado:true, desligamento:"20/07/2026"},
+  "BERNARDO TADEU MACHADO VERANO": {admissao:"16/07/2025", desligado:false, desligamento:null},
+  "BERTA ALENCAR NERY BIONDI": {admissao:"18/09/2023", desligado:false, desligamento:null},
+  "BRENDA PAULA MARINHO ALVES": {admissao:"19/07/2022", desligado:false, desligamento:null},
+  "BRUNA COELHO DE MIRANDA": {admissao:"15/06/2026", desligado:false, desligamento:null},
+  "BRUNO PINHEIRO DE CARVALHO": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "CAIO ALEXANDRE SILVESTRE MELO": {admissao:"20/08/2025", desligado:false, desligamento:null},
+  "CAMILA PIMENTA CEZARIO DE SOUZA": {admissao:"16/07/2025", desligado:false, desligamento:null},
+  "CARLA CONCEICAO CAVALCANTI": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "CARLA DE QUEIROZ AIRES HABIB": {admissao:"12/03/2025", desligado:false, desligamento:null},
+  "CARLOS EDUARDO RODRIGUES NEROSKY": {admissao:"01/02/2017", desligado:false, desligamento:null},
+  "CARLOS ROBERTO ALVES TELES": {admissao:"01/10/2025", desligado:false, desligamento:null},
+  "CAROLINA MONTEIRO DE MATOS": {admissao:"23/01/2025", desligado:false, desligamento:null},
+  "CINTHIA NEVES LIBERATO DE MATOS": {admissao:"19/01/2018", desligado:false, desligamento:null},
+  "CLAUDIONETH MATEUS NASCIMENTO": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "DANIELE IZABEL MARTINI MACHADO": {admissao:"19/01/2023", desligado:false, desligamento:null},
+  "DANIELE LACERDA DA COSTA": {admissao:"29/09/2020", desligado:false, desligamento:null},
+  "DANIELLE NATHALIE COSTA JUSTEN": {admissao:"07/05/2025", desligado:false, desligamento:null},
+  "DEBORA DE SOUZA RODRIGUES": {admissao:"19/01/2018", desligado:false, desligamento:null},
+  "DORIS DE FREITAS COSTA FERREIRA DOS SANTOS": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "DOUGLAS HUDSON LIMA DE SOUSA": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "FERNANDA BEATRIZ AGUIAR DE CARVALHO": {admissao:"25/05/2026", desligado:false, desligamento:null},
+  "FILIPE MACHADO VALLADARES PADUA": {admissao:"22/02/2021", desligado:false, desligamento:null},
+  "GABRIELA SOUZA NEIVA": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "GALILEU HENRIQUE COSTA FONTES": {admissao:"01/02/2021", desligado:false, desligamento:null},
+  "GIOVANNA MARIA DA ROCHA OTERO": {admissao:"13/08/2025", desligado:false, desligamento:null},
+  "GLEITON DE OLIVEIRA CARVALHO": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "GUSTAVO BESSA FREIRE ROLIM": {admissao:"25/09/2024", desligado:false, desligamento:null},
+  "HELOISA ALVES DE MAGALHAES": {admissao:"21/03/2023", desligado:false, desligamento:null},
+  "HUDA AUGUSTO CARDOSO": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "INGRED FERNANDES DE ANDRADE ALENCAR": {admissao:"23/01/2025", desligado:false, desligamento:null},
+  "ISABELA SILVA DE ALBUQUERQUE": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "IVANOR RANZZI": {admissao:"18/07/2024", desligado:false, desligamento:null},
+  "JESSICA CARNEIRO GERMANO": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "JESSICA MEIRE DE ALMEIDA GOMES": {admissao:"24/01/2024", desligado:false, desligamento:null},
+  "JHENIFER CRISTINA TEXEIRA DOS SANTOS": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "JOSE VALDECIR DONATO DA SILVA JUNIOR": {admissao:"05/08/2024", desligado:false, desligamento:null},
+  "JULIA VERDADE COSTA": {admissao:"09/09/2022", desligado:false, desligamento:null},
+  "JULIANA CRISTINA AMARAL DE SOUZA PARDINI": {admissao:"19/03/2024", desligado:false, desligamento:null},
+  "JULIANA FERREIRA ALVES": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "JULIANE RIBEIRO ZOTTICH": {admissao:"26/01/2026", desligado:false, desligamento:null},
+  "KARINE COUTINHO LIMA": {admissao:"27/01/2025", desligado:false, desligamento:null},
+  "KARINE FERNANDA LAGES DUTRA RAFAEL": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "KARLA GABRIELLE DIAS MARQUES KUHLMANN": {admissao:"23/07/2026", desligado:false, desligamento:null},
+  "KATIA REGINA FRANCA FARIA E SOUZA MARTINS": {admissao:"01/06/2026", desligado:false, desligamento:null},
+  "KENNIA CRISTINA MACEDO": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "LAISLA FRANCIELLE BORGES DE SOUSA": {admissao:"15/01/2025", desligado:true, desligamento:"08/06/2026"},
+  "LARISSA COSTA FERNANDES DE SOUZA": {admissao:"04/05/2026", desligado:false, desligamento:null},
+  "LARISSA GONCALVES BRITO ROSA": {admissao:"06/08/2021", desligado:false, desligamento:null},
+  "LIDICE RODRIGUES MIRANDA MARTINS": {admissao:"20/01/2025", desligado:false, desligamento:null},
+  "LIGIA MONTEIRO DA SILVA": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "LORENA EUFRASIO CARDOSO": {admissao:"15/01/2024", desligado:true, desligamento:"17/07/2026"},
+  "LUCAS DE SOUSA ROCHA": {admissao:"22/02/2024", desligado:false, desligamento:null},
+  "LUCIANA BARBOSA SILVA GESTEIRA COSTA": {admissao:"16/10/2023", desligado:false, desligamento:null},
+  "LUCIANA ROSA ALMEIDA LOPES": {admissao:"19/01/2023", desligado:false, desligamento:null},
+  "LUCIANO ALVARES ALVES": {admissao:"22/02/2021", desligado:false, desligamento:null},
+  "LUCIO CASSEMIRO ANACLETO": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "LUISA DE OLIVEIRA ROSA": {admissao:"16/07/2025", desligado:true, desligamento:"03/08/2026"},
+  "LUISA MATOS LOPES": {admissao:"16/08/2021", desligado:false, desligamento:null},
+  "MAIRA OLIVEIRA CORDEIRO": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "MANUELA RESENDE MASCARENHAS": {admissao:"05/02/2024", desligado:false, desligamento:null},
+  "MARCOS LEANDRO MATIAS MORRIS": {admissao:"01/06/2023", desligado:false, desligamento:null},
+  "MARIANA DE OLIVEIRA ALVES": {admissao:"01/02/2016", desligado:false, desligamento:null},
+  "MARLON ANDRE DE SOUZA FLORENCIO": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "MARTA GUEDES DA COSTA SCARANO": {admissao:"27/07/2026", desligado:false, desligamento:null},
+  "MATEUS VINICIOS AFONSO ROCHA": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "MATHEUS PONTES SILVA": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "MATHEUS RODRIGUES BATISTA MACHADO": {admissao:"19/01/2023", desligado:false, desligamento:null},
+  "MEYRE HELEN NUNES DE ANDRADE": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "MICAELLY SILVA SUSUKI": {admissao:"12/02/2021", desligado:false, desligamento:null},
+  "MICHELLE COSTA GOSSLING VALERIO CARDOSO": {admissao:"19/07/2022", desligado:false, desligamento:null},
+  "MYLENA DA SILVA GUIMARAES": {admissao:"16/01/2018", desligado:false, desligamento:null},
+  "NATALIA RONCISVALLE AVANZI": {admissao:"22/07/2024", desligado:false, desligamento:null},
+  "NATALIA SARAIVA DO AMARAL": {admissao:"22/03/2021", desligado:false, desligamento:null},
+  "NATHAN SIMOES MAGELA DE CASTRO": {admissao:"06/02/2023", desligado:false, desligamento:null},
+  "NATHASHA KARENINA ZEMUNER LEMOS": {admissao:"13/02/2020", desligado:false, desligamento:null},
+  "NINA LUNA RIDD": {admissao:"09/02/2022", desligado:false, desligamento:null},
+  "OCTAVIO A. R. SCHUENCK AMORELLI RIBEIRO PEREIRA": {admissao:"05/09/2024", desligado:false, desligamento:null},
+  "OLAVO CARVALHO NEVES": {admissao:"17/04/2024", desligado:false, desligamento:null},
+  "OLIVIA LUISA FERNANDES SILVEIRA": {admissao:"08/10/2025", desligado:false, desligamento:null},
+  "PATRICIA CHAGAS ALONSO GONCALVES": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "PHILIPPE SPEZIA SILVA": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "RAIANE VIEIRA PENHA": {admissao:"02/03/2020", desligado:false, desligamento:null},
+  "RAISSA GRACE JUMNE ASOBO": {admissao:"06/04/2026", desligado:false, desligamento:null},
+  "RAQUEL BATISTA DE SOUZA MACIEL NETO BARBOSA": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "RAQUEL SANTOS BRACARENSE": {admissao:"14/01/2026", desligado:false, desligamento:null},
+  "RAYANNE LINHARES AZEVEDO": {admissao:"16/08/2023", desligado:false, desligamento:null},
+  "REJANE CRISTINA DOS SANTOS SERPA CANABARRO": {admissao:"15/01/2025", desligado:false, desligamento:null},
+  "RENNE NASCIMENTO SOUZA RODRIGUES": {admissao:"11/09/2024", desligado:false, desligamento:null},
+  "ROBERTA LUSSAC DO ESPIRITO SANTO": {admissao:"25/06/2025", desligado:false, desligamento:null},
+  "RODOLFO ALEJANDRO MUNOZ ARAYA": {admissao:"23/01/2019", desligado:false, desligamento:null},
+  "RODRIGO BORGES DE MAGALHAES": {admissao:"19/01/2023", desligado:false, desligamento:null},
+  "RODRIGO EDUARDO DE OLIVEIRA": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "ROGERIO DUTRA PEREIRA": {admissao:"14/01/2026", desligado:true, desligamento:"02/07/2026"},
+  "ROSANE MESQUITA PONTES": {admissao:"15/01/2024", desligado:false, desligamento:null},
+  "SAMARA FERNANDES DOS SANTOS": {admissao:"22/07/2024", desligado:false, desligamento:null},
+  "SAMARA KIRMSE BATISTA NUNES": {admissao:"29/01/2024", desligado:false, desligamento:null},
+  "SAMIRES DOS SANTOS QUEIROZ": {admissao:"15/04/2024", desligado:false, desligamento:null},
+  "SARAH ISIDORIO ROSA": {admissao:"15/04/2024", desligado:false, desligamento:null},
+  "SIDNEI FELIX VIEIRA": {admissao:"26/01/2022", desligado:false, desligamento:null},
+  "STELI LARISSA LIMA FERREIRA RIOS": {admissao:"31/07/2017", desligado:false, desligamento:null},
+  "TALITA COSTA SANTOS SPINDOLA": {admissao:"21/10/2024", desligado:false, desligamento:null},
+  "TATIANE LUIZA DA SILVA": {admissao:"22/07/2024", desligado:false, desligamento:null},
+  "TERESA RAQUEL MATOS DE SOUSA": {admissao:"23/01/2019", desligado:false, desligamento:null},
+  "THAIS BAUMGARTNER": {admissao:"10/02/2025", desligado:false, desligamento:null},
+  "THALITA BEZERRA DE OLIVEIRA": {admissao:"06/03/2018", desligado:false, desligamento:null},
+  "THALITA DE CAMARGO MIRANDA": {admissao:"01/02/2017", desligado:false, desligamento:null},
+  "THAMIRES PANNO GARCIA": {admissao:"01/09/2016", desligado:false, desligamento:null},
+  "THAMIRES SANTANA DE OLIVEIRA CASTRO PEREIRA": {admissao:"19/01/2023", desligado:false, desligamento:null},
+  "TULIO DE ARAUJO CAMPOS": {admissao:"24/09/2025", desligado:false, desligamento:null},
+  "WALDSON MUNIZ PEREIRA": {admissao:"22/02/2021", desligado:false, desligamento:null},
+  "WELILENI SANTOS MACIEL": {admissao:"22/01/2025", desligado:false, desligamento:null},
+  "WILLIAM SANTOS CRUZ JUNIOR": {admissao:"12/07/2023", desligado:false, desligamento:null}
+};
+
+function stripAccents(s){
+  return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'');
+}
+function admissaoInfo(nomeAny){
+  const key = stripAccents((nomeAny||'').toUpperCase().trim());
+  return PROF_ADMISSAO[key] || null;
+}
+function parseDataBR(s){
+  const p = s.split('/');
+  return new Date(parseInt(p[2],10), parseInt(p[1],10)-1, parseInt(p[0],10));
+}
+// Data de referência da planilha de RH — fixa (não usa a data do dia em que o painel é aberto), para o
+// "Tempo de empresa" não mudar sozinho cada vez que o arquivo for reaberto em um dia diferente.
+const REF_HOJE_RH = new Date(2026, 8, 22);
+function tempoEmpresaTexto(dataAdmissaoStr, dataFimStr){
+  const ini = parseDataBR(dataAdmissaoStr);
+  const fim = dataFimStr ? parseDataBR(dataFimStr) : REF_HOJE_RH;
+  let meses = (fim.getFullYear()-ini.getFullYear())*12 + (fim.getMonth()-ini.getMonth());
+  if(fim.getDate() < ini.getDate()) meses--;
+  if(meses<0) meses = 0;
+  const anos = Math.floor(meses/12);
+  const mesesRestantes = meses%12;
+  const anosTxt = anos>0 ? (anos+' ano'+(anos>1?'s':'')) : '';
+  const mesesTxt = mesesRestantes>0 ? (mesesRestantes+(mesesRestantes>1?' meses':' mês')) : '';
+  if(anos>0 && mesesRestantes>0) return anosTxt+' e '+mesesTxt;
+  if(anos>0) return anosTxt;
+  if(mesesRestantes>0) return mesesTxt;
+  return 'menos de 1 mês';
+}
+function tempoEmpresaCellHtml(nomeAny){
+  const info = admissaoInfo(nomeAny);
+  if(!info) return '<td class="n-muted">—</td>';
+  const tempo = tempoEmpresaTexto(info.admissao, info.desligado ? info.desligamento : null);
+  return '<td>' + tempo + (info.desligado ? ' <span style="color:var(--crit-vivid); font-weight:600;">(desligado em '+info.desligamento+')</span>' : '') + '</td>';
+}
+function profNameHtml(nomeAny, displayName){
+  const info = admissaoInfo(nomeAny);
+  const label = displayName || nomeAny;
+  if(info && info.desligado) return '<span style="color:var(--crit-vivid); font-weight:600;">'+label+'</span>';
+  return label;
+}
+
 function renderCitacoesTutoria(unidade, segmento){
   document.getElementById('citacoesTutoriaScope').textContent = 'Recorte: ' + ((unidade==='Consolidado'&&segmento==='Consolidado') ? 'Consolidado' : [unidade!=='Consolidado'?unidade:null, segmento!=='Consolidado'?segmento:null].filter(Boolean).join(' + '));
   let list = CITACOES_TUTORIA.filter(t => t.leitura === 'Atenção nas duas frentes');
-  if(unidade!=='Consolidado') list = list.filter(t => (t.unidade||'').split('+').map(s=>s.trim()).includes(unidade));
+  if(unidade!=='Consolidado') list = list.filter(t => (t.unidade||'').split('+').map(s=>s.trim()).some(u=>unidadeMatches(u, unidade)));
   if(segmento!=='Consolidado') list = list.filter(t => t.segmento===segmento);
   list = list.slice().sort((a,b)=> a.tutoriaAlunos - b.tutoriaAlunos);
 
@@ -1660,16 +2304,208 @@ function renderCitacoesTutoria(unidade, segmento){
   let html = '<tr><th>Tutor</th><th>Unidade / Segmento</th><th class="num">Tutorandos</th><th class="num">Respostas de alunos</th><th class="num">Citações por aluno</th><th class="num">Tutoria — Alunos</th><th>Leitura cruzada</th></tr>';
   list.forEach(t=>{
     html += `<tr>
-      <td><b>${t.nome}</b></td>
+      <td><b>${profNameHtml(t.nome)}</b></td>
       <td>${SEG_SHORT[t.segmento]||t.segmento} · ${t.unidade||'—'}</td>
       <td class="num">${t.tutorandos}</td>
       <td class="num">${t.respostas}</td>
-      <td class="num" style="color:${t.citacoesPorAluno<1.18?'var(--crit)':'var(--ink-2)'}">${t.citacoesPorAluno!=null?fmtNum(t.citacoesPorAluno):'—'}</td>
-      <td class="num" style="color:${t.tutoriaAlunos<78.7?'var(--crit)':'var(--ink-2)'}; font-weight:700;">${fmtNum(t.tutoriaAlunos)}</td>
+      <td class="num" style="color:${t.citacoesPorAluno<1.18?'var(--crit-vivid)':'var(--ink-2)'}">${t.citacoesPorAluno!=null?fmtNum(t.citacoesPorAluno):'—'}</td>
+      <td class="num" style="color:${t.tutoriaAlunos<78.7?'var(--crit-vivid)':'var(--ink-2)'}; font-weight:700;">${fmtNum(t.tutoriaAlunos)}</td>
       <td><span class="pill pill-neg">${t.leitura}</span></td>
     </tr>`;
   });
   tbl.innerHTML = html;
+}
+
+/* ============ RENDER: DISPERSÃO citações × tutoria (scatter, SVG) ============ */
+const LEITURA_COLOR = {
+  "Atenção nas duas frentes": "var(--crit-vivid)",
+  "Referência em sala e na tutoria": "var(--good-vivid)",
+  "Forte na tutoria, pouco citado em sala": "var(--blue)",
+  "Forte em sala, tutoria a desenvolver": "var(--orange)"
+};
+function renderCitacoesScatterTutoria(unidade, segmento){
+  const el = document.getElementById('citacoesScatter');
+  if(!el) return;
+  let list = CITACOES_TUTORIA.filter(t => t.citacoesPorAluno != null);
+  if(unidade!=='Consolidado') list = list.filter(t => (t.unidade||'').split('+').map(s=>s.trim()).some(u=>unidadeMatches(u, unidade)));
+  if(segmento!=='Consolidado') list = list.filter(t => t.segmento===segmento);
+  if(list.length===0){ el.innerHTML = '<div class="data-empty">Sem tutores com as duas medidas (citações em sala e nota de tutoria) neste recorte.</div>'; return; }
+
+  const MED_X = 1.18, MED_Y = 78.7;
+  const W = 900, H = 380, padL = 46, padR = 20, padT = 24, padB = 50;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const maxX = Math.ceil(Math.max(MED_X*1.4, ...list.map(t=>t.citacoesPorAluno)) * 10) / 10;
+  const minY = Math.max(0, Math.floor((Math.min(MED_Y, ...list.map(t=>t.tutoriaAlunos)) - 8) / 10) * 10);
+  const maxY = 100;
+  const xScale = v => padL + (v/maxX)*plotW;
+  const yScale = v => padT + plotH - ((v-minY)/(maxY-minY))*plotH;
+  const xTickStep = maxX > 4 ? 1 : 0.5;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;">`;
+  for(let v=minY; v<=maxY; v+=20){
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border)" stroke-width="1"/>`;
+    svg += `<text x="${padL-8}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--ink-3)">${v}</text>`;
+  }
+  for(let v=0; v<=maxX+0.001; v+=xTickStep){
+    const x = xScale(v);
+    svg += `<text x="${x.toFixed(1)}" y="${H-padB+18}" text-anchor="middle" font-size="11" fill="var(--ink-3)">${v.toFixed(1).replace('.',',')}</text>`;
+  }
+  const medXpx = xScale(MED_X), medYpx = yScale(MED_Y);
+  svg += `<line x1="${medXpx.toFixed(1)}" y1="${padT}" x2="${medXpx.toFixed(1)}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4,3"/>`;
+  svg += `<line x1="${padL}" y1="${medYpx.toFixed(1)}" x2="${W-padR}" y2="${medYpx.toFixed(1)}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4,3"/>`;
+  svg += `<text x="${(medXpx+4).toFixed(1)}" y="${padT+11}" font-size="10" fill="var(--ink-3)">mediana citações (${fmtNum(MED_X)})</text>`;
+  svg += `<text x="${padL+4}" y="${(medYpx-5).toFixed(1)}" font-size="10" fill="var(--ink-3)">mediana tutoria (${fmtNum(MED_Y)})</text>`;
+  svg += `<text x="${(padL+plotW/2).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink-2)">Citações por aluno (referência em sala)</text>`;
+  svg += `<text x="14" y="${(padT+plotH/2).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink-2)" transform="rotate(-90 14 ${(padT+plotH/2).toFixed(1)})">Tutoria — nota de alunos</text>`;
+  list.forEach((t,i)=>{
+    const x = xScale(t.citacoesPorAluno), y = yScale(t.tutoriaAlunos);
+    const color = LEITURA_COLOR[t.leitura] || 'var(--neutral)';
+    svg += `<circle class="tut-pt" data-i="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.5" fill="${color}" fill-opacity="0.88" stroke="var(--bg-card)" stroke-width="1.5" style="cursor:pointer;"/>`;
+  });
+  svg += `<line x1="${padL}" y1="${(padT+plotH).toFixed(1)}" x2="${W-padR}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--border-2)" stroke-width="1.5"/>`;
+  svg += `</svg>`;
+
+  const legend = Object.entries(LEITURA_COLOR).map(([k,c])=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-2);margin-right:14px;"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${k}</span>`).join('');
+  el.innerHTML = svg + `<div style="margin-top:8px;">${legend}</div>`;
+
+  el.querySelectorAll('.tut-pt').forEach(pt=>{
+    const t = list[+pt.dataset.i];
+    wireTip(pt, t.nome, [
+      ['Unidade/Segmento', (t.unidade||'—') + ' · ' + (SEG_SHORT[t.segmento]||t.segmento)],
+      ['Citações por aluno', fmtNum(t.citacoesPorAluno)],
+      ['Tutoria — Alunos', fmtNum(t.tutoriaAlunos)],
+      ['Tutorandos', t.tutorandos],
+      ['Respostas', t.respostas],
+      ['Leitura cruzada', t.leitura]
+    ]);
+  });
+}
+
+/* ============ CONSULTA POR PROFESSOR (ficha individual) ============ */
+function normUp(s){ return (s||'').toUpperCase().trim(); }
+function toTitleCase(s){
+  const lower = ['de','da','do','das','dos','e'];
+  return (s||'').toLowerCase().split(' ').map(w => lower.includes(w) ? w : (w.charAt(0).toUpperCase()+w.slice(1))).join(' ');
+}
+function renderProfCard(pNomeUpper){
+  const p = PROFESSORES.find(x=>x.nome===pNomeUpper);
+  const container = document.getElementById('profConsultaCard');
+  if(!p || !container) return;
+  const displayName = toTitleCase(p.nome);
+
+  const citacaoSorted = CITACOES.slice().sort((a,b)=>b.ratio-a.ratio);
+  const citacao = CITACOES.find(c=>normUp(c.nome)===pNomeUpper);
+  const citacaoRank = citacao ? citacaoSorted.indexOf(citacao)+1 : null;
+
+  const familiaSorted = PROF_FAMILIA_REGENTE.slice().sort((a,b)=>b.media-a.media);
+  const familiaReg = PROF_FAMILIA_REGENTE.filter(c=>normUp(c.nome)===pNomeUpper).map(f=>({...f, rank: familiaSorted.indexOf(PROF_FAMILIA_REGENTE.find(x=>x===f))+1}));
+
+  const tutoria = CITACOES_TUTORIA.find(t=>normUp(t.nome)===pNomeUpper);
+  const avalTurma = AVAL_FAMILIA_TURMA[p.nome] || null;
+
+  const admInfo = admissaoInfo(p.nome);
+  const badges = [];
+  if(tutoria) badges.push('<span class="pill pill-pos">Tutor(a)</span>');
+  if(citacao) badges.push(`<span class="pill pill-mix">Citado pelos alunos · #${citacaoRank} de ${CITACOES.length}</span>`);
+  if(familiaReg.length) badges.push(`<span class="pill pill-mix">Regente/tutora avaliada pela família</span>`);
+  if(!tutoria && !citacao && !familiaReg.length) badges.push('<span class="pill" style="background:var(--neutral-bg); color:var(--neutral);">Sem citação/tutoria na base</span>');
+  if(admInfo && admInfo.desligado) badges.push(`<span class="pill" style="background:var(--vivid-bg-crit); color:var(--crit-vivid);">Desligado(a) em ${admInfo.desligamento}</span>`);
+
+  const eixosHtml = EIXOS.map(e=>{
+    const eid = e.id;
+    const ex = p[eid];
+    if(!ex) return '';
+    const hasAlunoIdx = EIXO_HAS_ALUNO[eid] && ex.aluno!=null;
+    const hasAlunoTaxa = EIXO_ALUNO_MODE[eid]==='taxa' && ex.alunoTaxa!=null;
+    let famVal = ex.familia, famN = ex.familiaN, famViaTurma=false;
+    if(EIXO_HAS_FAMILIA[eid] && ex.familia==null){
+      if(avalTurma && avalTurma.media!=null){
+        // 1ª opção: média por turma/disciplina (Aval. Família (Turma))
+        famVal = avalTurma.media; famN = avalTurma.n; famViaTurma = true;
+      } else if(familiaReg.length){
+        // 2ª opção: quando o professor não está em Aval. Família (Turma) mas está na base de
+        // notas de família por regente/tutora (PROF_FAMILIA_REGENTE) — evita ficar sem nenhuma
+        // nota de família só porque falta em uma das duas bases.
+        const totalN = familiaReg.reduce((s,f)=>s+f.n,0);
+        famVal = Math.round((familiaReg.reduce((s,f)=>s+f.n*f.media,0)/totalN)*100)/100;
+        famN = totalN; famViaTurma = true;
+      }
+    }
+    const rows = [];
+    if(hasAlunoIdx) rows.push({k:'Aluno', v:ex.aluno, n:ex.alunoN, color:'var(--orange)'});
+    else if(hasAlunoTaxa) rows.push({k:'Aluno (nomeação)', v:ex.alunoTaxa, n:null, color:'var(--orange)', isTaxa:true});
+    if(EIXO_HAS_FAMILIA[eid] && famVal!=null) rows.push({k: famViaTurma?'Família (via turma)':'Família', v:famVal, n:famN, color:'var(--blue)'});
+    if(ex.coord!=null) rows.push({k:'Coordenação', v:ex.coord, n:ex.coordN, color:'var(--aqua)'});
+    if(ex.auto!=null) rows.push({k:'Autoaval.', v:ex.auto, n:ex.autoN, color:'var(--violet)'});
+    if(rows.length===0) return '';
+    const barsHtml = rows.map(r=>{
+      const pct = r.isTaxa ? Math.min(r.v*2,100) : r.v;
+      return `<div class="mini-bar-row"><div class="k">${r.k}</div><div class="track"><div class="fill" style="width:${pct}%;background:${r.color}"></div></div><div class="v">${r.isTaxa?fmtPct(r.v):fmtNum(r.v)}${r.n?` <span style="color:var(--ink-3); font-weight:500;">n=${r.n}</span>`:''}</div></div>`;
+    }).join('');
+    return `<div class="eixo-card">
+      <div class="eixo-title"><h3>${e.nome}</h3></div>
+      <div class="eixo-bars">${barsHtml}</div>
+      <div class="eixo-interp" style="font-size:11.5px;"><b>Leitura geral do eixo (base consolidada, não específica deste professor):</b> ${e.interpretacao}</div>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  const extraCards = [];
+  if(citacao){
+    extraCards.push(`<div class="kpi-mini"><div class="t">Citações por aluno</div><div class="v" style="color:var(--navy-vivid); background:var(--vivid-bg-navy);">${fmtNum(citacao.ratio)}</div><div class="d">Posição #${citacaoRank} de ${CITACOES.length} professores citados (EF II/EM) · ${citacao.unidade||'multi-unidade'}</div></div>`);
+  }
+  familiaReg.forEach(f=>{
+    const cor = f.media<80 ? 'var(--crit-vivid)' : 'var(--good-vivid)';
+    const bg = f.media<80 ? 'var(--vivid-bg-crit)' : 'var(--vivid-bg-good)';
+    extraCards.push(`<div class="kpi-mini"><div class="t">Nota da família (turma) — ${SEG_SHORT[f.segmento]||f.segmento}</div><div class="v" style="color:${cor}; background:${bg};">${fmtNum(f.media)}</div><div class="d">Posição #${f.rank} de ${PROF_FAMILIA_REGENTE.length} · Turma: ${f.turma||'—'} · n=${f.n}</div></div>`);
+  });
+  if(tutoria){
+    extraCards.push(`<div class="kpi-mini"><div class="t">Tutoria — Alunos (0–100)</div><div class="v" style="color:var(--navy-vivid); background:var(--vivid-bg-navy);">${fmtNum(tutoria.tutoriaAlunos)}</div><div class="d">${tutoria.tutorandos} tutorandos · ${tutoria.respostas} respostas · leitura cruzada: "${tutoria.leitura}"</div></div>`);
+  }
+
+  container.innerHTML = `
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 style="margin:0; font-size:20px; color:var(--navy);">${profNameHtml(p.nome, displayName)}</h3>
+          <div style="font-size:13px; color:var(--ink-2); margin-top:4px;">${p.unidade||'—'} · ${SEG_SHORT[p.segmento]||p.segmento||'—'}${admInfo ? ` · Tempo de empresa: ${tempoEmpresaTexto(admInfo.admissao, admInfo.desligado?admInfo.desligamento:null)}` : ''}</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">${badges.join('')}</div>
+      </div>
+    </div>
+    ${extraCards.length ? `<div class="col3" style="margin-bottom:16px;">${extraCards.join('')}</div>` : ''}
+    <div class="eixos-grid">${eixosHtml || '<div class="data-empty">Sem nenhuma nota registrada para este professor na base.</div>'}</div>
+    <div class="footnote" style="margin-top:14px;">Todas as notas acima vêm das mesmas bases usadas no resto do painel (coor-resposta, auto-respostas, fam-resposta, Alun-Respostas e aba 10-Prof-Mais-Citados) — nenhum número é específico desta ficha. Em <b>Família</b>: quando o professor tem vínculo direto de tutoria, mostra a nota real dele nesse eixo; quando não tem (comum em Ensino Infantil/Fund. I), mostra a nota por turma — priorizando a Aval. Família (Turma) e, na ausência dela, a nota da base de "Professores referência" — sempre marcada "via turma" para deixar claro que é um proxy, não a nota direta deste professor. Por política deste painel, comentários abertos individuais não são reproduzidos aqui, mesmo quando elogiosos — apenas números agregados e a leitura geral de cada eixo (que é da base toda, não deste professor em particular).</div>
+  `;
+}
+function initProfConsulta(){
+  const input = document.getElementById('profSearchInput');
+  const results = document.getElementById('profSearchResults');
+  if(!input || !results) return;
+  const list = PROFESSORES.slice().sort((a,b)=> toTitleCase(a.nome).localeCompare(toTitleCase(b.nome)));
+
+  function showResults(q){
+    const query = q.trim().toLowerCase();
+    if(query.length<1){ results.style.display='none'; results.innerHTML=''; return; }
+    const matches = list.filter(p=>toTitleCase(p.nome).toLowerCase().includes(query)).slice(0,15);
+    results.innerHTML = matches.length ? matches.map(p=>`<div class="prof-search-item" data-nome="${p.nome.replace(/"/g,'&quot;')}"><b>${profNameHtml(p.nome, toTitleCase(p.nome))}</b><small>${p.unidade||'—'} · ${SEG_SHORT[p.segmento]||p.segmento||'—'}</small></div>`).join('') : '<div class="prof-search-item" style="color:var(--ink-3); cursor:default;">Nenhum professor encontrado</div>';
+    results.style.display='block';
+  }
+
+  input.addEventListener('input', ()=> showResults(input.value));
+  input.addEventListener('focus', ()=> { if(input.value.trim()) showResults(input.value); });
+  results.addEventListener('click', (e)=>{
+    const item = e.target.closest('.prof-search-item');
+    if(!item || !item.dataset.nome) return;
+    input.value = toTitleCase(item.dataset.nome);
+    results.style.display='none';
+    document.getElementById('profConsultaEmpty').style.display='none';
+    document.getElementById('profConsultaCard').style.display='block';
+    renderProfCard(item.dataset.nome);
+  });
+  document.addEventListener('click', (e)=>{
+    if(!e.target.closest('.prof-search-wrap')) results.style.display='none';
+  });
 }
 
 /* ============ ANÁLISE QUALITATIVA: tabela de temas dinâmica ============ */
@@ -1700,6 +2536,14 @@ const THEME_DATA = {
     "Ensino Médio":          {base:49,  catolico:11, idioma:1,  comunicacao:1,  formacao_integral:8,  acolhimento:5,  organizacao:1,  mensalidade:0, estrutura:1, rotatividade:0,  conteudo_fraco:0, disciplina:1}
   }
 };
+// Lago Sul (Kinder + High): soma simples de menções e da base — contagens, não médias, então não precisa de ponderação.
+(function bootstrapLagoSulThemes(){
+  const members = UNIDADE_GROUPS["Lago Sul"];
+  const a = THEME_DATA.unidade[members[0]], b = THEME_DATA.unidade[members[1]];
+  const merged = {};
+  Object.keys(a).forEach(function(k){ merged[k] = (a[k]||0) + (b[k]||0); });
+  THEME_DATA.unidade["Lago Sul"] = merged;
+})();
 const POL_PILL = {pos:'pill-pos', neg:'pill-neg', mix:'pill-mix'};
 const POL_LABEL = {pos:'Positivo', neg:'Crítico', mix:'Misto'};
 
@@ -1728,6 +2572,82 @@ function renderThemeTable(unidade, segmento){
   document.getElementById('themeNote').textContent = 'Base = comentários com texto associados a esse recorte (uma família pode aparecer em mais de um recorte quando tem filhos em mais de uma unidade/segmento).' + note;
 }
 
+/* ============ ANÁLISE DAS FAMÍLIAS (espelho da Análise dos alunos, voz da família) ============ */
+function renderFamiliasSection(unidade, segmento){
+  const secEl = document.getElementById('sec-familias');
+  const noteEl = document.getElementById('sec-familias-note');
+  if(!secEl) return;
+  const scope = resolveScope(unidade, segmento);
+  const d = scope.d;
+  if(!d || d.n===0){
+    secEl.style.display='none';
+    noteEl.style.display='block';
+    return;
+  }
+  secEl.style.display='';
+  noteEl.style.display='none';
+
+  let scopeLabel = 'Consolidado';
+  if(unidade!=='Consolidado' && segmento!=='Consolidado') scopeLabel = unidade + ' + ' + segmento;
+  else if(unidade!=='Consolidado') scopeLabel = unidade;
+  else if(segmento!=='Consolidado') scopeLabel = segmento;
+  document.getElementById('familiasNTag').textContent = d.n.toLocaleString('pt-BR') + ' famílias respondentes' + (scopeLabel!=='Consolidado' ? ' — ' + scopeLabel : '');
+
+  const isFiltered = !(unidade==='Consolidado' && segmento==='Consolidado');
+  EIXOS.forEach(e=>{
+    const cross = EIXO_CROSS[e.id];
+    const cell = isFiltered ? cellFor(cross.familia, unidade, segmento) : {n:e.overall.familiaN, idx:e.overall.familia};
+    const barEl = document.getElementById('famBar_'+e.id);
+    if(!barEl) return;
+    const v = cell ? cell.idx : null;
+    const n = cell ? cell.n : 0;
+    barEl.querySelector('.fill').style.width = (v!=null?v:0) + '%';
+    barEl.querySelector('.val').textContent = v!=null ? fmtNum(v) : 'sem base';
+    const nEl = document.getElementById('famBarN_'+e.id);
+    if(nEl) nEl.textContent = n ? ('n='+n) : '';
+  });
+
+  // Temas: mesma lógica de resolução de escopo da seção "Análise qualitativa dos comentários".
+  let data, note='';
+  if(unidade==='Consolidado' && segmento==='Consolidado'){
+    data = THEME_DATA.consolidado;
+  } else if(unidade!=='Consolidado' && segmento==='Consolidado'){
+    data = THEME_DATA.unidade[unidade];
+  } else if(segmento!=='Consolidado' && unidade==='Consolidado'){
+    data = THEME_DATA.segmento[segmento];
+  } else {
+    data = THEME_DATA.unidade[unidade];
+    note = ' Recorte combinado não disponível para comentários — mostrando apenas o recorte de unidade ('+unidade+').';
+  }
+
+  const ranked = THEME_DEFS.map(t=>({k:t.k, label:t.label, pol:t.pol, c:data[t.k]||0})).sort((a,b)=>b.c-a.c);
+  const top = ranked.filter(t=>t.c>0).slice(0,6);
+  const topBody = document.getElementById('familiasTemasTop');
+  if(topBody){
+    topBody.innerHTML = top.length ? top.map((t,i)=>{
+      const pct = data.base>0 ? (t.c/data.base*100) : 0;
+      return `<tr><td>${i+1}</td><td>${t.label}</td><td><span class="pill ${POL_PILL[t.pol]}">${POL_LABEL[t.pol]}</span></td><td class="num">${t.c}</td><td class="num">${fmtPct(pct)}</td></tr>`;
+    }).join('') : '<tr><td colspan="5" style="text-align:center; color:var(--ink-3); padding:14px;">Sem menções registradas neste recorte.</td></tr>';
+  }
+
+  const buckets = {pos:[], neg:[], mix:[]};
+  ranked.filter(t=>t.c>0).forEach(t=> buckets[t.pol].push(t));
+  function fillList(id, arr){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = arr.length ? arr.map(t=>{
+      const pct = data.base>0 ? (t.c/data.base*100) : 0;
+      return `<li>${t.label} — ${t.c} de ${data.base} comentários (${fmtPct(pct)})</li>`;
+    }).join('') : '<li style="color:var(--ink-3);">Nenhum tema nesta categoria, neste recorte.</li>';
+  }
+  fillList('familiasPos', buckets.pos);
+  fillList('familiasNeg', buckets.neg);
+  fillList('familiasMix', buckets.mix);
+
+  document.getElementById('familiasTemasFoot').textContent = 'Base de comentários deste recorte: ' + data.base + '.' + note;
+  document.getElementById('familiasFootnote').textContent = 'Base = comentários com texto associados a esse recorte (uma família pode aparecer em mais de um recorte quando tem filhos em mais de uma unidade/segmento).' + note;
+}
+
 /* ============ PROMOTORES / NEUTROS / DETRATORES: contagens dinâmicas ============ */
 function renderPND(unidade, segmento){
   const scope = resolveScope(unidade, segmento);
@@ -1748,7 +2668,10 @@ function itemMatchesScope(scopeAttr, unidade, segmento){
   if(!scopeAttr) return true; // sem tag = item geral, sempre visível
   if(unidade==='Consolidado' && segmento==='Consolidado') return true;
   const tags = scopeAttr.split(',').map(s=>s.trim());
-  if(unidade!=='Consolidado' && tags.includes(unidade)) return true;
+  if(unidade!=='Consolidado'){
+    const group = UNIDADE_GROUPS[unidade];
+    if(group ? tags.some(t=>group.includes(t)) : tags.includes(unidade)) return true;
+  }
   if(segmento!=='Consolidado' && tags.includes(segmento)) return true;
   return false;
 }
@@ -1764,6 +2687,8 @@ function renderTaggedSections(unidade, segmento){
   filterScopedElements('#tblPlano tr[data-scope]', unidade, segmento);
   filterScopedElements('.top5-card', unidade, segmento);
   filterScopedElements('.insight-item', unidade, segmento);
+  filterScopedElements('#sec-impacto li[data-scope]', unidade, segmento);
+  filterScopedElements('.conclusao-item', unidade, segmento);
 }
 
 /* ============ PROFESSORES: helpers ============ */
@@ -1772,9 +2697,16 @@ const EIXO_NOMES = {E1:'Tutoria e PDI', E2:'Idioma e Bilinguismo', E3:'Ambiente,
 const EIXO_ALUNO_MODE = {E1:'index', E2:'index', E3:'taxa', E4:'taxa', E5:'taxa', E6:null};
 const EIXO_HAS_ALUNO = {E1:true, E2:true, E3:false, E4:false, E5:false, E6:false}; // "has" = tem nota comparável para gap
 const EIXO_HAS_FAMILIA = {E1:true, E2:false, E3:false, E4:false, E5:false, E6:true};
+// E1 e E6: as perguntas de Coordenação/Autoavaliação nesses dois eixos são escritas "Como tutor(a)..." — só
+// existem no formulário de quem atua como tutor. Quem não é tutor não tem "—" por falta de resposta: a
+// pergunta nunca foi feita a esse professor, porque o papel de tutor não se aplica a ele.
+const EIXO_RESTRICAO_COORD_AUTO = {
+  E1: 'só existem para professores que atuam como <b>tutores</b> — a pergunta de Coordenação/Autoavaliação neste eixo é "Como tutor(a)..." e não é feita a quem não exerce esse papel',
+  E6: 'só existem para professores que atuam como <b>tutores</b> — a pergunta de Coordenação/Autoavaliação neste eixo ("Como tutor(a), a comunicação... com as famílias...") não é feita a quem não exerce esse papel'
+};
 
 function profMatchesScope(p, unidade, segmento){
-  if(unidade!=='Consolidado' && p.unidade!==unidade) return false;
+  if(unidade!=='Consolidado' && !unidadeMatches(p.unidade, unidade)) return false;
   if(segmento!=='Consolidado' && p.segmento!==segmento) return false;
   return true;
 }
@@ -1790,7 +2722,7 @@ function computeGaps(e){
 }
 function gapCell(v){
   if(v===null||v===undefined) return '<td class="num" style="color:var(--ink-3)">—</td>';
-  const color = Math.abs(v)>=20 ? 'var(--crit)' : (Math.abs(v)>=10 ? 'var(--warn)' : 'var(--ink-2)');
+  const color = Math.abs(v)>=20 ? 'var(--crit-vivid)' : (Math.abs(v)>=10 ? 'var(--warn-vivid)' : 'var(--ink-2)');
   return `<td class="num" style="color:${color}; font-weight:${Math.abs(v)>=10?'700':'500'}">${v>0?'+':''}${fmtNum(v)}</td>`;
 }
 function avalFamiliaTurmaCell(nome){
@@ -1805,113 +2737,136 @@ function noteCell(v,n){
   return `<td class="num">${fmtNum(v)}<span class="q-tag" style="margin-left:4px;">n=${n||0}</span></td>`;
 }
 
-/* ============ PROFESSORES EM ATENÇÃO ============ */
-const ATENCAO_LIMIAR = 80;
-function findFlags(p, limiar, direction, allowAluno){
-  // direction: 'below' (atenção) ou 'above' (referência)
-  // allowAluno: quando false, a nota do aluno nunca entra como fonte (mesmo que exista no dado do professor) —
-  // usado para blindar Infantil/Fund.I mesmo se algum professor tiver aluno residual de outra atribuição.
-  const hits = [];
-  ['E1','E2','E6'].forEach(eid=>{
-    const e = p[eid];
-    const externals = [];
-    if(allowAluno && EIXO_HAS_ALUNO[eid] && e.aluno!=null) externals.push({type:'Aluno', val:e.aluno, n:e.alunoN});
-    if(EIXO_HAS_FAMILIA[eid] && e.familia!=null) externals.push({type:'Família', val:e.familia, n:e.familiaN});
-    externals.forEach(ext=>{
-      const extHit = direction==='below' ? ext.val < limiar : ext.val >= limiar;
-      if(extHit){
-        const corrobFamilia = externals.find(x=> x!==ext && (direction==='below' ? x.val<limiar : x.val>=limiar));
-        const corrobCoord = (e.coord!=null && (direction==='below' ? e.coord<limiar : e.coord>=limiar));
-        if(corrobFamilia || corrobCoord){
-          hits.push({ eixo:eid, fonte:ext.type, valor:ext.val, n:ext.n, coord:e.coord, coordN:e.coordN, corrob: corrobFamilia? corrobFamilia.type : 'Coordenação', corrobVal: corrobFamilia? corrobFamilia.val : e.coord });
-        }
-      }
-    });
-  });
-  return hits;
-}
-function motivoTexto(f, direction){
-  const rel = direction==='below' ? 'abaixo de' : 'igual/acima de';
-  const limiar = direction==='below' ? ATENCAO_LIMIAR : REFERENCIA_LIMIAR;
-  return `${f.fonte} avalia ${fmtNum(f.valor)} em ${EIXO_NOMES[f.eixo]} (n=${f.n||0}), ${rel} ${limiar}, corroborado por ${f.corrob}${f.corrobVal!=null?' em '+fmtNum(f.corrobVal):''}${f.corrob!=='Coordenação'&&f.coord!=null?` · Coordenação em ${fmtNum(f.coord)}`:''}.`;
-}
-
+/* ============ PROFESSORES EM ATENÇÃO (mesmos dois rankings de "Professores referência", ordem invertida) ============ */
 function renderProfessoresAtencao(unidade, segmento){
   document.getElementById('profAtencaoScope').textContent = 'Recorte: ' + ((unidade==='Consolidado'&&segmento==='Consolidado') ? 'Consolidado' : [unidade!=='Consolidado'?unidade:null, segmento!=='Consolidado'?segmento:null].filter(Boolean).join(' + '));
-  const scoped = PROFESSORES.filter(p => profMatchesScope(p, unidade, segmento));
-  const allowAluno = scopeHasAlunos(unidade, segmento);
-  const flags = [];
-  scoped.forEach(p=>{
-    const hits = findFlags(p, ATENCAO_LIMIAR, 'below', allowAluno);
-    if(hits.length===0) return;
-    const worst = hits.reduce((a,b)=> b.valor<a.valor?b:a);
-    flags.push({ p, worst, hits });
-  });
-  flags.sort((a,b)=> a.worst.valor - b.worst.valor);
 
-  const tbl = document.getElementById('tblProfAtencao');
-  const emptyEl = document.getElementById('profAtencaoEmpty');
-  if(flags.length===0){
-    tbl.innerHTML = '';
-    emptyEl.style.display = 'block';
-    return;
+  const showAluno = segmento==='Consolidado' || SEGMENTOS_CITACAO_ALUNO.includes(segmento);
+  const showFamilia = segmento==='Consolidado' || SEGMENTOS_FAMILIA_REGENTE.includes(segmento);
+  document.getElementById('profAtencaoAlunoCard').style.display = showAluno ? '' : 'none';
+  document.getElementById('profAtencaoFamiliaCard').style.display = showFamilia ? '' : 'none';
+
+  if(showAluno){
+    let list = CITACOES.slice();
+    if(unidade!=='Consolidado') list = list.filter(c => unidadeMatches(c.unidade, unidade));
+    if(segmento!=='Consolidado') list = list.filter(c => c.segmento===segmento);
+    list.sort((a,b)=> a.ratio - b.ratio);
+
+    const tbl = document.getElementById('tblProfAtencao');
+    const emptyEl = document.getElementById('profAtencaoEmpty');
+    if(list.length===0){
+      tbl.innerHTML = '';
+      emptyEl.style.display = 'block';
+    } else {
+      emptyEl.style.display = 'none';
+      let html = '<tr><th>#</th><th>Professor</th><th>Segmento / Unidade</th><th class="num">Citações por aluno</th><th>Tempo de empresa</th></tr>';
+      list.forEach((c,i)=>{
+        html += `<tr>
+          <td>${i+1}</td>
+          <td><b>${profNameHtml(c.nome)}</b></td>
+          <td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'multi-unidade'}</td>
+          <td class="num" style="font-weight:700; color:${c.ratio<1?'var(--crit-vivid)':'var(--ink-2)'};">${fmtNum(c.ratio)}</td>
+          ${tempoEmpresaCellHtml(c.nome)}
+        </tr>`;
+      });
+      tbl.innerHTML = html;
+    }
   }
-  emptyEl.style.display = 'none';
-  let html = '<tr><th>Professor</th><th>Unidade / Segmento</th><th>Eixo mais crítico</th><th class="num">Nota (voz externa)</th><th class="num">Coordenação</th><th>Amostra</th><th style="min-width:280px;">Motivo</th></tr>';
-  flags.forEach(f=>{
-    const smallN = (f.worst.n||0) < 5 || (f.worst.coordN!=null && f.worst.coordN < 5);
-    const outrosEixos = f.hits.length>1 ? ` <span class="q-tag">+${f.hits.length-1} outro(s) eixo(s)</span>` : '';
-    html += `<tr>
-      <td><b>${f.p.nome}</b></td>
-      <td>${f.p.unidade||'—'} · ${SEG_SHORT[f.p.segmento]||f.p.segmento||'—'}</td>
-      <td>${EIXO_NOMES[f.worst.eixo]}${outrosEixos}</td>
-      <td class="num" style="color:var(--crit); font-weight:700;">${fmtNum(f.worst.valor)} <span class="q-tag">${f.worst.fonte} · n=${f.worst.n||0}</span></td>
-      <td class="num">${f.worst.coord!=null?fmtNum(f.worst.coord):'—'} <span class="q-tag">n=${f.worst.coordN||0}</span></td>
-      <td>${smallN ? '<span class="small-sample-flag" style="margin-top:0;">⚠ pequena</span>' : '<span class="pill pill-pos">robusta</span>'}</td>
-      <td style="font-size:12.3px; color:var(--ink-2);">${motivoTexto(f.worst,'below')}</td>
-    </tr>`;
-  });
-  tbl.innerHTML = html;
+
+  if(showFamilia){
+    let list = PROF_FAMILIA_REGENTE.slice();
+    if(unidade!=='Consolidado') list = list.filter(c => unidadeMatches(c.unidade, unidade));
+    if(segmento!=='Consolidado') list = list.filter(c => c.segmento===segmento);
+    list.sort((a,b)=> a.media - b.media);
+
+    const tbl = document.getElementById('tblProfAtencaoFamilia');
+    const emptyEl = document.getElementById('profAtencaoFamiliaEmpty');
+    if(list.length===0){
+      tbl.innerHTML = '';
+      emptyEl.style.display = 'block';
+    } else {
+      emptyEl.style.display = 'none';
+      let html = '<tr><th>#</th><th>Professor</th><th>Segmento / Unidade</th><th>Turma</th><th class="num">Nota da família (%)</th><th>Tempo de empresa</th></tr>';
+      list.forEach((c,i)=>{
+        html += `<tr>
+          <td>${i+1}</td>
+          <td><b>${profNameHtml(c.nome)}</b></td>
+          <td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'—'}</td>
+          <td>${c.turma||'—'}</td>
+          <td class="num" style="font-weight:700; color:${c.media<80?'var(--crit-vivid)':'var(--ink-2)'};">${fmtNum(c.media)}</td>
+          ${tempoEmpresaCellHtml(c.nome)}
+        </tr>`;
+      });
+      tbl.innerHTML = html;
+    }
+  }
 }
 
-/* ============ PROFESSORES REFERÊNCIA (≥85) ============ */
-const REFERENCIA_LIMIAR = 85;
+/* ============ PROFESSORES REFERÊNCIA (ranking completo, aba 11-Citações-x-Tutoria) ============ */
+const SEGMENTOS_CITACAO_ALUNO = ["Ensino Fundamental II","Ensino Médio"];
+const SEGMENTOS_FAMILIA_REGENTE = ["Ensino Infantil","Ensino Fundamental I"];
 function renderProfessoresReferencia(unidade, segmento){
   document.getElementById('profReferenciaScope').textContent = 'Recorte: ' + ((unidade==='Consolidado'&&segmento==='Consolidado') ? 'Consolidado' : [unidade!=='Consolidado'?unidade:null, segmento!=='Consolidado'?segmento:null].filter(Boolean).join(' + '));
-  const scoped = PROFESSORES.filter(p => profMatchesScope(p, unidade, segmento));
-  const allowAluno = scopeHasAlunos(unidade, segmento);
-  const flags = [];
-  scoped.forEach(p=>{
-    const hits = findFlags(p, REFERENCIA_LIMIAR, 'above', allowAluno);
-    if(hits.length===0) return;
-    const best = hits.reduce((a,b)=> b.valor>a.valor?b:a);
-    flags.push({ p, best, hits });
-  });
-  flags.sort((a,b)=> b.best.valor - a.best.valor);
 
-  const tbl = document.getElementById('tblProfReferencia');
-  const emptyEl = document.getElementById('profReferenciaEmpty');
-  if(flags.length===0){
-    tbl.innerHTML = '';
-    emptyEl.style.display = 'block';
-    return;
+  const showAluno = segmento==='Consolidado' || SEGMENTOS_CITACAO_ALUNO.includes(segmento);
+  const showFamilia = segmento==='Consolidado' || SEGMENTOS_FAMILIA_REGENTE.includes(segmento);
+  document.getElementById('profReferenciaAlunoCard').style.display = showAluno ? '' : 'none';
+  document.getElementById('profReferenciaFamiliaCard').style.display = showFamilia ? '' : 'none';
+
+  if(showAluno){
+    let list = CITACOES.slice();
+    if(unidade!=='Consolidado') list = list.filter(c => unidadeMatches(c.unidade, unidade));
+    if(segmento!=='Consolidado') list = list.filter(c => c.segmento===segmento);
+    list.sort((a,b)=> b.ratio - a.ratio);
+
+    const tbl = document.getElementById('tblProfReferencia');
+    const emptyEl = document.getElementById('profReferenciaEmpty');
+    if(list.length===0){
+      tbl.innerHTML = '';
+      emptyEl.style.display = 'block';
+    } else {
+      emptyEl.style.display = 'none';
+      let html = '<tr><th>#</th><th>Professor</th><th>Segmento / Unidade</th><th class="num">Citações por aluno</th><th>Tempo de empresa</th></tr>';
+      list.forEach((c,i)=>{
+        html += `<tr>
+          <td>${i+1}</td>
+          <td><b>${profNameHtml(c.nome)}</b></td>
+          <td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'multi-unidade'}</td>
+          <td class="num" style="font-weight:700;">${fmtNum(c.ratio)}</td>
+          ${tempoEmpresaCellHtml(c.nome)}
+        </tr>`;
+      });
+      tbl.innerHTML = html;
+    }
   }
-  emptyEl.style.display = 'none';
-  let html = '<tr><th>Professor</th><th>Unidade / Segmento</th><th>Eixo de destaque</th><th class="num">Nota (voz externa)</th><th class="num">Coordenação</th><th>Amostra</th><th style="min-width:280px;">Como chegou nesta nota</th></tr>';
-  flags.forEach(f=>{
-    const smallN = (f.best.n||0) < 5 || (f.best.coordN!=null && f.best.coordN < 5);
-    const outrosEixos = f.hits.length>1 ? ` <span class="q-tag">+${f.hits.length-1} outro(s) eixo(s)</span>` : '';
-    html += `<tr>
-      <td><b>${f.p.nome}</b></td>
-      <td>${f.p.unidade||'—'} · ${SEG_SHORT[f.p.segmento]||f.p.segmento||'—'}</td>
-      <td>${EIXO_NOMES[f.best.eixo]}${outrosEixos}</td>
-      <td class="num" style="color:var(--good); font-weight:700;">${fmtNum(f.best.valor)} <span class="q-tag">${f.best.fonte} · n=${f.best.n||0}</span></td>
-      <td class="num">${f.best.coord!=null?fmtNum(f.best.coord):'—'} <span class="q-tag">n=${f.best.coordN||0}</span></td>
-      <td>${smallN ? '<span class="small-sample-flag" style="margin-top:0;">⚠ pequena</span>' : '<span class="pill pill-pos">robusta</span>'}</td>
-      <td style="font-size:12.3px; color:var(--ink-2);">${motivoTexto(f.best,'above')}</td>
-    </tr>`;
-  });
-  tbl.innerHTML = html;
+
+  if(showFamilia){
+    let list = PROF_FAMILIA_REGENTE.slice();
+    if(unidade!=='Consolidado') list = list.filter(c => unidadeMatches(c.unidade, unidade));
+    if(segmento!=='Consolidado') list = list.filter(c => c.segmento===segmento);
+    list.sort((a,b)=> b.media - a.media);
+
+    const tbl = document.getElementById('tblProfReferenciaFamilia');
+    const emptyEl = document.getElementById('profReferenciaFamiliaEmpty');
+    if(list.length===0){
+      tbl.innerHTML = '';
+      emptyEl.style.display = 'block';
+    } else {
+      emptyEl.style.display = 'none';
+      let html = '<tr><th>#</th><th>Professor</th><th>Segmento / Unidade</th><th>Turma</th><th class="num">Nota da família (%)</th><th>Tempo de empresa</th></tr>';
+      list.forEach((c,i)=>{
+        html += `<tr>
+          <td>${i+1}</td>
+          <td><b>${profNameHtml(c.nome)}</b></td>
+          <td>${SEG_SHORT[c.segmento]||c.segmento} · ${c.unidade||'—'}</td>
+          <td>${c.turma||'—'}</td>
+          <td class="num" style="font-weight:700; color:${c.media<80?'var(--crit-vivid)':'var(--ink-2)'};">${fmtNum(c.media)}</td>
+          ${tempoEmpresaCellHtml(c.nome)}
+        </tr>`;
+      });
+      tbl.innerHTML = html;
+    }
+  }
 }
 
 /* ============ PROFESSORES: NOTAS E GAPS POR EIXO ============ */
@@ -1926,26 +2881,59 @@ function renderProfessoresMatriz(unidade, segmento){
   const hasAluno = EIXO_HAS_ALUNO[eid] && scopeAllowsAluno;   // só true quando é 'index' (comparável, entra em gap)
   const hasAlunoTaxa = (alunoMode === 'taxa') && scopeAllowsAluno;
   const hasFamilia = EIXO_HAS_FAMILIA[eid];
+  // Aval. Família (turma): só faz sentido para Ensino Infantil/Fund. I, que não têm o vínculo família↔professor
+  // via tutoria (coluna "Família" acima). Nos demais segmentos essa ligação já existe diretamente — não duplicar.
+  const showAvalFamiliaTurma = segmento==='Consolidado' || SEGMENTOS_FAMILIA_REGENTE.includes(segmento);
 
   let rows = PROFESSORES.filter(p => profMatchesScope(p, unidade, segmento)).map(p=>{
     const e = p[eid];
-    const g = computeGaps(e);
-    return { nome:p.nome, unidade:p.unidade, segmento:p.segmento, e, g, avalFamiliaTurma: AVAL_FAMILIA_TURMA[p.nome] || null };
-  }).filter(r => r.e.coord!=null || r.e.auto!=null || (hasAluno && r.e.aluno!=null) || (hasAlunoTaxa && r.e.alunoTaxa!=null) || (hasFamilia && r.e.familia!=null));
+    const avalTurma = AVAL_FAMILIA_TURMA[p.nome] || null;
+    // Sem nota de família direta neste eixo (comum em Infantil/Fund. I, sem vínculo família↔professor via tutoria):
+    // usa a Aval. Família (Turma) como substituta, só para dar um gap de referência contra Coord./Autoaval.
+    let familiaEfetiva = e.familia, familiaEfetivaN = e.familiaN, familiaViaTurma = false;
+    if(hasFamilia && e.familia==null && avalTurma && avalTurma.media!=null){
+      familiaEfetiva = avalTurma.media;
+      familiaEfetivaN = avalTurma.n;
+      familiaViaTurma = true;
+    }
+    const g = computeGaps({ aluno:e.aluno, coord:e.coord, auto:e.auto, familia:familiaEfetiva });
+    return { nome:p.nome, unidade:p.unidade, segmento:p.segmento, e, g, familiaEfetiva, familiaEfetivaN, familiaViaTurma, avalFamiliaTurma: avalTurma };
+  });
+  // Mostra todo professor do recorte de unidade/segmento, mesmo sem nenhum dado neste eixo específico (célula "—") —
+  // esconder a linha escondia lacunas reais de resposta (ex.: E6/Comunicação só tem resposta de coordenação para
+  // uma fração dos tutores), em vez de deixar a lacuna visível para conferência.
 
   const tbl = document.getElementById('tblProfMatriz');
   const emptyEl = document.getElementById('profMatrizEmpty');
+  const eixoNoteEl = document.getElementById('profMatrizEixoNote');
   if(rows.length===0){
     tbl.innerHTML = '';
     emptyEl.style.display = 'block';
+    eixoNoteEl.style.display = 'none';
     return;
   }
   emptyEl.style.display = 'none';
 
+  // Explica por que tantas linhas ficam "—" de Coordenação/Autoaval. neste eixo — a nota some quando a
+  // pergunta em si não existe para aquele professor (não quando a resposta faltou).
+  {
+    const comData = rows.filter(r => r.e.coord!=null || r.e.auto!=null);
+    const restricao = EIXO_RESTRICAO_COORD_AUTO[eid];
+    if(restricao){
+      eixoNoteEl.innerHTML = `<b>${comData.length} de ${rows.length}</b> professores deste recorte têm nota de Coordenação/Autoavaliação em ${EIXO_NOMES[eid]}. Os demais aparecem com "—" porque as perguntas de Coordenação/Autoavaliação neste eixo ${restricao} — não é falta de resposta, é uma pergunta que nunca foi feita a esse professor.`;
+      eixoNoteEl.style.display = 'block';
+    } else if(comData.length < rows.length){
+      eixoNoteEl.innerHTML = `<b>${comData.length} de ${rows.length}</b> professores deste recorte têm nota de Coordenação/Autoavaliação em ${EIXO_NOMES[eid]}. Os demais aparecem com "—" porque não há registro de resposta de Coordenação nem de Autoavaliação para esse professor neste eixo na base.`;
+      eixoNoteEl.style.display = 'block';
+    } else {
+      eixoNoteEl.style.display = 'none';
+    }
+  }
+
   if(PROF_SORT.col){
     rows.sort((a,b)=>{
-      const va = PROF_SORT.col==='nome' ? a.nome : (PROF_SORT.col==='avalFamiliaTurma' ? (a.avalFamiliaTurma?a.avalFamiliaTurma.media:null) : (PROF_SORT.col.startsWith('g.') ? a.g[PROF_SORT.col.slice(2)] : a.e[PROF_SORT.col]));
-      const vb = PROF_SORT.col==='nome' ? b.nome : (PROF_SORT.col==='avalFamiliaTurma' ? (b.avalFamiliaTurma?b.avalFamiliaTurma.media:null) : (PROF_SORT.col.startsWith('g.') ? b.g[PROF_SORT.col.slice(2)] : b.e[PROF_SORT.col]));
+      const va = PROF_SORT.col==='nome' ? a.nome : (PROF_SORT.col==='avalFamiliaTurma' ? (a.avalFamiliaTurma?a.avalFamiliaTurma.media:null) : (PROF_SORT.col==='familia' ? a.familiaEfetiva : (PROF_SORT.col.startsWith('g.') ? a.g[PROF_SORT.col.slice(2)] : a.e[PROF_SORT.col])));
+      const vb = PROF_SORT.col==='nome' ? b.nome : (PROF_SORT.col==='avalFamiliaTurma' ? (b.avalFamiliaTurma?b.avalFamiliaTurma.media:null) : (PROF_SORT.col==='familia' ? b.familiaEfetiva : (PROF_SORT.col.startsWith('g.') ? b.g[PROF_SORT.col.slice(2)] : b.e[PROF_SORT.col])));
       if(va===null||va===undefined) return 1;
       if(vb===null||vb===undefined) return -1;
       if(typeof va === 'string') return va.localeCompare(vb) * PROF_SORT.dir;
@@ -1956,10 +2944,10 @@ function renderProfessoresMatriz(unidade, segmento){
   const cols = [];
   cols.push({k:'nome', label:'Professor', sortable:true});
   cols.push({k:'loc', label:'Unidade/Segmento', sortable:false});
-  cols.push({k:'avalFamiliaTurma', label:'Aval. Família (turma)', sortable:true, title:'Média da avaliação das famílias por turma (planilha de médias por turma — Kinder e Fund. I). Só para professores destacados em azul na planilha original; passe o mouse para ver a(s) turma(s).'});
+  if(showAvalFamiliaTurma) cols.push({k:'avalFamiliaTurma', label:'Aval. Família (turma)', sortable:true, title:'Média da avaliação das famílias por turma (planilha de médias por turma — Kinder e Fund. I). Só para professores destacados em azul na planilha original; passe o mouse para ver a(s) turma(s).'});
   if(hasAluno) cols.push({k:'aluno', label:'Aluno', sortable:true});
   if(hasAlunoTaxa) cols.push({k:'alunoTaxa', label:'Aluno (taxa nomeação)', sortable:true});
-  if(hasFamilia) cols.push({k:'familia', label:'Família', sortable:true});
+  if(hasFamilia) cols.push({k:'familia', label:'Família', sortable:true, title:'Quando não há nota de família direta neste eixo (sem vínculo família↔professor via tutoria), usa a Aval. Família (Turma) como substituta — marcada "via turma".'});
   cols.push({k:'coord', label:'Coordenação', sortable:true});
   cols.push({k:'auto', label:'Autoaval.', sortable:true});
   if(hasAluno) cols.push({k:'g.alunoCoord', label:'Aluno × Coord.', sortable:true});
@@ -1968,15 +2956,17 @@ function renderProfessoresMatriz(unidade, segmento){
   if(hasFamilia) cols.push({k:'g.familiaAuto', label:'Família × Auto.', sortable:true});
   cols.push({k:'g.autoCoord', label:'Auto. × Coord.', sortable:true});
 
-  let html = '<tr>' + cols.map(c=>`<th${c.sortable?` class="prof-sort-th num" data-col="${c.k}" style="cursor:pointer;"`:''}${c.title?` title="${c.title}"`:''}>${c.label}${PROF_SORT.col===c.k?(PROF_SORT.dir>0?' ▲':' ▼'):''}</th>`).join('') + '</tr>';
+  let html = '<tr>' + cols.map(c=>`<th${c.sortable?` class="prof-sort-th num" data-col="${c.k}" style="cursor:pointer;"`:''}${c.title?` title="${c.title.replace(/"/g,'&quot;')}"`:''}>${c.label}${PROF_SORT.col===c.k?(PROF_SORT.dir>0?' ▲':' ▼'):''}</th>`).join('') + '</tr>';
   rows.forEach(r=>{
     html += '<tr>';
-    html += `<td><b>${r.nome}</b></td>`;
+    html += `<td><b>${profNameHtml(r.nome)}</b></td>`;
     html += `<td>${r.unidade||'—'} · ${SEG_SHORT[r.segmento]||r.segmento||'—'}</td>`;
-    html += avalFamiliaTurmaCell(r.nome);
+    if(showAvalFamiliaTurma) html += (SEGMENTOS_FAMILIA_REGENTE.includes(r.segmento) ? avalFamiliaTurmaCell(r.nome) : '<td class="num" style="color:var(--ink-3)">—</td>');
     if(hasAluno) html += noteCell(r.e.aluno, r.e.alunoN);
     if(hasAlunoTaxa) html += (r.e.alunoTaxa!=null ? `<td class="num" style="color:var(--ink-2)">${fmtPct(r.e.alunoTaxa)}</td>` : '<td class="num" style="color:var(--ink-3)">—</td>');
-    if(hasFamilia) html += noteCell(r.e.familia, r.e.familiaN);
+    if(hasFamilia) html += r.familiaViaTurma
+      ? `<td class="num" style="color:var(--ink-2)">${fmtNum(r.familiaEfetiva)}<span class="q-tag" style="margin-left:4px;" title="Sem nota de família direta neste eixo — usando Aval. Família (Turma) como substituta">via turma · n=${r.familiaEfetivaN||0}</span></td>`
+      : noteCell(r.e.familia, r.e.familiaN);
     html += noteCell(r.e.coord, r.e.coordN);
     html += noteCell(r.e.auto, r.e.autoN);
     if(hasAluno) html += gapCell(r.g.alunoCoord);
@@ -2043,7 +3033,7 @@ function renderCoordenadores(unidade, segmento){
   const redeAvg = weightedAvg(COORDENADORES);
 
   let list = COORDENADORES;
-  if(unidade!=='Consolidado') list = list.filter(c=>c.unidade===unidade);
+  if(unidade!=='Consolidado') list = list.filter(c=>unidadeMatches(c.unidade, unidade));
   // segmento em coordenador é multi-valor (um coordenador pode atender mais de um segmento) — filtra por "contém"
   if(segmento!=='Consolidado') list = list.filter(c=> (c.segmento||'').split('|').map(s=>s.trim()).includes(segmento));
 
@@ -2066,7 +3056,7 @@ function renderCoordenadores(unidade, segmento){
     if(Math.abs(devRede)>=10){ leitura = devRede>0?'Avalia acima da média da rede':'Avalia abaixo da média da rede'; leituraClass = devRede>0?'pill-pos':'pill-neg'; }
     else { leitura = 'Dentro da média'; leituraClass = 'pill-mix'; }
     html += `<tr>
-      <td><b>${c.nome}</b></td>
+      <td><b>${profNameHtml(c.nome)}</b></td>
       <td>${c.unidade}</td>
       <td>${c.papel}</td>
       <td class="num">${c.profs}</td>
@@ -2075,7 +3065,7 @@ function renderCoordenadores(unidade, segmento){
       ${gapCell(devUnit)}
       ${gapCell(devRede)}
       <td class="num">${fmtPct(c.pctSempre)}</td>
-      <td class="num" style="color:${c.pctSemBase>=20?'var(--warn)':'var(--ink-2)'}">${fmtPct(c.pctSemBase)}</td>
+      <td class="num" style="color:${c.pctSemBase>=20?'var(--warn-vivid)':'var(--ink-2)'}">${fmtPct(c.pctSemBase)}</td>
       <td><span class="pill ${leituraClass}">${leitura}</span></td>
     </tr>`;
   });
@@ -2093,7 +3083,7 @@ function updatePillVisibility(){
     const v = b.dataset.val;
     b.style.display = (v==='Consolidado' || validSegs.includes(v)) ? '' : 'none';
   });
-  const validUnits = STATE.segmento==='Consolidado' ? UNIDADES : SEGMENT_UNITS[STATE.segmento];
+  const validUnits = STATE.segmento==='Consolidado' ? UNIDADES_PILL : SEGMENT_UNITS[STATE.segmento];
   document.querySelectorAll('#pillsUnidade .pill-btn').forEach(b=>{
     const v = b.dataset.val;
     b.style.display = (v==='Consolidado' || validUnits.includes(v)) ? '' : 'none';
@@ -2120,7 +3110,7 @@ function setFilter(kind, val){
     const nextSeg = (STATE.segmento==='Consolidado' || validSegs.includes(STATE.segmento)) ? STATE.segmento : 'Consolidado';
     applyScope(val, nextSeg);
   } else {
-    const validUnits = val==='Consolidado' ? UNIDADES : SEGMENT_UNITS[val];
+    const validUnits = val==='Consolidado' ? UNIDADES_PILL : SEGMENT_UNITS[val];
     const nextUnid = (STATE.unidade==='Consolidado' || validUnits.includes(STATE.unidade)) ? STATE.unidade : 'Consolidado';
     applyScope(nextUnid, val);
   }
@@ -2164,12 +3154,15 @@ function refreshAll(){
     (STATE.unidade==='Consolidado' && STATE.segmento==='Consolidado') ? 'Consolidado' :
     [STATE.unidade!=='Consolidado'?STATE.unidade:null, STATE.segmento!=='Consolidado'?STATE.segmento:null].filter(Boolean).join(' + ');
   updateScopeVisibility(STATE.unidade, STATE.segmento);
+  renderGraficoEixos(STATE.unidade);
   renderSegmentComparison(STATE.unidade, STATE.segmento);
   renderKPI(STATE.unidade, STATE.segmento);
   renderEixos(STATE.unidade, STATE.segmento);
   renderAlunoSection(STATE.unidade, STATE.segmento);
+  renderFamiliasSection(STATE.unidade, STATE.segmento);
   renderProfessoresAtencao(STATE.unidade, STATE.segmento);
   renderCitacoesTutoria(STATE.unidade, STATE.segmento);
+  renderCitacoesScatterTutoria(STATE.unidade, STATE.segmento);
   renderProfessoresReferencia(STATE.unidade, STATE.segmento);
   renderProfessoresMatriz(STATE.unidade, STATE.segmento);
   renderCoordenadores(STATE.unidade, STATE.segmento);
@@ -2189,6 +3182,8 @@ updatePillVisibility();
 initTheme();
 renderRankings();
 renderCrossTable();
+renderCrossChart();
+initProfConsulta();
 refreshAll();
 </script>
 </body>
