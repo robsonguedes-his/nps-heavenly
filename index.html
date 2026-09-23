@@ -68,6 +68,21 @@
   /* Logo institucional é arte branca — no fundo claro da página ela é invertida para ficar visível como marca d'água */
   --logo-watermark-filter: invert(1);
   --logo-watermark-opacity: 0.05;
+
+  /* Escala tipográfica consolidada — substitui ~20 valores soltos (10px a 15.5px) por 6 passos,
+     e unifica os dois tamanhos de título (h1=20/h2=19) em um só. Tamanhos de destaque (22/26/30/34)
+     já eram suficientemente distintos entre si e foram só tokenizados, sem mudar de valor. */
+  --fs-2xs:  10.5px;
+  --fs-xs:   11.5px;
+  --fs-sm:   12.5px;
+  --fs-base: 13.5px;
+  --fs-md:   14.5px;
+  --fs-lg:   15.5px;
+  --fs-xl:   20px;
+  --fs-2xl:  22px;
+  --fs-3xl:  26px;
+  --fs-4xl:  30px;
+  --fs-5xl:  34px;
 }
 
 :root[data-theme="dark"]{
@@ -156,7 +171,7 @@ html,body{margin:0;padding:0;}
 body{
   background:var(--bg-page); color:var(--ink-1);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size:14.5px; line-height:1.55;
+  font-size:var(--fs-md); line-height:1.55;
   transition: background-color .25s ease, color .25s ease;
   position:relative;
 }
@@ -185,45 +200,51 @@ header.top{
 header.top .wrap{ padding-bottom:0; } /* .wrap normalmente carrega o padding-bottom:70px do corpo da página — não deve valer aqui */
 :root[data-theme="dark"] header.top{ background: linear-gradient(135deg, #030d16 0%, #0a1c2c 60%, #2a1116 130%); }
 header.top .head-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;}
-header.top .header-logo{height:42px; width:auto; flex:0 0 auto; display:block;}
+header.top .header-logo{height:52px; width:auto; flex:0 0 auto; display:block;}
 header.top .title-block{display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; flex:1 1 auto; min-width:0;}
-header.top h1{font-size:20px; margin:0; letter-spacing:.3px; font-weight:800; white-space:nowrap;}
-header.top p.sub{margin:0; color:#cbbf9e; font-size:13.5px; max-width:460px; display:none;}
+header.top h1{font-size:var(--fs-xl); margin:0; letter-spacing:.3px; font-weight:800; white-space:nowrap;}
+header.top p.sub{margin:0; color:#cbbf9e; font-size:var(--fs-base); max-width:460px; display:none;}
 @media (min-width:1300px){ header.top p.sub{display:block;} }
 .head-actions{display:flex; align-items:center; gap:8px; flex:0 0 auto;}
 .theme-toggle{
   display:flex; align-items:center; gap:5px; background:rgba(244,235,212,.12); border:1px solid rgba(244,235,212,.28);
-  color:#f4ebd4; padding:3px 10px; border-radius:20px; font-size:13.5px; font-weight:600; cursor:pointer;
+  color:#f4ebd4; padding:3px 10px; border-radius:20px; font-size:var(--fs-base); font-weight:600; cursor:pointer;
   transition:background .15s ease;
 }
 .theme-toggle:hover{background:rgba(244,235,212,.22);}
-.badge-live{display:inline-flex; align-items:center; gap:5px; font-size:12.5px; color:#cbbf9e; background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.22); padding:2px 9px; border-radius:20px; white-space:nowrap;}
+.export-pdf-btn{
+  display:flex; align-items:center; gap:5px; background:rgba(244,235,212,.12); border:1px solid rgba(244,235,212,.28);
+  color:#f4ebd4; padding:3px 10px; border-radius:20px; font-size:var(--fs-base); font-weight:600; cursor:pointer;
+  transition:background .15s ease;
+}
+.export-pdf-btn:hover{background:rgba(244,235,212,.22);}
+.badge-live{display:inline-flex; align-items:center; gap:5px; font-size:var(--fs-sm); color:#cbbf9e; background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.22); padding:2px 9px; border-radius:20px; white-space:nowrap;}
 .badge-live span.dot{width:6px;height:6px;border-radius:50%;background:#7fc8a9;display:inline-block; box-shadow:0 0 0 2px rgba(127,200,169,.25);}
 
 /* ===== FILTER BAR ===== */
 .filter-shell{margin-top:5px; background:rgba(244,235,212,.08); border:1px solid rgba(244,235,212,.18); border-radius:10px; padding:5px 10px;}
 .filter-row{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
-.filter-label{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#cbbf9e; flex:0 0 auto; width:66px;}
+.filter-label{font-size:var(--fs-sm); font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#cbbf9e; flex:0 0 auto; width:66px;}
 .pillset{display:flex; gap:5px; flex-wrap:wrap;}
 .pill-btn{
   background:rgba(244,235,212,.10); border:1px solid rgba(244,235,212,.25); color:#f4ebd4;
-  padding:3px 11px; border-radius:16px; font-size:13.5px; font-weight:600; cursor:pointer;
+  padding:3px 11px; border-radius:16px; font-size:var(--fs-base); font-weight:600; cursor:pointer;
   transition: all .15s ease;
 }
 .pill-btn:hover{background:rgba(244,235,212,.22);}
 .pill-btn.active{background:#f4ebd4; color:var(--navy); border-color:#f4ebd4; box-shadow:0 2px 8px rgba(0,0,0,.18);}
-.filter-note{font-size:11px; color:#b5a985; margin-top:3px; line-height:1.2;}
-.scope-summary{display:inline-flex; align-items:center; gap:6px; background:rgba(244,235,212,.14); border:1px solid rgba(244,235,212,.3); padding:2px 11px; border-radius:18px; font-size:13px; font-weight:700; color:#f4ebd4; margin-left:6px;}
+.filter-note{font-size:var(--fs-xs); color:#b5a985; margin-top:3px; line-height:1.2;}
+.scope-summary{display:inline-flex; align-items:center; gap:6px; background:rgba(244,235,212,.14); border:1px solid rgba(244,235,212,.3); padding:2px 11px; border-radius:18px; font-size:var(--fs-base); font-weight:700; color:#f4ebd4; margin-left:6px;}
 
 /* ===== SECTION SHELL ===== */
 section{margin-bottom:36px;}
 .section-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
-.section-head h2{font-size:19px; margin:0; color:var(--navy); font-weight:800; display:flex; align-items:center; gap:9px;}
-.section-head h2 .num-chip{font-size:11px; background:var(--navy); color:var(--beige); width:22px; height:22px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-weight:800;}
+.section-head h2{font-size:var(--fs-xl); margin:0; color:var(--navy); font-weight:800; display:flex; align-items:center; gap:9px;}
+.section-head h2 .num-chip{font-size:var(--fs-xs); background:var(--navy); color:var(--beige); width:22px; height:22px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-weight:800;}
 :root[data-theme="dark"] .section-head h2 .num-chip{ background:var(--navy); color:#081420; }
-.section-head .n-tag{font-size:11.5px; color:var(--ink-3); font-weight:600;}
-.section-desc{font-size:13px; color:var(--ink-2); margin:-8px 0 16px; max-width:920px;}
-.eyebrow{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--navy-3); margin-bottom:4px;}
+.section-head .n-tag{font-size:var(--fs-xs); color:var(--ink-3); font-weight:600;}
+.section-desc{font-size:var(--fs-base); color:var(--ink-2); margin:-8px 0 16px; max-width:920px;}
+.eyebrow{font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--navy-3); margin-bottom:4px;}
 
 .card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:18px 20px; transition: box-shadow .2s ease, transform .2s ease, background-color .25s ease, border-color .25s ease;}
 
@@ -231,57 +252,57 @@ section{margin-bottom:36px;}
 .kpi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
 .kpi{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px; position:relative; transition:transform .18s ease, box-shadow .18s ease;}
 .kpi:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
-.kpi .label{font-size:11.5px; color:var(--ink-3); font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
-.kpi .value{font-size:30px; font-weight:800; color:var(--navy-vivid); margin:6px 0 2px; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 14px; border-radius:10px; background:var(--vivid-bg-navy);}
+.kpi .label{font-size:var(--fs-xs); color:var(--ink-3); font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
+.kpi .value{font-size:var(--fs-4xl); font-weight:800; color:var(--navy-vivid); margin:6px 0 2px; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 14px; border-radius:10px; background:var(--vivid-bg-navy);}
 .kpi .value.good{color:var(--good-vivid); background:var(--vivid-bg-good);}
 .kpi .value.warn{color:var(--warn-vivid); background:var(--vivid-bg-warn);}
 .kpi .value.crit{color:var(--crit-vivid); background:var(--vivid-bg-crit);}
-.kpi .foot{font-size:12px; color:var(--ink-2);}
-.kpi .chip, .kpi-mini .chip{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:20px; margin-top:6px;}
+.kpi .foot{font-size:var(--fs-sm); color:var(--ink-2);}
+.kpi .chip, .kpi-mini .chip{display:inline-block; font-size:var(--fs-2xs); font-weight:700; padding:2px 9px; border-radius:20px; margin-top:6px;}
 .kpi-sub-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;}
 .kpi-mini{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:14px 16px;}
-.kpi-mini .t{font-size:11.5px; color:var(--ink-3); font-weight:700; text-transform:uppercase;}
-.kpi-mini .v{font-size:20px; font-weight:800; margin-top:4px; color:var(--navy-vivid); display:inline-block; padding:0px 11px; border-radius:8px; background:var(--vivid-bg-navy);}
+.kpi-mini .t{font-size:var(--fs-xs); color:var(--ink-3); font-weight:700; text-transform:uppercase;}
+.kpi-mini .v{font-size:var(--fs-xl); font-weight:800; margin-top:4px; color:var(--navy-vivid); display:inline-block; padding:0px 11px; border-radius:8px; background:var(--vivid-bg-navy);}
 .kpi-mini .v.good{color:var(--good-vivid); background:var(--vivid-bg-good);}
 .kpi-mini .v.warn{color:var(--warn-vivid); background:var(--vivid-bg-warn);}
 .kpi-mini .v.crit{color:var(--crit-vivid); background:var(--vivid-bg-crit);}
-.kpi-mini .d{font-size:12px; color:var(--ink-2); margin-top:2px;}
-.small-sample-flag{display:inline-flex; align-items:center; gap:5px; background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-brd); font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; margin-top:8px;}
+.kpi-mini .d{font-size:var(--fs-sm); color:var(--ink-2); margin-top:2px;}
+.small-sample-flag{display:inline-flex; align-items:center; gap:5px; background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-brd); font-size:var(--fs-xs); font-weight:700; padding:3px 9px; border-radius:20px; margin-top:8px;}
 
 /* ===== NPS distribution ===== */
 .nps-dist-wrap{display:grid; grid-template-columns:1.3fr 1fr; gap:18px;}
 .stackbar{height:36px; border-radius:9px; overflow:hidden; display:flex; width:100%; box-shadow:inset 0 0 0 1px rgba(2,36,66,.06);}
-.stackbar > div{height:100%; display:flex; align-items:center; justify-content:center; color:#fffdf8; font-size:12px; font-weight:700; min-width:0; cursor:default; transition:filter .15s ease;}
+.stackbar > div{height:100%; display:flex; align-items:center; justify-content:center; color:#fffdf8; font-size:var(--fs-sm); font-weight:700; min-width:0; cursor:default; transition:filter .15s ease;}
 .stackbar > div:hover{filter:brightness(1.08);}
 .seg-prom{background:var(--good-vivid);}
 .seg-neu{background:var(--warn-vivid);}
 .seg-det{background:var(--crit-vivid);}
 .legend-row{display:flex; gap:18px; margin-top:12px; flex-wrap:wrap;}
-.legend-item{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2);}
+.legend-item{display:flex; align-items:center; gap:7px; font-size:var(--fs-sm); color:var(--ink-2);}
 .legend-dot{width:11px;height:11px;border-radius:3px; display:inline-block;}
-.nps-formula{background:var(--bg-card-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; font-size:13px; color:var(--ink-1); margin-top:14px;}
+.nps-formula{background:var(--bg-card-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; font-size:var(--fs-base); color:var(--ink-1); margin-top:14px;}
 .nps-formula b{color:var(--navy);}
 :root[data-theme="dark"] .nps-formula b{color:var(--gold-2);}
 
 /* ===== bar comparison rows ===== */
 .barrow{display:grid; grid-template-columns:150px 1fr 56px; align-items:center; gap:10px; margin-bottom:9px;}
-.barrow .lbl{font-size:12.5px; color:var(--ink-2); font-weight:600; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.barrow .lbl{font-size:var(--fs-sm); color:var(--ink-2); font-weight:600; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .barrow .track{background:var(--bg-card-2); border:1px solid var(--border); border-radius:6px; height:18px; position:relative; overflow:hidden;}
 .barrow .fill{height:100%; border-radius:6px; display:flex; align-items:center; cursor:default;}
-.barrow .val{font-size:12.5px; font-weight:700; color:var(--ink-1); font-variant-numeric:tabular-nums;}
+.barrow .val{font-size:var(--fs-sm); font-weight:700; color:var(--ink-1); font-variant-numeric:tabular-nums;}
 
 /* ranking cards */
 .rank-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
 .rank-card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px; position:relative; transition:transform .18s ease, box-shadow .18s ease;}
 .rank-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
-.rank-card .pos{position:absolute; top:14px; right:16px; font-size:22px; font-weight:800; color:var(--border-2);}
-.rank-card h4{margin:0 0 8px; font-size:15px; color:var(--navy);}
-.rank-card .nps-big{font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 12px; border-radius:9px; margin-top:2px;}
-.rank-card .row-mini{display:flex; justify-content:space-between; font-size:12px; color:var(--ink-2); margin-top:8px; border-top:1px solid var(--border); padding-top:8px;}
+.rank-card .pos{position:absolute; top:14px; right:16px; font-size:var(--fs-2xl); font-weight:800; color:var(--border-2);}
+.rank-card h4{margin:0 0 8px; font-size:var(--fs-lg); color:var(--navy);}
+.rank-card .nps-big{font-size:var(--fs-3xl); font-weight:800; font-variant-numeric:tabular-nums; display:inline-block; padding:1px 12px; border-radius:9px; margin-top:2px;}
+.rank-card .row-mini{display:flex; justify-content:space-between; font-size:var(--fs-sm); color:var(--ink-2); margin-top:8px; border-top:1px solid var(--border); padding-top:8px;}
 
-table{width:100%; border-collapse:collapse; font-size:13px;}
+table{width:100%; border-collapse:collapse; font-size:var(--fs-base);}
 th,td{padding:9px 10px; text-align:left; border-bottom:1px solid var(--border);}
-th{color:var(--ink-3); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.3px;}
+th{color:var(--ink-3); font-weight:700; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.3px;}
 tr:last-child td{border-bottom:none;}
 tr{transition:background-color .12s ease;}
 tbody tr:hover{background:var(--bg-card-2);}
@@ -292,44 +313,44 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 .eixo-card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:18px; transition:transform .18s ease, box-shadow .18s ease;}
 .eixo-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
 .eixo-card .eixo-title{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:10px;}
-.eixo-card h3{font-size:15.5px; margin:0; color:var(--navy);}
-.status-badge{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; white-space:nowrap;}
+.eixo-card h3{font-size:var(--fs-lg); margin:0; color:var(--navy);}
+.status-badge{font-size:var(--fs-2xs); font-weight:700; padding:3px 9px; border-radius:20px; white-space:nowrap;}
 .status-alto{background:var(--good-bg); color:var(--good-vivid); border:1px solid var(--good-brd);}
 .status-medioalto{background:var(--bg-card-2); color:var(--navy-3); border:1px solid var(--border-2);}
 .status-mediobaixo{background:var(--warn-bg); color:var(--warn-vivid); border:1px solid var(--warn-brd);}
 .status-baixo{background:var(--crit-bg); color:var(--crit-vivid); border:1px solid var(--crit-brd);}
 .eixo-bars{margin:10px 0 12px;}
 .mini-bar-row{display:grid; grid-template-columns:78px 1fr 42px; gap:8px; align-items:center; margin-bottom:6px;}
-.mini-bar-row .k{font-size:11px; color:var(--ink-3); font-weight:600;}
+.mini-bar-row .k{font-size:var(--fs-xs); color:var(--ink-3); font-weight:600;}
 .mini-bar-row .track{background:var(--bg-card-2); border:1px solid var(--border); border-radius:5px; height:12px;}
 .mini-bar-row .fill{height:100%; border-radius:5px; cursor:default;}
-.mini-bar-row .v{font-size:11.5px; font-weight:700; text-align:right; font-variant-numeric:tabular-nums;}
-.eixo-meta{font-size:11.5px; color:var(--ink-3); margin-bottom:8px;}
-.eixo-block{margin-top:8px; font-size:12.5px;}
-.eixo-block b{color:var(--navy); display:block; font-size:11px; text-transform:uppercase; letter-spacing:.3px; margin-bottom:2px;}
-.eixo-interp{background:var(--bg-card-2); border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:12px; color:var(--ink-1); margin-top:10px;}
+.mini-bar-row .v{font-size:var(--fs-xs); font-weight:700; text-align:right; font-variant-numeric:tabular-nums;}
+.eixo-meta{font-size:var(--fs-xs); color:var(--ink-3); margin-bottom:8px;}
+.eixo-block{margin-top:8px; font-size:var(--fs-sm);}
+.eixo-block b{color:var(--navy); display:block; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.3px; margin-bottom:2px;}
+.eixo-interp{background:var(--bg-card-2); border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:var(--fs-sm); color:var(--ink-1); margin-top:10px;}
 
 /* ===== consulta por professor ===== */
 .prof-search-wrap{position:relative; max-width:520px;}
-.prof-search-input{width:100%; padding:11px 14px; border:1px solid var(--border-2); border-radius:9px; font-size:14px; background:var(--bg-card); color:var(--ink-1); font-family:inherit;}
+.prof-search-input{width:100%; padding:11px 14px; border:1px solid var(--border-2); border-radius:9px; font-size:var(--fs-md); background:var(--bg-card); color:var(--ink-1); font-family:inherit;}
 .prof-search-input:focus{outline:2px solid var(--navy-3); outline-offset:1px;}
 .prof-search-results{position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--bg-card); border:1px solid var(--border); border-radius:9px; box-shadow:var(--shadow-md); max-height:300px; overflow-y:auto; z-index:30; display:none;}
-.prof-search-item{padding:8px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid var(--border);}
+.prof-search-item{padding:8px 14px; font-size:var(--fs-base); cursor:pointer; border-bottom:1px solid var(--border);}
 .prof-search-item:last-child{border-bottom:none;}
 .prof-search-item:hover{background:var(--bg-card-2);}
 .prof-search-item b{color:var(--navy); font-weight:700;}
-.prof-search-item small{display:block; color:var(--ink-3); font-size:11px; margin-top:1px;}
+.prof-search-item small{display:block; color:var(--ink-3); font-size:var(--fs-xs); margin-top:1px;}
 
 /* ===== grafico eixos (grouped bars, 02-Painel-Eixos) ===== */
 .eixo-chart-outer{display:grid; grid-template-columns:26px 1fr; gap:6px;}
-.eixo-chart-yaxis{display:flex; flex-direction:column; justify-content:space-between; height:220px; padding-bottom:2px; font-size:10px; color:var(--ink-3); text-align:right; font-variant-numeric:tabular-nums;}
+.eixo-chart-yaxis{display:flex; flex-direction:column; justify-content:space-between; height:220px; padding-bottom:2px; font-size:var(--fs-2xs); color:var(--ink-3); text-align:right; font-variant-numeric:tabular-nums;}
 .eixo-chart-wrap{display:flex; align-items:flex-end; gap:10px; height:222px; border-bottom:1px solid var(--border); padding:0 4px;}
 .eixo-chart-group{flex:1; display:flex; flex-direction:column; align-items:center; min-width:0; height:100%; justify-content:flex-end;}
 .eixo-chart-bars{display:flex; align-items:flex-end; justify-content:center; gap:3px; width:100%; height:220px;}
 .eixo-chart-bar{width:15px; border-radius:3px 3px 0 0; cursor:default; transition:opacity .15s ease;}
 .eixo-chart-bar:hover{opacity:.78;}
-.eixo-chart-label{font-size:10.5px; color:var(--ink-2); text-align:center; line-height:1.25; margin-top:8px; max-width:118px;}
-.eixo-chart-legend{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:16px; font-size:12px; color:var(--ink-2);}
+.eixo-chart-label{font-size:var(--fs-2xs); color:var(--ink-2); text-align:center; line-height:1.25; margin-top:8px; max-width:118px;}
+.eixo-chart-legend{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:16px; font-size:var(--fs-sm); color:var(--ink-2);}
 
 /* ===== matriz fam x aluno ===== */
 .gapbar-track{height:20px; background:var(--bg-card-2); border:1px solid var(--border); border-radius:6px; position:relative;}
@@ -337,7 +358,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 .gapbar-fill{position:absolute; top:2px; bottom:2px; border-radius:4px;}
 
 /* ===== theme table ===== */
-.pill{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px;}
+.pill{display:inline-block; font-size:var(--fs-2xs); font-weight:700; padding:2px 8px; border-radius:20px;}
 .pill-pos{background:var(--good-bg); color:var(--good-vivid);}
 .pill-neg{background:var(--crit-bg); color:var(--crit-vivid);}
 .pill-mix{background:var(--warn-bg); color:var(--warn-vivid);}
@@ -346,84 +367,100 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 .col3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
 .col2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
 .group-card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:18px;}
-.group-card h3{margin:0 0 10px; font-size:15.5px;}
+.group-card h3{margin:0 0 10px; font-size:var(--fs-lg);}
 .group-card.prom{border-top:4px solid var(--good);}
 .group-card.neu{border-top:4px solid var(--warn);}
 .group-card.det{border-top:4px solid var(--crit);}
 .group-card ul{margin:0; padding-left:18px;}
-.group-card li{margin-bottom:7px; font-size:12.8px;}
+.group-card li{margin-bottom:7px; font-size:var(--fs-sm);}
 
 .forca-card{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); border-left:4px solid var(--good); padding:16px 18px; transition:transform .18s ease;}
 .forca-card:hover{transform:translateY(-2px);}
-.forca-card h4{margin:0 0 6px; font-size:14.5px; color:var(--navy);}
-.forca-field{margin-top:8px; font-size:12.5px;}
-.forca-field b{display:block; font-size:10.5px; text-transform:uppercase; color:var(--ink-3); letter-spacing:.3px; margin-bottom:2px;}
+.forca-card h4{margin:0 0 6px; font-size:var(--fs-md); color:var(--navy);}
+.forca-field{margin-top:8px; font-size:var(--fs-sm);}
+.forca-field b{display:block; font-size:var(--fs-2xs); text-transform:uppercase; color:var(--ink-3); letter-spacing:.3px; margin-bottom:2px;}
 
 .atencao-item{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px; margin-bottom:12px; display:grid; grid-template-columns:120px 1fr; gap:16px;}
-.prio-flag{font-size:11px; font-weight:800; padding:5px 10px; border-radius:8px; text-align:center; align-self:flex-start; text-transform:uppercase;}
+.prio-flag{font-size:var(--fs-xs); font-weight:800; padding:5px 10px; border-radius:8px; text-align:center; align-self:flex-start; text-transform:uppercase;}
 .prio-critico{background:var(--crit-bg); color:var(--crit-vivid); border:1px solid var(--crit-brd);}
 .prio-alta{background:var(--warn-bg); color:var(--orange); border:1px solid var(--warn-brd);}
 .prio-atencao{background:var(--warn-bg); color:var(--warn-vivid); border:1px solid var(--warn-brd);}
 .prio-monitorar{background:var(--neutral-bg); color:var(--neutral); border:1px solid var(--neutral-brd);}
-.atencao-body h4{margin:0 0 6px; font-size:14.5px;}
-.atencao-grid-meta{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:8px; font-size:11.8px;}
-.atencao-grid-meta div b{display:block; font-size:10px; text-transform:uppercase; color:var(--ink-3); margin-bottom:1px;}
+.atencao-body h4{margin:0 0 6px; font-size:var(--fs-md);}
+.atencao-grid-meta{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:8px; font-size:var(--fs-xs);}
+.atencao-grid-meta div b{display:block; font-size:var(--fs-2xs); text-transform:uppercase; color:var(--ink-3); margin-bottom:1px;}
 
 /* ===== impact x recurrence matrix ===== */
 .matrix2x2{display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:12px; position:relative;}
 .quad{border-radius:12px; padding:16px; min-height:150px; border:1px solid; transition:transform .18s ease;}
 .quad:hover{transform:scale(1.01);}
-.quad h4{margin:0 0 4px; font-size:13.5px;}
-.quad .sub{font-size:11px; opacity:.8; margin-bottom:8px;}
-.quad ul{margin:0; padding-left:16px; font-size:12px;}
+.quad h4{margin:0 0 4px; font-size:var(--fs-base);}
+.quad .sub{font-size:var(--fs-xs); opacity:.8; margin-bottom:8px;}
+.quad ul{margin:0; padding-left:16px; font-size:var(--fs-sm);}
 .quad li{margin-bottom:5px;}
 .quad-crit{background:var(--crit-bg); border-color:var(--crit-brd);}
 .quad-invest{background:var(--warn-bg); border-color:var(--warn-brd);}
 .quad-oper{background:var(--bg-card-2); border-color:var(--border-2);}
 .quad-monit{background:var(--neutral-bg); border-color:var(--neutral-brd);}
-.axis-label{font-size:11px; color:var(--ink-3); font-weight:700; text-align:center;}
+.axis-label{font-size:var(--fs-xs); color:var(--ink-3); font-weight:700; text-align:center;}
 
 /* plano de ação */
-.tag-prazo{font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--bg-card-2); color:var(--navy); border:1px solid var(--border-2);}
+.tag-prazo{font-size:var(--fs-2xs); font-weight:700; padding:2px 8px; border-radius:20px; background:var(--bg-card-2); color:var(--navy); border:1px solid var(--border-2);}
 
 /* top 5 */
 .top5-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
 .top5-card{background:linear-gradient(160deg,var(--navy),#0c4272); color:#f4ebd4; border-radius:var(--radius); padding:18px 16px; box-shadow:var(--shadow-md); position:relative; min-height:200px; transition:transform .18s ease;}
 .top5-card:hover{transform:translateY(-3px);}
 :root[data-theme="dark"] .top5-card{ background:linear-gradient(160deg,#0a1c2c,#123350); }
-.top5-card .num{font-size:34px; font-weight:800; opacity:.32; position:absolute; top:10px; right:14px;}
-.top5-card h4{font-size:14px; margin:18px 0 8px; line-height:1.35;}
-.top5-card p{font-size:11.8px; color:#d9cfb0; margin:0;}
+.top5-card .num{font-size:var(--fs-5xl); font-weight:800; opacity:.32; position:absolute; top:10px; right:14px;}
+.top5-card h4{font-size:var(--fs-md); margin:18px 0 8px; line-height:1.35;}
+.top5-card p{font-size:var(--fs-xs); color:#d9cfb0; margin:0;}
 
 /* insights */
 .insight-list{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-.insight-item{background:var(--bg-card); border-radius:10px; border:1px solid var(--border); box-shadow:var(--shadow); padding:14px 16px; font-size:13px; display:flex; gap:10px;}
-.insight-item .ix{font-size:15px; font-weight:800; color:var(--navy-3); flex:0 0 auto;}
+.insight-item{background:var(--bg-card); border-radius:10px; border:1px solid var(--border); box-shadow:var(--shadow); padding:14px 16px; font-size:var(--fs-base); display:flex; gap:10px;}
+.insight-item .ix{font-size:var(--fs-lg); font-weight:800; color:var(--navy-3); flex:0 0 auto;}
 
 /* conclusao */
 .conclusao-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
 .conclusao-item{background:var(--bg-card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); padding:16px 18px;}
-.conclusao-item h4{margin:0 0 8px; font-size:13.5px; color:var(--navy-3); text-transform:uppercase; letter-spacing:.3px;}
-.conclusao-item p{margin:0; font-size:13.3px; color:var(--ink-1);}
+.conclusao-item h4{margin:0 0 8px; font-size:var(--fs-base); color:var(--navy-3); text-transform:uppercase; letter-spacing:.3px;}
+.conclusao-item p{margin:0; font-size:var(--fs-base); color:var(--ink-1);}
 
-.footnote{font-size:11.5px; color:var(--ink-3); margin-top:6px;}
-.data-warn{background:var(--warn-bg); border:1px solid var(--warn-brd); color:var(--warn); border-radius:8px; padding:10px 14px; font-size:12.5px; margin-bottom:14px;}
-.data-empty{background:var(--neutral-bg); border:1px dashed var(--neutral-brd); color:var(--neutral); border-radius:8px; padding:16px; font-size:13px; text-align:center;}
+.footnote{font-size:var(--fs-xs); color:var(--ink-3); margin-top:6px;}
+.data-warn{background:var(--warn-bg); border:1px solid var(--warn-brd); color:var(--warn); border-radius:8px; padding:10px 14px; font-size:var(--fs-sm); margin-bottom:14px;}
+.data-empty{background:var(--neutral-bg); border:1px dashed var(--neutral-brd); color:var(--neutral); border-radius:8px; padding:16px; font-size:var(--fs-base); text-align:center;}
 
 /* ===== tooltip (toolpic) ===== */
 .tooltip-box{
-  position:fixed; background:var(--navy); color:#f4ebd4; font-size:12px; padding:0; border-radius:10px;
+  position:fixed; background:var(--navy); color:#f4ebd4; font-size:var(--fs-sm); padding:0; border-radius:10px;
   pointer-events:none; z-index:999; max-width:280px; box-shadow:var(--shadow-md); display:none; overflow:hidden;
   border:1px solid rgba(244,235,212,.15);
 }
 :root[data-theme="dark"] .tooltip-box{ background:#152c40; }
-.tooltip-box .tt-head{font-weight:800; font-size:12.5px; padding:9px 12px 6px; border-bottom:1px solid rgba(244,235,212,.15);}
+.tooltip-box .tt-head{font-weight:800; font-size:var(--fs-sm); padding:9px 12px 6px; border-bottom:1px solid rgba(244,235,212,.15);}
 .tooltip-box .tt-body{padding:8px 12px 10px; display:flex; flex-direction:column; gap:4px;}
-.tooltip-box .tt-row{display:flex; justify-content:space-between; gap:14px; font-size:11.5px; color:#dcd3ba;}
+.tooltip-box .tt-row{display:flex; justify-content:space-between; gap:14px; font-size:var(--fs-xs); color:#dcd3ba;}
 .tooltip-box .tt-row b{color:#f4ebd4; font-variant-numeric:tabular-nums;}
-.tooltip-box .tt-note{font-size:10.5px; color:#b5a988; margin-top:2px; max-width:250px;}
+.tooltip-box .tt-note{font-size:var(--fs-2xs); color:#b5a988; margin-top:2px; max-width:250px;}
 
-.q-tag{font-size:10.5px; color:var(--ink-3); background:var(--neutral-bg); padding:2px 7px; border-radius:12px; margin-left:6px;}
+.q-tag{font-size:var(--fs-2xs); color:var(--ink-3); background:var(--neutral-bg); padding:2px 7px; border-radius:12px; margin-left:6px;}
+
+/* ===== BOTAO VOLTAR AO TOPO ===== */
+.back-to-top{
+  position:fixed; right:22px; bottom:22px; z-index:60;
+  width:44px; height:44px; border-radius:50%; border:none;
+  background:var(--navy); color:#f4ebd4; font-size:var(--fs-xl); font-weight:800; line-height:1;
+  display:none; align-items:center; justify-content:center; cursor:pointer;
+  box-shadow:var(--shadow-md);
+  opacity:0; transform:translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
+}
+.back-to-top.show{ display:flex; opacity:1; transform:translateY(0); }
+.back-to-top:hover{ background:var(--navy-2); }
+:root[data-theme="dark"] .back-to-top{ background:var(--navy-2); color:#081420; }
+:root[data-theme="dark"] .back-to-top:hover{ background:var(--navy-3); }
+@media (max-width:760px){ .back-to-top{ right:14px; bottom:14px; width:40px; height:40px; } }
 
 ::-webkit-scrollbar{height:8px;width:8px;}
 ::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:4px;}
@@ -452,11 +489,34 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   .filter-row{flex-direction:column; align-items:flex-start;}
   .filter-label{width:auto;}
 }
+
+/* ===== IMPRESSAO / EXPORTAR PDF =====
+   Sem isto, Ctrl+P (ou o botao "Exportar PDF") sai cortado: cabecalho fixo repetindo,
+   filtros/tooltips/botoes sem função em papel, e fundo escuro se o modo escuro estiver ativo. */
+@media print{
+  :root, :root[data-theme="dark"]{
+    color-scheme: light;
+    --bg-page:#ffffff; --bg-card:#ffffff; --bg-card-2:#f7f3e8;
+    --ink-1:#241a14; --ink-2:#55493d; --ink-3:#8a7c68;
+    --border:#d8cca9; --border-2:#c9bb92;
+    --good-vivid:#1f8a4d; --warn-vivid:#a9720c; --crit-vivid:#a4283f; --navy-vivid:#0a5fb0;
+    --vivid-bg-good:#e4f3ea; --vivid-bg-warn:#faf0d9; --vivid-bg-crit:#fbe3e6; --vivid-bg-navy:#e4eefa;
+  }
+  body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body::before{ display:none; } /* marca d'água some na impressão, poupa tinta */
+  .tooltip-box, .back-to-top, .export-pdf-btn, .theme-toggle, .filter-shell{ display:none !important; }
+  header.top{ position:static; box-shadow:none; background:var(--navy) !important; }
+  a[href]::after{ content:""; }
+  .card, .kpi, .kpi-mini, .eixo-card, .rank-card, .group-card, .forca-card, .atencao-item,
+  .top5-card, .conclusao-item, .insight-item, .quad, section{ break-inside:avoid; }
+  .wrap{ max-width:100%; padding:0 8px 20px; }
+}
 </style>
 </head>
 <body>
 
 <div class="tooltip-box" id="tooltip"></div>
+<button id="backToTop" class="back-to-top" type="button" aria-label="Voltar ao topo" title="Voltar ao topo">↑</button>
 
 <header class="top">
   <div class="wrap">
@@ -468,26 +528,28 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
         <div class="badge-live"><span class="dot"></span> 452 NPS de famílias · 374 alunos · 154 professores</div>
       </div>
       <div class="head-actions">
+        <button class="export-pdf-btn" id="exportPdfBtn" type="button" title="Exportar o painel como PDF"><span>🖨️</span><span>Exportar PDF</span></button>
         <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Modo escuro</span></button>
       </div>
+      <img class="header-logo" src="data:image/png;base64,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" alt="Heavenly International School">
     </div>
     <div class="filter-shell">
       <div class="filter-row">
         <div class="filter-label">Unidade</div>
-        <div class="pillset" id="pillsUnidade">
-          <button class="pill-btn active" data-val="Consolidado">Consolidado</button>
-          <button class="pill-btn" data-val="Kinder">Kinder</button>
-          <button class="pill-btn" data-val="Asa Norte">Asa Norte</button>
-          <button class="pill-btn" data-val="High">High</button>
-          <button class="pill-btn" data-val="Lago Sul" title="Kinder + High somados">Lago Sul</button>
+        <div class="pillset" id="pillsUnidade" role="tablist" aria-label="Filtro de unidade">
+          <button class="pill-btn active" data-val="Consolidado" role="tab" aria-selected="true">Consolidado</button>
+          <button class="pill-btn" data-val="Kinder" role="tab" aria-selected="false">Kinder</button>
+          <button class="pill-btn" data-val="Asa Norte" role="tab" aria-selected="false">Asa Norte</button>
+          <button class="pill-btn" data-val="High" role="tab" aria-selected="false">High</button>
+          <button class="pill-btn" data-val="Lago Sul" title="Kinder + High somados" role="tab" aria-selected="false">Lago Sul</button>
         </div>
         <div class="filter-label" style="width:auto; margin-left:6px;">Segmento</div>
-        <div class="pillset" id="pillsSegmento">
-          <button class="pill-btn active" data-val="Consolidado">Consolidado</button>
-          <button class="pill-btn" data-val="Ensino Infantil">Infantil</button>
-          <button class="pill-btn" data-val="Ensino Fundamental I">Fund. I</button>
-          <button class="pill-btn" data-val="Ensino Fundamental II">Fund. II</button>
-          <button class="pill-btn" data-val="Ensino Médio">Médio</button>
+        <div class="pillset" id="pillsSegmento" role="tablist" aria-label="Filtro de segmento">
+          <button class="pill-btn active" data-val="Consolidado" role="tab" aria-selected="true">Consolidado</button>
+          <button class="pill-btn" data-val="Ensino Infantil" role="tab" aria-selected="false">Infantil</button>
+          <button class="pill-btn" data-val="Ensino Fundamental I" role="tab" aria-selected="false">Fund. I</button>
+          <button class="pill-btn" data-val="Ensino Fundamental II" role="tab" aria-selected="false">Fund. II</button>
+          <button class="pill-btn" data-val="Ensino Médio" role="tab" aria-selected="false">Médio</button>
         </div>
         <span class="scope-summary" id="scopeSummary">Consolidado</span>
       </div>
@@ -550,11 +612,11 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <div class="col2" style="margin-top:14px;" id="kpiConsolidadoBoxes">
       <div class="kpi-mini" style="border-left:4px solid var(--good);">
         <div class="t">Principal força (evidência quantitativa + qualitativa)</div>
-        <div class="d" style="font-size:13px; margin-top:4px; color:var(--ink-1);">Formação católica / valores institucionais — tema citado em 97 dos 356 comentários de NPS (41% dos promotores que comentaram), e Bilinguismo/idioma, citado em 48 comentários como motivo de escolha da escola.</div>
+        <div class="d" style="font-size:var(--fs-base); margin-top:4px; color:var(--ink-1);">Formação católica / valores institucionais — tema citado em 97 dos 356 comentários de NPS (41% dos promotores que comentaram), e Bilinguismo/idioma, citado em 48 comentários como motivo de escolha da escola.</div>
       </div>
       <div class="kpi-mini" style="border-left:4px solid var(--crit);">
         <div class="t">Principal ponto de atenção</div>
-        <div class="d" style="font-size:13px; margin-top:4px; color:var(--ink-1);">Comunicação escola–família — tema em 40 comentários, sendo 38 deles de neutros ou detratores (95%). O ponto mais crítico do cruzamento é <b>Asa Norte + Ensino Fundamental I</b> (NPS +23,3%, n=129) — bem abaixo da média da própria unidade.</div>
+        <div class="d" style="font-size:var(--fs-base); margin-top:4px; color:var(--ink-1);">Comunicação escola–família — tema em 40 comentários, sendo 38 deles de neutros ou detratores (95%). O ponto mais crítico do cruzamento é <b>Asa Norte + Ensino Fundamental I</b> (NPS +23,3%, n=129) — bem abaixo da média da própria unidade.</div>
       </div>
     </div>
   </div>
@@ -663,7 +725,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <div class="eyebrow">Leitura</div>
     <div id="segmentoLeitura">
       <p style="margin:0 0 8px;">O <b>Ensino Médio</b> tem o melhor NPS entre os segmentos (+81,4; nota média 9,42) e a menor concentração de detratores (1 em 59 respostas) — e existe só na unidade High. O <b>Ensino Fundamental I</b> é o segmento mais frágil no consolidado (+38,6), mas o cruzamento mostra que isso é puxado quase inteiramente pela <b>Asa Norte</b>: lá, EF I cai para +23,3 (n=129), enquanto o mesmo segmento no Kinder — a única outra unidade que também tem EF I — está em +54,4 (n=125), mais de 30 pontos acima. Não é um problema do segmento — é um problema dessa combinação específica de unidade e segmento.</p>
-      <p style="margin:0; font-size:12.5px; color:var(--ink-3);">Amostra do Ensino Médio (n=59) é a menor entre os quatro segmentos: leia a diferença como direção, não como certeza estatística fina.</p>
+      <p style="margin:0; font-size:var(--fs-sm); color:var(--ink-3);">Amostra do Ensino Médio (n=59) é a menor entre os quatro segmentos: leia a diferença como direção, não como certeza estatística fina.</p>
     </div>
   </div>
 </section>
@@ -684,9 +746,9 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <div class="card">
       <div class="eyebrow">O que a base quantitativa mostra</div>
       <div class="barrow" id="alunoBar_E1"><div class="lbl">Tutoria (índice)</div><div class="track"><div class="fill" style="width:77.3%; background:var(--blue);"></div></div><div class="val">77,3</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="alunoBarN_E1">n=1.779</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="alunoBarN_E1">n=1.779</div>
       <div class="barrow" id="alunoBar_E2"><div class="lbl">Idioma (índice)</div><div class="track"><div class="fill" style="width:65.9%; background:var(--blue);"></div></div><div class="val">65,9</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="alunoBarN_E2">n=1.860</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="alunoBarN_E2">n=1.860</div>
       <div class="barrow"><div class="lbl">Nomeação Ambiente</div><div class="track"><div class="fill" style="width:19.8%; background:var(--aqua);"></div></div><div class="val">19,8%</div></div>
       <div class="barrow"><div class="lbl">Nomeação Clareza</div><div class="track"><div class="fill" style="width:20.7%; background:var(--aqua);"></div></div><div class="val">20,7%</div></div>
       <div class="barrow"><div class="lbl">Nomeação Inclusão</div><div class="track"><div class="fill" style="width:19.3%; background:var(--aqua);"></div></div><div class="val">19,3%</div></div>
@@ -738,17 +800,17 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     <div class="card">
       <div class="eyebrow">O que a base quantitativa mostra — nota das famílias por eixo</div>
       <div class="barrow" id="famBar_E1"><div class="lbl">Tutoria e PDI</div><div class="track"><div class="fill" style="width:80%; background:var(--bordo);"></div></div><div class="val">80,0</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E1">n=573</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E1">n=573</div>
       <div class="barrow" id="famBar_E2"><div class="lbl">Idioma e Bilinguismo</div><div class="track"><div class="fill" style="width:65.9%; background:var(--bordo);"></div></div><div class="val">65,9</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E2">n=441</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E2">n=441</div>
       <div class="barrow" id="famBar_E3"><div class="lbl">Ambiente, Respeito e Equidade</div><div class="track"><div class="fill" style="width:86.6%; background:var(--bordo);"></div></div><div class="val">86,6</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E3">n=188</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E3">n=188</div>
       <div class="barrow" id="famBar_E4"><div class="lbl">Clareza da Aprendizagem</div><div class="track"><div class="fill" style="width:78.5%; background:var(--bordo);"></div></div><div class="val">78,5</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E4">n=405</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E4">n=405</div>
       <div class="barrow" id="famBar_E5"><div class="lbl">Inclusão e Atenção Individual</div><div class="track"><div class="fill" style="width:86.7%; background:var(--bordo);"></div></div><div class="val">86,7</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E5">n=504</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E5">n=504</div>
       <div class="barrow" id="famBar_E6"><div class="lbl">Comunicação e Parceria</div><div class="track"><div class="fill" style="width:72.4%; background:var(--bordo);"></div></div><div class="val">72,4</div></div>
-      <div style="text-align:right; font-size:10.5px; color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E6">n=860</div>
+      <div style="text-align:right; font-size:var(--fs-2xs); color:var(--ink-3); margin:-6px 0 6px;" id="famBarN_E6">n=860</div>
       <p class="footnote">Índice 0–100 (Sempre=100 / Quase sempre=75 / Às vezes=50 / Raramente=25 / Nunca=0), recalculado por unidade/segmento a partir do cruzamento real de cada resposta — mesma base da seção "Seis eixos prioritários", aqui isolada só para a voz da família.</p>
     </div>
     <div class="card">
@@ -845,13 +907,13 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <section id="sec-prof-matriz">
   <div class="section-head"><h2><span class="num-chip">14</span>Professores — notas e gaps por eixo</h2><span class="n-tag" id="profMatrizScope">Recorte: Consolidado</span></div>
   <div class="section-desc">Nota (índice 0–100) de cada professor nas quatro vozes, por eixo, e os cinco gaps solicitados. Em <b>Tutoria (E1)</b> e <b>Idioma (E2)</b> a coluna Aluno é um índice 0–100 comparável, com gap. Em <b>Ambiente (E3)</b>, <b>Clareza (E4)</b> e <b>Inclusão (E5)</b> o aluno não dá nota — só nomeia professores-referência — então mostramos a <b>taxa de nomeação</b> desse professor como coluna informativa, sem gap (escala diferente de um índice 0–100, calculá-lo misturaria duas medidas distintas). Colunas de Família só existem em E1 e E6, os únicos eixos vinculáveis ao professor via a tutoria (a família não identifica o professor de cada disciplina — checamos a base aluno-professor e a pergunta de família não permite essa ligação nos demais eixos, ver nota metodológica abaixo). Quando um professor não tem nota de família direta nesses dois eixos (comum em Ensino Infantil/Fund. I, sem vínculo via tutoria), a coluna Família usa a <b>Aval. Família (Turma)</b> como substituta — marcada "via turma" — só para permitir um gap de referência contra Coordenação/Autoavaliação.</div>
-  <div class="tabs" id="profEixoTabs">
-    <button class="tab-btn active" data-eixo="E1">E1 · Tutoria</button>
-    <button class="tab-btn" data-eixo="E2">E2 · Idioma</button>
-    <button class="tab-btn" data-eixo="E3">E3 · Ambiente</button>
-    <button class="tab-btn" data-eixo="E4">E4 · Clareza</button>
-    <button class="tab-btn" data-eixo="E5">E5 · Inclusão</button>
-    <button class="tab-btn" data-eixo="E6">E6 · Comunicação</button>
+  <div class="tabs" id="profEixoTabs" role="tablist" aria-label="Eixo avaliado">
+    <button class="tab-btn active" data-eixo="E1" role="tab" aria-selected="true">E1 · Tutoria</button>
+    <button class="tab-btn" data-eixo="E2" role="tab" aria-selected="false">E2 · Idioma</button>
+    <button class="tab-btn" data-eixo="E3" role="tab" aria-selected="false">E3 · Ambiente</button>
+    <button class="tab-btn" data-eixo="E4" role="tab" aria-selected="false">E4 · Clareza</button>
+    <button class="tab-btn" data-eixo="E5" role="tab" aria-selected="false">E5 · Inclusão</button>
+    <button class="tab-btn" data-eixo="E6" role="tab" aria-selected="false">E6 · Comunicação</button>
   </div>
   <div id="profMatrizEixoNote" class="data-warn" style="display:none;"></div>
   <div class="card" style="overflow-x:auto;">
@@ -883,7 +945,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   <div class="col2" style="margin-top:14px;">
     <div class="card">
       <div class="eyebrow">Sugestões recorrentes das famílias</div>
-      <ul style="margin:8px 0 0; padding-left:18px; font-size:12.8px;">
+      <ul style="margin:8px 0 0; padding-left:18px; font-size:var(--fs-sm);">
         <li>Unificar os canais de comunicação (hoje app, WhatsApp, agenda física e site convivem, gerando confusão)</li>
         <li>Devolutivas mais frequentes e estruturadas sobre desenvolvimento acadêmico e socioemocional</li>
         <li>Mais fotos/registros da rotina diária, especialmente na Educação Infantil</li>
@@ -892,7 +954,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
     </div>
     <div class="card">
       <div class="eyebrow">Temas emergentes (baixa recorrência, mas específicos e verificáveis)</div>
-      <ul style="margin:8px 0 0; padding-left:18px; font-size:12.8px;">
+      <ul style="margin:8px 0 0; padding-left:18px; font-size:var(--fs-sm);">
         <li>Relato de PEI/PDI não implementado para aluno com neurodivergência (mesma família, citada em duas pesquisas distintas — NPS e onboarding)</li>
         <li>Relato de episódio de violência entre alunos sem retorno percebido pela família (nota 0)</li>
         <li>Dificuldade de acesso a informações por pai/mãe não guardião principal em situação de guarda compartilhada (3 menções)</li>
@@ -918,7 +980,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
   <div class="section-head"><h2><span class="num-chip">19</span>Matriz Impacto × Recorrência</h2></div>
   <div class="card">
     <div style="display:grid; grid-template-columns:24px 1fr; gap:8px;">
-      <div style="display:flex; align-items:center; justify-content:center;"><div style="writing-mode:vertical-rl; transform:rotate(180deg); font-size:11px; font-weight:700; color:var(--ink-3);">IMPACTO NA EXPERIÊNCIA →</div></div>
+      <div style="display:flex; align-items:center; justify-content:center;"><div style="writing-mode:vertical-rl; transform:rotate(180deg); font-size:var(--fs-xs); font-weight:700; color:var(--ink-3);">IMPACTO NA EXPERIÊNCIA →</div></div>
       <div>
         <div class="matrix2x2">
           <div class="quad quad-crit">
@@ -968,7 +1030,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <section id="sec-oportunidades">
   <div class="section-head"><h2><span class="num-chip">20</span>Oportunidades de melhoria</h2></div>
   <div class="card">
-    <ul id="listOportunidades" style="margin:0; padding-left:20px; font-size:13.3px;">
+    <ul id="listOportunidades" style="margin:0; padding-left:20px; font-size:var(--fs-base);">
       <li style="margin-bottom:10px;"><b>Consolidar os canais de comunicação em um único aplicativo/canal oficial</b>, com desativação explícita dos demais — reduz a causa nº1 de insatisfação (40 menções) e é a ação com maior potencial de mover neutros para promotores.</li>
       <li style="margin-bottom:10px;"><b>Instituir devolutiva periódica padronizada às famílias</b> sobre evolução acadêmica e socioemocional, com frequência definida (ex.: bimestral) e responsável identificado (tutor), reduzindo o eixo mais baixo da família (Comunicação, 72,4 pontos).</li>
       <li style="margin-bottom:10px;" data-scope="Asa Norte,Ensino Fundamental I"><b>Tratar Asa Norte + Ensino Fundamental I como uma combinação prioritária isolada</b>, não apenas como parte da unidade — é a única célula do cruzamento com NPS abaixo de +25 e amostra robusta (n=129) para agir.</li>
@@ -1041,7 +1103,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <section id="sec-metodologia">
   <div class="section-head"><h2><span class="num-chip">25</span>Notas metodológicas e limites da base</h2></div>
   <div class="card">
-    <ul style="margin:0; padding-left:20px; font-size:12.8px; color:var(--ink-2);">
+    <ul style="margin:0; padding-left:20px; font-size:var(--fs-sm); color:var(--ink-2);">
       <li style="margin-bottom:6px;">Alunos só respondem à pesquisa em Ensino Fundamental II e Ensino Médio; não há voz do aluno para Educação Infantil e Ensino Fundamental I.</li>
       <li style="margin-bottom:6px;">Nos blocos 1 a 3 da pesquisa de alunos, cada pergunta só permite indicar um professor-referência (até 3 nomes) — é um desenho de citação positiva, não uma escala, e por isso é tratado como taxa de nomeação, nunca como nota.</li>
       <li style="margin-bottom:6px;">O cruzamento Unidade × Segmento usa a unidade e o segmento diretamente registrados em cada resposta (não uma estimativa); para a pergunta de NPS das famílias, que não está ligada a uma turma específica, unidade e segmento vêm da(s) matrícula(s) do(s) filho(s) do CPF respondente — por isso uma mesma resposta pode aparecer em mais de uma célula quando a família tem filhos em mais de uma unidade/segmento.</li>
@@ -1379,7 +1441,7 @@ function renderForcas(unidade, segmento){
   grid.innerHTML = items.map(f => `
     <div class="forca-card">
       <h4>${f.titulo}</h4>
-      <div style="font-size:12.5px;color:var(--ink-2);">${f.desc}</div>
+      <div style="font-size:var(--fs-sm);color:var(--ink-2);">${f.desc}</div>
       <div class="forca-field"><b>Evidência</b>${f.evidencia}</div>
       <div class="forca-field"><b>Onde é mais forte</b>${f.onde}</div>
       <div class="forca-field"><b>Oportunidade</b>${f.oportunidade}</div>
@@ -1394,7 +1456,7 @@ function renderAtencao(unidade, segmento){
       <div class="prio-flag ${PRIO_CLASS[a.prio]}">${PRIO_LABEL[a.prio]}</div>
       <div class="atencao-body">
         <h4>${a.titulo}</h4>
-        <div style="font-size:12.8px;color:var(--ink-2);">${a.evidencia}</div>
+        <div style="font-size:var(--fs-sm);color:var(--ink-2);">${a.evidencia}</div>
         <div class="atencao-grid-meta">
           <div><b>Frequência</b>${a.freq}</div>
           <div><b>Público afetado</b>${a.publico}</div>
@@ -1517,7 +1579,7 @@ function renderRankings(){
       <div class="pos">#${i+1}</div>
       <h4>${nome}</h4>
       <div class="nps-big" style="color:${d.nps>=50?'var(--good-vivid)':(d.nps>=35?'var(--warn-vivid)':'var(--crit-vivid)')}; background:${d.nps>=50?'var(--vivid-bg-good)':(d.nps>=35?'var(--vivid-bg-warn)':'var(--vivid-bg-crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
-      <div style="font-size:11.5px;color:var(--ink-3)">NPS · n=${d.n}</div>
+      <div style="font-size:var(--fs-xs);color:var(--ink-3)">NPS · n=${d.n}</div>
       <div class="row-mini"><span>Nota média</span><b>${fmtNum(d.media)}</b></div>
       <div class="row-mini"><span>% Promotores</span><b style="color:var(--good-vivid)">${fmtPct(d.prom/d.n*100)}</b></div>
       <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit-vivid)">${fmtPct(d.det/d.n*100)}</b></div>
@@ -1546,7 +1608,7 @@ function renderSegmentComparison(unidade, segmento){
     entries = Object.entries(NPS_DATA.bySegmento).sort((a,b)=>b[1].nps-a[1].nps);
     ntagText = 'Base: NPS de famílias, n=452';
     leituraHtml = `<p style="margin:0 0 8px;">O <b>Ensino Médio</b> tem o melhor NPS entre os segmentos (+81,4; nota média 9,42) e a menor concentração de detratores (1 em 59 respostas) — e existe só na unidade High. O <b>Ensino Fundamental I</b> é o segmento mais frágil no consolidado (+38,6), mas o cruzamento mostra que isso é puxado quase inteiramente pela <b>Asa Norte</b>: lá, EF I cai para +23,3 (n=129), enquanto o mesmo segmento no Kinder — a única outra unidade que também tem EF I — está em +54,4 (n=125), mais de 30 pontos acima. Não é um problema do segmento — é um problema dessa combinação específica de unidade e segmento.</p>
-      <p style="margin:0; font-size:12.5px; color:var(--ink-3);">Amostra do Ensino Médio (n=59) é a menor entre os quatro segmentos: leia a diferença como direção, não como certeza estatística fina.</p>`;
+      <p style="margin:0; font-size:var(--fs-sm); color:var(--ink-3);">Amostra do Ensino Médio (n=59) é a menor entre os quatro segmentos: leia a diferença como direção, não como certeza estatística fina.</p>`;
   } else {
     const segsDaUnidade = UNIT_SEGMENTS[unidade] || [];
     entries = segsDaUnidade
@@ -1561,7 +1623,7 @@ function renderSegmentComparison(unidade, segmento){
     } else {
       const melhor = entries[0], pior = entries[entries.length-1];
       leituraHtml = `<p style="margin:0 0 8px;">Dentro de <b>${unidade}</b>, o segmento com melhor NPS é <b>${melhor[0]}</b> (${(melhor[1].nps>=0?'+':'')+fmtPct(melhor[1].nps)}, n=${melhor[1].n}) e o mais frágil é <b>${pior[0]}</b> (${(pior[1].nps>=0?'+':'')+fmtPct(pior[1].nps)}, n=${pior[1].n}) — uma diferença de ${fmtNum(Math.abs(melhor[1].nps-pior[1].nps))} pontos de NPS dentro da mesma unidade.</p>
-        <p style="margin:0; font-size:12.5px; color:var(--ink-3);">Comparação restrita aos segmentos que existem em ${unidade}; amostras menores que 20 respostas devem ser lidas como direção, não como certeza estatística fina.</p>`;
+        <p style="margin:0; font-size:var(--fs-sm); color:var(--ink-3);">Comparação restrita aos segmentos que existem em ${unidade}; amostras menores que 20 respostas devem ser lidas como direção, não como certeza estatística fina.</p>`;
     }
   }
 
@@ -1572,7 +1634,7 @@ function renderSegmentComparison(unidade, segmento){
       <div class="pos">#${i+1}</div>
       <h4>${nome}</h4>
       <div class="nps-big" style="color:${d.nps>=50?'var(--good-vivid)':(d.nps>=35?'var(--warn-vivid)':'var(--crit-vivid)')}; background:${d.nps>=50?'var(--vivid-bg-good)':(d.nps>=35?'var(--vivid-bg-warn)':'var(--vivid-bg-crit)')}">${(d.nps>=0?'+':'')+fmtPct(d.nps)}</div>
-      <div style="font-size:11.5px;color:var(--ink-3)">NPS · n=${d.n}</div>
+      <div style="font-size:var(--fs-xs);color:var(--ink-3)">NPS · n=${d.n}</div>
       <div class="row-mini"><span>Nota média</span><b>${fmtNum(d.media)}</b></div>
       <div class="row-mini"><span>% Promotores</span><b style="color:var(--good-vivid)">${fmtPct(d.prom/d.n*100)}</b></div>
       <div class="row-mini"><span>% Detratores</span><b style="color:var(--crit-vivid)">${fmtPct(d.det/d.n*100)}</b></div>
@@ -1663,8 +1725,8 @@ function renderCrossChart(){
   svg += `<line x1="${padL}" y1="${y0.toFixed(1)}" x2="${W-padR}" y2="${y0.toFixed(1)}" stroke="var(--border-2)" stroke-width="1.5"/>`;
   svg += `</svg>`;
 
-  const legend = UNIDADES.map(u=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink-2);margin-right:16px;"><span style="width:11px;height:11px;border-radius:3px;background:${unitColor[u]};display:inline-block;"></span>${u}</span>`).join('');
-  el.innerHTML = svg + `<div style="margin-top:4px;">${legend}<span style="font-size:10.5px;color:var(--ink-3);margin-left:4px;">Barras foscas = amostra pequena (n&lt;10). Clique numa barra para aplicar o recorte.</span></div>`;
+  const legend = UNIDADES.map(u=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-xs);color:var(--ink-2);margin-right:16px;"><span style="width:11px;height:11px;border-radius:3px;background:${unitColor[u]};display:inline-block;"></span>${u}</span>`).join('');
+  el.innerHTML = svg + `<div style="margin-top:4px;">${legend}<span style="font-size:var(--fs-2xs);color:var(--ink-3);margin-left:4px;">Barras foscas = amostra pequena (n&lt;10). Clique numa barra para aplicar o recorte.</span></div>`;
 
   el.querySelectorAll('.cross-bar').forEach(rect=>{
     const u = rect.dataset.u, s = rect.dataset.s;
@@ -2390,7 +2452,7 @@ function renderCitacoesScatterTutoria(unidade, segmento){
   svg += `<line x1="${padL}" y1="${(padT+plotH).toFixed(1)}" x2="${W-padR}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--border-2)" stroke-width="1.5"/>`;
   svg += `</svg>`;
 
-  const legend = Object.entries(LEITURA_COLOR).map(([k,c])=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-2);margin-right:14px;"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${k}</span>`).join('');
+  const legend = Object.entries(LEITURA_COLOR).map(([k,c])=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-xs);color:var(--ink-2);margin-right:14px;"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${k}</span>`).join('');
   el.innerHTML = svg + `<div style="margin-top:8px;">${legend}</div>`;
 
   el.querySelectorAll('.tut-pt').forEach(pt=>{
@@ -2470,7 +2532,7 @@ function renderProfCard(pNomeUpper){
     return `<div class="eixo-card">
       <div class="eixo-title"><h3>${e.nome}</h3></div>
       <div class="eixo-bars">${barsHtml}</div>
-      <div class="eixo-interp" style="font-size:11.5px;"><b>Leitura geral do eixo (base consolidada, não específica deste professor):</b> ${e.interpretacao}</div>
+      <div class="eixo-interp" style="font-size:var(--fs-xs);"><b>Leitura geral do eixo (base consolidada, não específica deste professor):</b> ${e.interpretacao}</div>
     </div>`;
   }).filter(Boolean).join('');
 
@@ -2491,8 +2553,8 @@ function renderProfCard(pNomeUpper){
     <div class="card" style="margin-bottom:16px;">
       <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="margin:0; font-size:20px; color:var(--navy);">${profNameHtml(p.nome, displayName)}</h3>
-          <div style="font-size:13px; color:var(--ink-2); margin-top:4px;">${p.unidade||'—'} · ${SEG_SHORT[p.segmento]||p.segmento||'—'}${admInfo ? ` · Tempo de empresa: ${tempoEmpresaTexto(admInfo.admissao, admInfo.desligado?admInfo.desligamento:null)}` : ''}</div>
+          <h3 style="margin:0; font-size:var(--fs-xl); color:var(--navy);">${profNameHtml(p.nome, displayName)}</h3>
+          <div style="font-size:var(--fs-base); color:var(--ink-2); margin-top:4px;">${p.unidade||'—'} · ${SEG_SHORT[p.segmento]||p.segmento||'—'}${admInfo ? ` · Tempo de empresa: ${tempoEmpresaTexto(admInfo.admissao, admInfo.desligado?admInfo.desligamento:null)}` : ''}</div>
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap;">${badges.join('')}</div>
       </div>
@@ -3014,8 +3076,9 @@ function renderProfessoresMatriz(unidade, segmento){
 
 document.querySelectorAll('#profEixoTabs .tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    document.querySelectorAll('#profEixoTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('#profEixoTabs .tab-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
     btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
     PROF_MATRIZ_EIXO = btn.dataset.eixo;
     PROF_SORT = { col:null, dir:1 };
     renderProfessoresMatriz(STATE.unidade, STATE.segmento);
@@ -3115,8 +3178,16 @@ function updatePillVisibility(){
 }
 
 function syncPillActive(){
-  document.querySelectorAll('#pillsUnidade .pill-btn').forEach(b=> b.classList.toggle('active', b.dataset.val === STATE.unidade));
-  document.querySelectorAll('#pillsSegmento .pill-btn').forEach(b=> b.classList.toggle('active', b.dataset.val === STATE.segmento));
+  document.querySelectorAll('#pillsUnidade .pill-btn').forEach(b=>{
+    const isActive = b.dataset.val === STATE.unidade;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  document.querySelectorAll('#pillsSegmento .pill-btn').forEach(b=>{
+    const isActive = b.dataset.val === STATE.segmento;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
 }
 
 function applyScope(unidade, segmento){
@@ -3209,6 +3280,23 @@ renderCrossTable();
 renderCrossChart();
 initProfConsulta();
 refreshAll();
+
+/* ============ VOLTAR AO TOPO ============ */
+(function initBackToTop(){
+  const btn = document.getElementById('backToTop');
+  if(!btn) return;
+  window.addEventListener('scroll', ()=>{
+    btn.classList.toggle('show', window.scrollY > 600);
+  }, { passive:true });
+  btn.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
+})();
+
+/* ============ EXPORTAR PDF ============ */
+(function initExportPdf(){
+  const btn = document.getElementById('exportPdfBtn');
+  if(!btn) return;
+  btn.addEventListener('click', ()=> window.print());
+})();
 </script>
 </body>
 </html>
