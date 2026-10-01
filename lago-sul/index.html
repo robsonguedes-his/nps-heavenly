@@ -638,7 +638,7 @@ td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
 <!-- ============ GRAFICO EIXOS (02-Painel-Eixos) ============ -->
 <section id="sec-grafico-eixos">
   <div class="section-head"><h2><span class="num-chip">2</span>Índice 0–100 por eixo e por visão</h2><span class="n-tag" id="graficoEixosScope">Recorte: Consolidado</span></div>
-  <div class="section-desc">As quatro vozes lado a lado, nos sete eixos comuns da base (fonte: aba 02-Painel-Eixos). Alunos só têm índice comparável em <b>Tutoria</b> e <b>Idioma</b> — nos demais eixos e em "Percepção geral e jornada" (pergunta exclusiva de família do Ensino Médio) a barra de aluno não existe. Reage ao filtro de <b>Unidade</b> (agrega todos os segmentos daquela unidade); não reage ao filtro de Segmento, para manter os sete eixos comparáveis lado a lado no mesmo gráfico.</div>
+  <div class="section-desc">As quatro vozes lado a lado, nos sete eixos comuns da base. Alunos só têm índice comparável em <b>Tutoria</b> e <b>Idioma</b> — nos demais eixos a barra de aluno não existe. "Percepção geral e jornada" é pergunta exclusiva de família do <b>Ensino Médio</b> — a barra só aparece com esse segmento selecionado (ou Consolidado). Responde aos filtros de Unidade e Segmento, inclusive combinados — mesmo cruzamento real usado na seção "Seis eixos prioritários", para os dois quadros nunca mostrarem números diferentes para o mesmo recorte.</div>
   <div class="card">
     <div class="eixo-chart-outer">
       <div class="eixo-chart-yaxis"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
@@ -1964,32 +1964,19 @@ const GRAFICO_EIXOS_VOICES = [
   {key:'auto', label:'Autoavaliação', color:'var(--violet)'},
   {key:'aluno', label:'Alunos', color:'var(--orange)'}
 ];
-function eixoUnidadeCell(cross, unidade){
-  // Agrega um voice (familia/coord/auto/aluno) por unidade, somando todos os segmentos dessa unidade
-  // (ou da rede inteira, se Consolidado) — mesma lógica de agregação ponderada por n usada em cellFor().
-  if(!cross) return null;
-  const unidadesAlvo = unidade==='Consolidado' ? UNIDADES : [unidade];
-  let sumN=0, sumNIdx=0;
-  unidadesAlvo.forEach(u=>{
-    const uObj = cross[u];
-    if(!uObj) return;
-    SEGMENTOS.forEach(s=>{
-      const c = uObj[s];
-      if(c && c.n>0 && c.idx!=null){ sumN += c.n; sumNIdx += c.n*c.idx; }
-    });
-  });
-  if(sumN===0) return null;
-  return {n:sumN, idx:Math.round((sumNIdx/sumN)*100)/100};
-}
-function graficoEixosCells(eid, unidade){
+// Reage a Unidade E Segmento, com a mesma agregação (cellFor) usada na seção "Seis eixos prioritários" —
+// garante que as duas seções nunca mostrem números diferentes pro mesmo recorte. Só no Consolidado pleno
+// (unidade E segmento) usa EIXOS.overall em vez de cellFor: o overall de alguns eixos combina mais de uma
+// pergunta-fonte (ex.: E6 = NPS + onboarding + comunicação, cellFor só captura a pergunta de comunicação),
+// então teria uma base diferente — a mesma regra que a seção "Seis eixos" já aplica.
+function graficoEixosCells(eid, unidade, segmento){
   if(eid==='E7'){
+    // Pergunta exclusiva de família do Ensino Médio — não existe para outro segmento.
+    if(segmento!=='Consolidado' && segmento!=='Ensino Médio') return {familia:null, coord:null, auto:null, aluno:null};
     const c = unidade==='Consolidado' ? E7_FAMILIA.overall : E7_FAMILIA.byUnidade[unidade];
     return {familia:c, coord:null, auto:null, aluno:null};
   }
-  if(unidade==='Consolidado'){
-    // Mesma fonte da seção "Seis eixos prioritários" no Consolidado (EIXOS.overall) — não re-somar via
-    // EIXO_CROSS aqui, que cobre só a pergunta específica de cada eixo por unidade/segmento e pode ter uma
-    // base diferente do overall (ex.: E6 combina NPS + onboarding + comunicação, cross só tem comunicação).
+  if(unidade==='Consolidado' && segmento==='Consolidado'){
     const eixoDef = EIXOS.find(x=>x.id===eid);
     const o = eixoDef.overall;
     return {
@@ -2001,17 +1988,21 @@ function graficoEixosCells(eid, unidade){
   }
   const cross = EIXO_CROSS[eid];
   return {
-    familia: eixoUnidadeCell(cross.familia, unidade),
-    coord: eixoUnidadeCell(cross.coord, unidade),
-    auto: eixoUnidadeCell(cross.auto, unidade),
-    aluno: (EIXO_ALUNO_MODE[eid]==='index') ? eixoUnidadeCell(cross.aluno, unidade) : null
+    familia: cellFor(cross.familia, unidade, segmento),
+    coord: cellFor(cross.coord, unidade, segmento),
+    auto: cellFor(cross.auto, unidade, segmento),
+    aluno: (EIXO_ALUNO_MODE[eid]==='index') ? cellFor(cross.aluno, unidade, segmento) : null
   };
 }
-function renderGraficoEixos(unidade){
-  document.getElementById('graficoEixosScope').textContent = 'Recorte: ' + unidade;
+function renderGraficoEixos(unidade, segmento){
+  let scopeLabel = 'Consolidado';
+  if(unidade!=='Consolidado' && segmento!=='Consolidado') scopeLabel = unidade + ' + ' + segmento;
+  else if(unidade!=='Consolidado') scopeLabel = unidade;
+  else if(segmento!=='Consolidado') scopeLabel = segmento;
+  document.getElementById('graficoEixosScope').textContent = 'Recorte: ' + scopeLabel;
 
   const groupsHtml = GRAFICO_EIXOS_ORDEM.map(eid=>{
-    const cells = graficoEixosCells(eid, unidade);
+    const cells = graficoEixosCells(eid, unidade, segmento);
     const barsHtml = GRAFICO_EIXOS_VOICES.map(v=>{
       const cell = cells[v.key];
       if(!cell || cell.idx==null) return '';
@@ -2025,7 +2016,7 @@ function renderGraficoEixos(unidade){
   document.getElementById('graficoEixosChart').innerHTML = groupsHtml;
 
   GRAFICO_EIXOS_ORDEM.forEach(eid=>{
-    const cells = graficoEixosCells(eid, unidade);
+    const cells = graficoEixosCells(eid, unidade, segmento);
     GRAFICO_EIXOS_VOICES.forEach(v=>{
       const cell = cells[v.key];
       if(!cell || cell.idx==null) return;
@@ -3408,7 +3399,7 @@ function refreshAll(){
     (STATE.unidade==='Consolidado' && STATE.segmento==='Consolidado') ? 'Consolidado' :
     [STATE.unidade!=='Consolidado'?STATE.unidade:null, STATE.segmento!=='Consolidado'?STATE.segmento:null].filter(Boolean).join(' + ');
   updateScopeVisibility(STATE.unidade, STATE.segmento);
-  renderGraficoEixos(STATE.unidade);
+  renderGraficoEixos(STATE.unidade, STATE.segmento);
   renderSegmentComparison(STATE.unidade, STATE.segmento);
   renderKPI(STATE.unidade, STATE.segmento);
   renderEixos(STATE.unidade, STATE.segmento);
