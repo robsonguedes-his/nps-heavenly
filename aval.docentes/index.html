@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avaliação Docente · Reconhecimento por Segmento</title>
+<meta name="description" content="Painel A · Segmento — pódio de reconhecimento docente por unidade e segmento (Heavenly).">
+<meta name="theme-color" content="#1f3a5f">
+<style>
+/* Identidade visual herdada do painel original (variáveis, cartões, tema claro/escuro) */
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2433;--mut:#667085;--line:#e4e0d6;--acc:#1f3a5f;--ok:#1f7a4d;--ad:#9a7b12;--at:#b42318;--okb:#e4f3ea;--adb:#faf1d2;--atb:#fde7e4;--c1:#2f6db5;--c2:#c9731a;--c3:#7a4fb0;--gold:#c9a227;--silver:#8a94a3;--bronze:#b0703a}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#12161d;--card:#1a2029;--ink:#e8ebf0;--mut:#98a2b3;--line:#2a3340;--acc:#9bb8e0;--ok:#5fd09a;--ad:#e2c25a;--at:#ff8a7d;--okb:#163226;--adb:#352d10;--atb:#3a1c19;--c1:#6ea6ee;--c2:#f0a24d;--c3:#b794e8}}
+:root[data-theme=dark]{--bg:#12161d;--card:#1a2029;--ink:#e8ebf0;--mut:#98a2b3;--line:#2a3340;--acc:#9bb8e0;--ok:#5fd09a;--ad:#e2c25a;--at:#ff8a7d;--okb:#163226;--adb:#352d10;--atb:#3a1c19;--c1:#6ea6ee;--c2:#f0a24d;--c3:#b794e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header img{height:34px;background:#1f3a5f;padding:4px 8px;border-radius:8px}h1{font-size:16px;margin:0}
+.tag{background:var(--adb);color:var(--ad);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700}.sp{flex:1}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{border-color:var(--acc)}button.on{background:var(--acc);color:var(--card);border-color:var(--acc)}
+button.q{padding:1px 8px;font-size:12px;border-radius:99px;color:var(--acc);font-weight:700}
+nav.main{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:51px;z-index:4;overflow-x:auto}
+nav.main button{white-space:nowrap}
+main{max-width:1240px;margin:0 auto;padding:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.box h2{font-size:15px;margin:0 0 6px}.box h3{font-size:14px;margin:12px 0 4px}.box ul{margin:6px 0 0;padding-left:18px}.box li{margin:3px 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.bar b{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:14px}.kpis div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px}.kpis b{font-size:22px;display:block}.kpis span{font-size:12px;color:var(--mut)}
+.chip{font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:99px;padding:1px 8px;white-space:nowrap;display:inline-block}
+.chip.ok{background:var(--okb);color:var(--ok);border-color:transparent}.chip.ad{background:var(--adb);color:var(--ad);border-color:transparent}.chip.at{background:var(--atb);color:var(--at);border-color:transparent}
+.at{background:var(--atb);color:var(--at)}.ad{background:var(--adb);color:var(--ad)}.ok{background:var(--okb);color:var(--ok)}.na{color:var(--mut);font-weight:400}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.pc h3{margin:0;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pc .rule{font-size:11.5px;color:var(--mut)}
+.slot{display:grid;grid-template-columns:28px 1fr 56px;gap:2px 8px;align-items:center;padding:5px 0;border-top:1px solid var(--line)}
+.slot .md{font-size:20px;grid-column:1;grid-row:1/3}.slot .nm{grid-column:2;grid-row:1;min-width:0;overflow-wrap:anywhere;background:none;border:0;padding:0;text-align:left;font-weight:600;color:var(--ink);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.slot .sc{font-weight:700;text-align:right;padding:1px 4px;border-radius:5px;grid-row:1/3;grid-column:3}
+.slot .tr{height:8px;background:var(--line);border-radius:4px;position:relative;grid-column:2;grid-row:2}.slot .tr i{display:block;height:100%;border-radius:4px;background:var(--acc)}.slot .tr u{position:absolute;left:80%;top:-3px;bottom:-3px;border-left:1.5px dashed var(--mut);opacity:.7}
+.slot.g .md{filter:none}.slot.out .nm{color:var(--mut)}.slot small{grid-column:2;grid-row:3;color:var(--mut);font-size:11px}
+.empty{color:var(--mut);font-size:13px;padding:8px 0;border-top:1px solid var(--line)}
+.foot{font-size:11.5px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}td.n,th.n{text-align:right;white-space:nowrap}
+.wrap{overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:14px}
+th{position:sticky;top:0;background:var(--card);font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.03em}
+tr.inel td{color:var(--mut)}
+.nm-btn{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--acc);cursor:pointer;text-align:left;text-decoration:underline dotted;text-underline-offset:3px}
+.sim-ban{background:var(--at);color:#fff;border-radius:10px;padding:8px 14px;font-weight:700;margin-bottom:12px}
+.warn{border-left:4px solid var(--ad);background:var(--adb);color:var(--ink);padding:8px 12px;border-radius:8px;font-size:13px;margin:8px 0}
+.note{border-left:4px solid var(--c1);background:color-mix(in srgb,var(--c1) 10%,transparent);padding:8px 12px;border-radius:8px;font-size:13px;margin:8px 0}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:8px 0}.stat div{border:1px solid var(--line);border-radius:10px;padding:6px 10px}.stat b{font-size:18px;display:block}.stat span{font-size:11.5px;color:var(--mut)}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;align-items:flex-start;justify-content:center;overflow:auto;padding:16px}
+#modal.open{display:flex}.mb{background:var(--card);color:var(--ink);border-radius:12px;max-width:980px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.mt{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);border-radius:12px 12px 0 0;z-index:2}.mt h2{margin:0;font-size:16px}
+.mc{padding:12px 16px 18px}
+.step{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0}.step .hd{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.step .hd b{font-size:14px}.step .val{margin-left:auto;font-size:18px;font-weight:700}
+.step code,.fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:color-mix(in srgb,var(--acc) 8%,transparent);padding:1px 6px;border-radius:5px}
+.exp{display:none;margin-top:6px;font-size:13px;color:var(--mut);border-top:1px dashed var(--line);padding-top:6px}.exp.open{display:block}
+.chk{display:grid;grid-template-columns:22px 1fr auto;gap:6px;padding:4px 0;border-bottom:1px solid var(--line);font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:760px){.two{grid-template-columns:1fr}}
+details{margin:6px 0}summary{cursor:pointer;font-weight:600}
+.params{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}.params label{display:block;font-size:12.5px;color:var(--mut)}.params input[type=number]{width:100%;font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}.params .chg input{border-color:var(--at)}
+.params small{display:block;font-size:11px}
+input[type=search],select{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+iframe.orig{width:100%;height:78vh;border:1px solid var(--line);border-radius:12px;background:#fff}
+.diffup{color:var(--ok)}.diffdn{color:var(--at)}
+#gate{max-width:560px;margin:60px auto}
+@media(max-width:600px){nav.main{position:static}main{padding:10px}header img{height:28px}.slot{grid-template-columns:24px 1fr 50px}}
+@media print{header,nav.main,.bar{display:none}}
+/* demitidos fora do quadro */
+.dem{font-size:12px;border-top:1px dashed var(--at);padding-top:6px;color:var(--mut);line-height:1.6}
+tr.dem-row td{color:var(--mut);background:color-mix(in srgb,var(--at) 5%,transparent)}
+tr.dem-row .nm-btn{color:var(--mut)}
+/* radar */
+.rleg{display:grid;gap:6px;margin:6px 0;font-size:12.5px;color:var(--mut)}.rleg>div{display:flex;gap:8px;align-items:flex-start}.rleg svg{flex:none;margin-top:3px}
+.rtab{width:100%;margin-top:6px;font-size:12.5px}.rtab th{position:static}
+/* botões de apoio na ficha */
+.acoes{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.acoes .q{padding:8px 14px;font-weight:600;border:1px solid var(--line);border-radius:10px}
+.acoes .fb{background:color-mix(in srgb,var(--c1) 10%,var(--card));color:var(--c1)}.acoes .pdi{background:color-mix(in srgb,var(--c2) 12%,var(--card));color:var(--c2)}
+.barra{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+/* documentos de feedback e PDI */
+.acao-doc h2{margin:0 0 2px}.acao-doc h3{margin:18px 0 6px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.ed{border-radius:4px;outline:1px dashed color-mix(in srgb,var(--mut) 55%,transparent);outline-offset:2px;padding:0 2px}.ed:hover,.ed:focus{background:color-mix(in srgb,var(--c1) 8%,transparent);outline-color:var(--c1)}
+.ed.block{display:block;padding:6px 8px;margin:4px 0;line-height:1.55}
+.card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}.card.warnc{border-left:4px solid var(--c2)}
+.two2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.smart{border:1px solid var(--c1);border-radius:12px;padding:10px 12px;margin:10px 0;background:color-mix(in srgb,var(--c1) 6%,var(--card))}
+.sm5{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:8px}.sm5>div{display:flex;flex-direction:column;gap:2px}.sm5 span{width:26px;height:26px;border-radius:50%;background:var(--c1);color:#fff;display:grid;place-items:center;font-weight:700}.sm5 small{color:var(--mut);font-size:12px;line-height:1.35}
+.meta{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:14px 0;break-inside:avoid}
+.mh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.badge{background:var(--c2);color:#fff;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700}
+.smrow{display:flex;gap:10px;align-items:flex-start;margin:6px 0}.smrow .k{flex:none;width:26px;height:26px;border-radius:6px;background:var(--c1);color:#fff;display:grid;place-items:center;font-weight:800;margin-top:2px}.smrow>div{flex:1;min-width:0}
+.chkS{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:12.5px;color:var(--mut)}.chkS label{display:flex;gap:4px;align-items:center}
+.rtab.acao td .ed{display:block}
+.assin{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+@media print{
+  body.print-modal #shell,body.print-modal #gate,body.print-modal header,body.print-modal nav{display:none!important}
+  body.print-modal #modal{position:static!important;inset:auto!important;background:#fff!important;overflow:visible!important;display:block!important;height:auto!important}
+  body.print-modal #modal .mb{box-shadow:none!important;max-width:none!important;max-height:none!important;border:0!important;overflow:visible!important}
+  body.print-modal #modal .mt,body.print-modal .noprint{display:none!important}
+  body.print-modal .ed{outline:none!important}
+  body.print-modal{background:#fff!important;color:#000!important}
+}
+.box h2 .chip,.box h3 .chip{white-space:normal;display:inline-block;margin-top:4px;max-width:100%}
+
+/* =====================================================================
+   v2 · Redesenho UX (mantém a identidade e a paleta do painel de NPS)
+   ===================================================================== */
+:root{--bg:#f4f1ea;--card:#fff;--ink:#1b2335;--mut:#5d6a7e;--line:#e3ded1;--acc:#1f3a5f;--acc2:#2b4f7e;--ok:#17744a;--okb:#e1f3e8;--ad:#8a6a06;--adb:#fbf0cc;--at:#b42318;--atb:#fde6e2;--c1:#2f6db5;--c2:#c9731a;--c3:#7a4fb0;--c4:#c2456f;--c5:#1a7f6e;--gold:#d4a017;--goldb:#fdf3d0;--silver:#7d8797;--bronze:#b26a2e;--sh:0 1px 2px rgba(31,58,95,.06),0 6px 18px rgba(31,58,95,.07);--r:16px}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f141c;--card:#18202b;--ink:#e9edf3;--mut:#9aa6b8;--line:#2a3443;--acc:#a9c4ea;--acc2:#1f3a5f;--ok:#5fd09a;--okb:#14301f;--ad:#e6c65e;--adb:#33290d;--at:#ff8f82;--atb:#3b1b18;--c1:#6ea6ee;--c2:#f0a24d;--c3:#b794e8;--c4:#f07aa0;--c5:#4fd0b8;--gold:#f0c24b;--goldb:#33290d;--sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25)}}
+:root[data-theme=dark]{--bg:#0f141c;--card:#18202b;--ink:#e9edf3;--mut:#9aa6b8;--line:#2a3443;--acc:#a9c4ea;--acc2:#1f3a5f;--ok:#5fd09a;--okb:#14301f;--ad:#e6c65e;--adb:#33290d;--at:#ff8f82;--atb:#3b1b18;--c1:#6ea6ee;--c2:#f0a24d;--c3:#b794e8;--c4:#f07aa0;--c5:#4fd0b8;--gold:#f0c24b;--goldb:#33290d;--sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25)}
+body{font:15px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.01em}
+.ic{width:1.15em;height:1.15em;flex:none;vertical-align:-.2em;stroke:currentColor}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--c1) 55%,transparent);outline-offset:2px}
+button,.btn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;font-weight:600;transition:background .15s,border-color .15s,transform .05s}
+button:active{transform:translateY(1px)}
+
+/* cabeçalho */
+header{background:linear-gradient(120deg,#16294a 0%,#1f3a5f 55%,#2b4f7e 100%);border-bottom:0;padding:10px 20px;color:#fff;box-shadow:0 2px 12px rgba(15,30,60,.25);position:sticky;top:0;z-index:20}
+header .hb{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header img{height:38px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:4px 10px;border-radius:12px}
+.ht{display:flex;flex-direction:column;line-height:1.15}.ht h1{font-size:18px;color:#fff;margin:0;font-weight:800}.ht span{font-size:12px;color:#c9d8ee}
+header .tag{background:#ffc93c;color:#2a2200;font-size:12px;padding:3px 12px;font-weight:800;border-radius:99px}
+.hbtn{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.3)!important;color:#fff!important;padding:7px 12px}
+.hbtn:hover{background:rgba(255,255,255,.22)!important}
+
+/* navegação */
+nav.main{top:60px;z-index:15;padding:0 16px;gap:2px;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(31,58,95,.05)}
+nav.main button{border:0;border-radius:0;background:none;padding:13px 14px;color:var(--mut);border-bottom:3px solid transparent;font-weight:700}
+nav.main button:hover{color:var(--acc);background:color-mix(in srgb,var(--acc) 6%,transparent)}
+nav.main button.on{background:none;color:var(--acc);border-bottom-color:var(--gold)}
+nav.main button.on .ic{color:var(--gold)}
+main{max-width:1280px;padding:22px 20px 40px}
+
+/* títulos de tela */
+.vt{display:flex;gap:14px;align-items:center;margin:26px 0 14px}
+.vti{width:44px;height:44px;border-radius:14px;background:color-mix(in srgb,var(--c1) 14%,var(--card));color:var(--c1);display:grid;place-items:center;flex:none}.vti .ic{width:24px;height:24px}
+.vt h2{font-size:21px;margin:0;color:var(--acc)}.vt p{margin:2px 0 0;color:var(--mut);font-size:13.5px}
+
+/* hero + KPIs */
+.hero{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);padding:20px 22px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--gold),var(--c2))}
+.hero-t{display:flex;gap:14px;align-items:flex-start}
+.hero-i{width:50px;height:50px;border-radius:16px;background:linear-gradient(135deg,#ffd666,#e8a317);color:#3a2a00;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(212,160,23,.35)}.hero-i .ic{width:28px;height:28px}
+.hero h2{margin:0 0 4px;font-size:22px;color:var(--acc)}.hero p{margin:0;color:var(--mut);font-size:14px;max-width:900px}.hero p b{color:var(--ink)}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:16px 0 4px}
+.kpis .kp{display:flex;gap:12px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kp .ki{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}.kp .ki .ic{width:22px;height:22px}
+.kp b{font-size:26px;line-height:1;display:block;color:var(--ink)}.kp span{font-size:12.5px;color:var(--mut)}.kp small{display:block;font-size:11.5px;color:var(--mut);opacity:.9}
+.kp.t-blue .ki{background:color-mix(in srgb,var(--c1) 16%,var(--card));color:var(--c1)}
+.kp.t-green .ki{background:var(--okb);color:var(--ok)}
+.kp.t-gold .ki{background:var(--goldb);color:var(--gold)}
+.kp.t-red .ki{background:var(--atb);color:var(--at)}
+.kpis div.kp b{display:block;font-size:26px}
+
+/* regra de desligados */
+.swr{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid}
+.swr.on{background:color-mix(in srgb,var(--c1) 8%,var(--card));border-color:color-mix(in srgb,var(--c1) 30%,var(--line))}
+.swr.off{background:var(--adb);border-color:color-mix(in srgb,var(--ad) 40%,var(--line))}
+.swi{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--card);color:var(--c1);flex:none}.swr.off .swi{color:var(--ad)}
+.swt{flex:1;min-width:240px;font-size:13px;color:var(--mut)}.swt b{display:block;color:var(--ink);font-size:14px}
+
+/* destaques */
+.hl4{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:18px}
+.hl{background:linear-gradient(160deg,var(--goldb),var(--card) 70%);border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));border-radius:16px;padding:14px 16px;box-shadow:var(--sh)}
+.hl-h{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--acc);flex-wrap:wrap}.hl-h em{font-style:normal;font-weight:600;font-size:12px;color:var(--mut);margin-left:auto;display:flex;align-items:center;gap:4px}
+.hl-b{display:flex;gap:10px;align-items:center;margin-top:10px}
+.hl-b .nm-btn{flex:1;font-size:15px;font-weight:800;text-decoration:none;color:var(--ink)}.hl-b .nm-btn:hover{text-decoration:underline}
+.hl .foot{margin-top:6px;display:flex;gap:4px;align-items:center}
+
+/* seção de grupo */
+.box{border-radius:var(--r);box-shadow:var(--sh)}
+.box.grp{padding:18px 18px 8px;margin-bottom:20px}
+.gh{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.gi{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;display:grid;place-items:center;flex:none}.gi .ic{width:25px;height:25px}
+:root[data-theme=dark] .gi{color:#fff}
+.gt h2{font-size:19px;margin:0;color:var(--acc)}.gs{display:flex;gap:5px;align-items:center;color:var(--mut);font-size:13px;font-weight:700}
+.gchips{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.chip{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--mut) 10%,var(--card));color:var(--mut);border:0}
+.chip .ic{width:13px;height:13px}
+.chip.ok{background:var(--okb);color:var(--ok)}.chip.at{background:var(--atb);color:var(--at)}.chip.ad{background:var(--adb);color:var(--ad)}
+.chip.bl{background:color-mix(in srgb,var(--c1) 13%,var(--card));color:var(--c1)}
+.box h2 .chip,.box h3 .chip{margin-top:0}
+
+/* cartões de pódio */
+.grid{grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-bottom:12px}
+.grid.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.pc{--cc:var(--c1);--ccb:color-mix(in srgb,var(--c1) 12%,var(--card));position:relative;border-radius:16px;padding:14px 16px 12px;gap:8px;border-top:4px solid var(--cc);box-shadow:var(--sh)}
+.pc.cat-gold{--cc:var(--gold);--ccb:var(--goldb)}.pc.cat-pink{--cc:var(--c4);--ccb:color-mix(in srgb,var(--c4) 13%,var(--card))}.pc.cat-blue{--cc:var(--c1);--ccb:color-mix(in srgb,var(--c1) 13%,var(--card))}.pc.cat-green{--cc:var(--c5);--ccb:color-mix(in srgb,var(--c5) 13%,var(--card))}.pc.cat-purple{--cc:var(--c3);--ccb:color-mix(in srgb,var(--c3) 13%,var(--card))}
+.pc h3{display:flex;align-items:center;gap:10px;justify-content:flex-start;font-size:15.5px}
+.pc h3 .ci{width:34px;height:34px;border-radius:11px;background:var(--ccb);color:var(--cc);display:grid;place-items:center;flex:none}.pc h3 .ci .ic{width:19px;height:19px}
+.pc h3 .ct{flex:1;font-weight:800;line-height:1.2}
+.pc .rule{font-size:12px}
+.slot{grid-template-columns:34px 1fr 62px;gap:3px 10px;padding:9px 0;border-top:1px solid var(--line)}
+.rk{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;grid-column:1;grid-row:1/3;background:color-mix(in srgb,var(--mut) 14%,var(--card));color:var(--mut)}
+.rk .ic{width:17px;height:17px}
+.slot.p1 .rk,.rk.big{background:linear-gradient(135deg,#ffd666,#e0a010);color:#3a2a00;box-shadow:0 2px 6px rgba(212,160,23,.4)}
+.slot.p2 .rk{background:linear-gradient(135deg,#e6eaf0,#a9b3c2);color:#2d3748}
+.slot.p3 .rk{background:linear-gradient(135deg,#f0c9a0,#c27a3c);color:#3a1f08}
+.rk.big{width:36px;height:36px}
+.slot .nm{font-weight:700;text-decoration:none;font-size:14.5px;line-height:1.25}.slot .nm:hover{text-decoration:underline;color:var(--acc)}
+.slot .sc,.sc{font-weight:800;font-size:15px;border-radius:8px;padding:2px 6px}
+.slot .tr{height:8px;background:color-mix(in srgb,var(--mut) 16%,var(--card));border-radius:5px}
+.slot .tr i{background:linear-gradient(90deg,var(--cc),color-mix(in srgb,var(--cc) 65%,#fff))}
+.slot .tr u{left:85%;border-left:1.5px dashed var(--mut)}
+.slot small{display:flex;gap:4px;align-items:center;color:var(--ad);font-weight:700}.slot small .ic{width:12px;height:12px}
+.pf{padding-top:4px}
+button.q{border-radius:99px;padding:5px 12px;font-size:12.5px;color:var(--acc);background:color-mix(in srgb,var(--acc) 7%,var(--card));border-color:transparent}
+button.q:hover{background:color-mix(in srgb,var(--acc) 14%,var(--card))}
+.empty{display:flex;gap:6px;align-items:center;color:var(--mut)}
+.dem{border-top:1px dashed var(--at);border-radius:0}
+.dem .chip{margin-right:4px}
+
+/* pontuação (≥85 consolidado · 80–84,9 atenção · <80 prioridade) */
+.ok{background:var(--okb);color:var(--ok)}.ad{background:var(--adb);color:var(--ad)}.at{background:var(--atb);color:var(--at)}
+.pill{display:inline-block;min-width:54px;text-align:center;padding:2px 8px;border-radius:99px;font-weight:800}
+
+/* seletor segmentado */
+.seg-c{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.seg-c button{padding:9px 16px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+.seg-c button.on{background:var(--acc);color:var(--card);border-color:var(--acc);box-shadow:0 3px 10px rgba(31,58,95,.25)}
+:root[data-theme=dark] .seg-c button.on{color:#0f141c}
+.seg-c.cats button .ic{color:var(--cc)}
+.cb-gold{--cc:var(--gold)}.cb-pink{--cc:var(--c4)}.cb-blue{--cc:var(--c1)}.cb-green{--cc:var(--c5)}.cb-purple{--cc:var(--c3)}
+.seg-c.cats button.on{background:var(--cc);border-color:var(--cc);color:#fff}.seg-c.cats button.on .ic{color:#fff}
+.seg-c.cats button.cb-gold.on{color:#3a2a00}.seg-c.cats button.cb-gold.on .ic{color:#3a2a00}
+.gcol-h{display:flex;gap:8px;align-items:center;margin:2px 4px 8px;color:var(--acc)}.gcol-h span{margin-left:auto;display:flex;gap:4px;align-items:center;font-size:12.5px;color:var(--mut);font-weight:700}
+
+/* tabelas */
+.wrap{border-radius:var(--r);box-shadow:var(--sh);margin-bottom:22px}
+th{background:color-mix(in srgb,var(--acc) 5%,var(--card));font-size:11.5px}
+tbody tr:hover td{background:color-mix(in srgb,var(--c1) 5%,transparent)}
+td .chip{margin-right:2px}
+
+/* quadro de honra */
+.honra{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.hn{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--sh)}
+.hn-h{display:flex;gap:12px;align-items:center}
+.hn-n{width:34px;height:34px;border-radius:50%;background:var(--acc);color:var(--card);display:grid;place-items:center;font-weight:800;flex:none}
+.hn-id{flex:1;min-width:0;display:flex;flex-direction:column}.hn-id .nm-btn{font-size:15.5px;text-decoration:none;color:var(--ink);font-weight:800}.hn-id span{display:flex;gap:4px;align-items:center;font-size:12px;color:var(--mut)}
+.meds{display:flex;gap:6px}
+.med{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:99px;font-size:13px}.med .ic{width:15px;height:15px}
+.med.m1{background:linear-gradient(135deg,#ffe28a,#f0b82f);color:#3a2a00}.med.m2{background:linear-gradient(135deg,#eef1f6,#bcc5d3);color:#2d3748}.med.m3{background:linear-gradient(135deg,#f7d9bb,#d49358);color:#3a1f08}.med.z{opacity:.35}
+.hn-c{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cc-gold{background:var(--goldb);color:var(--ad)}.cc-pink{background:color-mix(in srgb,var(--c4) 14%,var(--card));color:var(--c4)}.cc-blue{background:color-mix(in srgb,var(--c1) 14%,var(--card));color:var(--c1)}.cc-green{background:color-mix(in srgb,var(--c5) 14%,var(--card));color:var(--c5)}.cc-purple{background:color-mix(in srgb,var(--c3) 14%,var(--card));color:var(--c3)}
+
+/* avisos */
+.warn,.note{border-left:0;border-radius:12px;padding:10px 14px;margin:10px 0}
+.warn{background:var(--adb);color:var(--ink);border:1px solid color-mix(in srgb,var(--ad) 35%,var(--line))}.warn .ic{color:var(--ad);margin-top:3px}
+.note{background:color-mix(in srgb,var(--c1) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c1) 25%,var(--line))}.note .ic{color:var(--c1);margin-top:3px}
+.sim-ban{display:flex;gap:8px;align-items:center;border-radius:12px}
+.ck{display:inline-grid;place-items:center}.ck.y{color:var(--ok)}.ck.n{color:var(--at)}.ck.m{color:var(--mut)}
+.chk{grid-template-columns:26px 1fr auto;align-items:center}
+
+/* modal */
+#modal{background:rgba(12,22,40,.62);backdrop-filter:blur(3px);padding:24px 16px}
+.mb{border-radius:20px;overflow:hidden}
+.mt{background:linear-gradient(120deg,#16294a,#1f3a5f);color:#fff;border-radius:0;padding:14px 18px}.mt h2{color:#fff;font-size:17px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mt .chip{background:rgba(255,255,255,.18);color:#fff}
+.mt button.x{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff}
+.step{border-radius:14px;border-left:4px solid var(--c1)}
+.acoes .q{display:inline-flex}
+
+/* porta de dados */
+#gate{max-width:none;margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 10%,#2b4f7e 0,#16294a 55%,#0d1a30 100%)}
+.gate-c{background:var(--card);border-radius:24px;max-width:560px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.gate-i{width:64px;height:64px;border-radius:20px;margin:0 auto 12px;background:linear-gradient(135deg,#ffd666,#e8a317);color:#3a2a00;display:grid;place-items:center}.gate-i .ic{width:32px;height:32px}
+.gate-c h2{margin:0 0 8px;color:var(--acc)}.gate-c p{color:var(--mut);font-size:14px}
+.drop{display:block;border:2px dashed color-mix(in srgb,var(--c1) 50%,var(--line));border-radius:16px;padding:22px;cursor:pointer;color:var(--c1);font-weight:700;background:color-mix(in srgb,var(--c1) 5%,var(--card))}.drop.over,.drop:hover{background:color-mix(in srgb,var(--c1) 12%,var(--card))}.drop input{display:none}
+.pf2{text-align:center;color:var(--mut);font-size:12px;padding:18px 16px 28px}
+
+/* simulador */
+.params label{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.stat div{border-radius:12px;background:var(--bg)}
+
+@media(max-width:700px){
+  header{padding:8px 12px}.ht h1{font-size:16px}header .tag{display:none}
+  nav.main{top:56px;position:sticky;padding:0 6px}nav.main button{padding:11px 10px}nav.main button span{display:none}nav.main button.on span{display:inline}
+  main{padding:14px 12px 32px}.gchips{margin-left:0}.hero{padding:16px}.hero-t{flex-direction:column}
+  .honra{grid-template-columns:1fr}.grid,.grid.g2{grid-template-columns:1fr}
+}
+@media print{header,nav.main,.bar,.pf2{display:none}.box,.pc,.hn,.hero{box-shadow:none}}
+.kpis .kp>div{background:none;border:0;padding:0;border-radius:0}
+.hl-h{display:grid;grid-template-columns:auto 1fr;gap:2px 8px}.hl-h em{grid-column:2;margin:0}.hl-h span{align-self:center}
+
+.warn:has(>.ic),.note:has(>.ic){display:flex;gap:10px;align-items:flex-start}
+
+/* marca d'água da escola ao fundo (como no painel de NPS) */
+body::before{content:"";position:fixed;inset:60px 0 0 0;z-index:0;pointer-events:none;background:var(--logo) center 55%/min(520px,70vw) no-repeat;opacity:.06;filter:brightness(0)}
+:root[data-theme=dark] body::before{filter:brightness(0) invert(1);opacity:.05}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body::before{filter:brightness(0) invert(1);opacity:.05}}
+header,nav.main,main,.pf2{position:relative;z-index:1}header,nav.main{position:sticky}
+@media print{body::before{display:none}}
+
+/* cartões de indicador clicáveis + lista */
+button.kp{font:inherit;text-align:left;width:100%;cursor:pointer;position:relative;color:inherit}
+button.kp:hover{border-color:var(--c1);box-shadow:var(--sh);transform:translateY(-1px)}
+button.kp.on{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 8%,var(--card));box-shadow:0 0 0 2px color-mix(in srgb,var(--c1) 35%,transparent)}
+button.kp>div{flex:1}
+.kc{position:absolute;right:10px;top:8px;display:flex;gap:4px;align-items:center;font-size:11px;color:var(--mut);font-weight:700}.kc .ic{width:13px;height:13px}.kc em{font-style:normal}
+button.kp.on .kc{color:var(--c1)}
+.kl{margin-top:14px;border-top:1px dashed var(--line);padding-top:14px}
+.kl-h{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.kl-h h3{margin:0;font-size:17px;color:var(--acc)}.kl-h p{margin:2px 0 0;color:var(--mut);font-size:13px;max-width:880px}
+.kl .wrap{margin-bottom:0;max-height:560px;overflow:auto;box-shadow:none}
+
+</style></head><body>
+<div id="gate"><div class="gate-c">
+<div class="gate-i"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+<h2>Carregar os dados do painel</h2>
+<p>Os resultados individuais por regente são <b>nominativos</b> e não ficam no repositório público. Selecione o arquivo <code>dados.json</code> (ou coloque <code>data/dados.js</code> ao lado do <code>index.html</code>). O processamento acontece <b>no seu navegador</b>; nada é enviado a servidores.</p>
+<label id="drop" class="drop"><input type="file" id="file" accept=".json,application/json"><span>Escolher <code>dados.json</code> ou arrastar para cá</span></label>
+<p id="gerr" class="foot" style="color:var(--at)"></p></div></div>
+<div id="shell">
+<header><div class="hb"><img id="logo" alt="Heavenly"><div class="ht"><h1>Avaliação Docente</h1><span>Reconhecimento por segmento</span></div></div><span class="sp"></span><button data-act="theme" class="hbtn" aria-label="Alternar tema"></button></header>
+<nav class="main" aria-label="Seções do painel"></nav>
+<main id="app"></main>
+<footer class="pf2">Heavenly · Avaliação Docente · Painel A (aba 17) — pódio por unidade × segmento. Uso da diretoria.</footer></div>
+<div id="modal" role="dialog" aria-modal="true"></div>
+<script>
+window.LOGO="data:image/png;base64,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";
+
+</script>
+
+<script>
+window.TESTES=[{"teste":"T1a Sem autoavaliação => inelegível quando exigida","ok":true,"detalhe":"14 regentes sem autoavaliação"},{"teste":"T1b Sem exigir autoavaliação, perda2 = 0 para quem não tem","ok":true,"detalhe":""},{"teste":"T1c Exigir autoavaliação nunca ELEVA elegibilidade","ok":true,"detalhe":"40 → 46"},{"teste":"T2a <5 famílias => inelegível (A)","ok":true,"detalhe":"9 casos"},{"teste":"T2b <2 avaliadoras => inelegível","ok":true,"detalhe":"5 casos"},{"teste":"T2c Inelegível nunca aparece em ranking A","ok":true,"detalhe":""},{"teste":"T2d Inelegível nunca aparece em ranking B","ok":true,"detalhe":""},{"teste":"T3a K2–K4: mínimo = max(4; ⌈20%·alunos⌉)","ok":true,"detalhe":"19 linhas"},{"teste":"T3b Demais faixas: mínimo = 5","ok":true,"detalhe":""},{"teste":"T3c K2–K4 com 40 alunos exige 8","ok":true,"detalhe":""},{"teste":"T3d Bem-estar só em K2–K4","ok":true,"detalhe":""},{"teste":"T3e Aumentar % K2–K4 só reduz/mantém elegíveis em K2–K4","ok":true,"detalhe":""},{"teste":"T4a 1º < 80 => \"1º abaixo da nota mínima\" e ninguém reconhecido","ok":true,"detalhe":"1 categorias"},{"teste":"T4b 1º ≥ 80 => reconhecida","ok":true,"detalhe":""},{"teste":"T4c Piso 85 reconhece ≤ categorias que piso 80","ok":true,"detalhe":""},{"teste":"T5a 2º só se ≥80 e diferença ≤ 2","ok":true,"detalhe":"14 menções"},{"teste":"T5b Situação conforme Excel (coluna Situação)","ok":true,"detalhe":""},{"teste":"T5c Diferença 0 => Empate","ok":true,"detalhe":""},{"teste":"T6a Parâmetros da B não alteram resultados da A","ok":true,"detalhe":""},{"teste":"T6b Cálculo B não usa elegibilidade da A (mín. famílias B próprio)","ok":true,"detalhe":"há regentes com elegibilidade diferente em A e B"},{"teste":"T6c F por faixa difere do F do segmento (universos distintos)","ok":true,"detalhe":""},{"teste":"T6d Parâmetros herdados (pesos) afetam as duas","ok":true,"detalhe":""},{"teste":"T7 Determinismo (duas execuções iguais)","ok":true,"detalhe":""},{"teste":"T8 Inglês: só quem leciona inglês concorre","ok":true,"detalhe":""},{"teste":"T9 Categoria temática exige Final ≥ média do grupo","ok":true,"detalhe":""},{"teste":"T10a Há regentes demitidos marcados (des ≤ data de referência)","ok":true,"detalhe":"11 demitidos"},{"teste":"T10b Demitidos não aparecem no ranking/pódio da A","ok":true,"detalhe":""},{"teste":"T10c Médias do grupo iguais com e sem a regra","ok":true,"detalhe":""},{"teste":"T10d Notas finais inalteradas pela regra","ok":true,"detalhe":""},{"teste":"T10e Posições recalculadas sem demitidos (competição padrão, com empates)","ok":true,"detalhe":""},{"teste":"T10f Demitidos listados em foraQuadro com posição original","ok":true,"detalhe":""},{"teste":"T10g Sem a opção, resultado idêntico ao Excel (regra desligada por padrão)","ok":true,"detalhe":""},{"teste":"T11a Kinder 4 D AN: só Lorena (sem Marta Scarano nem Martha Guedes)","ok":true,"detalhe":"Lorena Eufrasio Cardoso"},{"teste":"T11b 2º Ano A AN: Thais Baumgartner (inglês) e Rejane (português); sem Bruna nem Luísa","ok":true,"detalhe":"Thais Baumgartner; Rejane Cristina dos Santos Serpa Canabarro"},{"teste":"T11c Kinder 3 C AN: Thais Nunes (sem Nathasha)","ok":true,"detalhe":"Thais Nunes da Costa Martins"},{"teste":"T11d Kinder 4 C AN: Olivia Luísa","ok":true,"detalhe":""},{"teste":"T11e Kinder 5 A AN: Gabriela dá inglês; sem Estefany","ok":true,"detalhe":"Gabriela Souza Neiva"},{"teste":"T11f 1º B AN: Andréa (inglês); 2º C AN e 3º A AN: Laisla (sem Larissa Costa)","ok":true,"detalhe":""},{"teste":"T11g 3º Ano B AN: Thais Baumgartner (inglês) e Carla (português); sem Bruna nem Luis Felipe","ok":true,"detalhe":"Thais Baumgartner; Carla Conceição Cavalcanti"},{"teste":"T11i 2º Ano B AN: Laisla (inglês), sem Bruna nem Luísa; Luis Felipe só no Lago Sul","ok":true,"detalhe":"Laisla Francielle Borges de Sousa; Rejane Cristina dos Santos Serpa Canabarro"},{"teste":"T11j 3º Ano C AN: só Nathasha (português) e Thais Nunes (inglês); sem Bruna, Laisla, Thais Baumgartner nem Carla","ok":true,"detalhe":"Thais Nunes da Costa Martins; Nathasha Karenina Zemuner Lemos"},{"teste":"T11k Luisa Matos Lopes (ativa desde 2021) é regente do Kinder 4 A LS e não se confunde com Luísa de Oliveira Rosa","ok":true,"detalhe":"Luisa Matos Lopes"},{"teste":"T11l Nathasha (ativa desde 2020) permanece nas listas","ok":true,"detalhe":""},{"teste":"T11h 4º Ano A AN: Katia (português); sem Rosane","ok":true,"detalhe":"Renne Nascimento Souza Rodrigues; Katia Regina França Faria e Souza Martins"},{"teste":"T12 Larissa Rosa Antunes e Amanda Rosa excluídas totalmente (turmas, A, B, painéis)","ok":true,"detalhe":""},{"teste":"T13 Nenhuma regente admitida depois de 01/06/2026 tem turma ou consta nas listas","ok":true,"detalhe":"admitidas após 01/06: Marta Guedes da Costa Scarano; Bruna Coelho de Miranda (ver lista de saídas)"},{"teste":"T14 Cada turma continua com ao menos 1 regente","ok":true,"detalhe":""},{"teste":"T15 Soma por turma (H,I,J) preservada nas linhas mantidas","ok":true,"detalhe":""},{"teste":"T16a Há afastadas marcadas (status Afastado, sem desligamento) — fora do quadro","ok":true,"detalhe":"Rosane Mesquita Pontes; Valentina Topali Torrealba"},{"teste":"T16b Afastadas não aparecem no pódio da A nem no reconhecimento da B","ok":true,"detalhe":""},{"teste":"T16c Notas e médias do grupo iguais com e sem a regra de afastadas","ok":true,"detalhe":""},{"teste":"T16d Sem a regra, ninguém é marcado como afastada/demitida","ok":true,"detalhe":""},{"teste":"T17 Recálculo independente (F, C ajustada, Base, Perdas, Final, elegibilidade) = motor, para todas as regentes","ok":true,"detalhe":"360 comparações"},{"teste":"T18 Média do grupo = média do Índice Final das elegíveis (inclui demitidas e afastadas)","ok":true,"detalhe":""}];
+</script>
+<script>
+/* Motor de cálculo — reproduz as fórmulas das abas 15, 16, 17 e 18 da planilha.
+ * Entrada: dados agregados (data.json) + parâmetros. Saída: índices por regente, elegibilidade,
+ * notas por categoria e tabelas de premiação das duas metodologias.
+ * Funciona no navegador (window.Engine) e no Node (module.exports). */
+(function (root) {
+  const NIL = null; // equivale a "" no Excel
+  const isNum = (v) => typeof v === "number" && isFinite(v);
+  const clamp = (v) => Math.max(0, Math.min(100, v));
+  const roundUp0 = (x) => Math.ceil(+x.toPrecision(15));
+  const excelRound1 = (x) => Math.round(x * 10 + (x >= 0 ? 1e-9 : -1e-9)) / 10;
+
+  const TEMAS = [
+    { id: "cuidado", nome: "Cuidado e Vínculo", famCols: ["K", "L"], coorKey: "Cuidado e Vínculo" },
+    { id: "comunic", nome: "Comunicação com a Família", famCols: ["M", "N"], coorKey: "Comunicação com a Família" },
+    { id: "ingles", nome: "Inglês", famCols: ["O", "P"], coorKey: "Inglês" },
+    { id: "desenv", nome: "Desenvolvimento e Aprendizagem", famCols: ["Q", "R"], coorKey: "Desenvolvimento e Aprendizagem" },
+  ];
+
+  function avg(arr) { const v = arr.filter(isNum); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : NIL; }
+
+  /* viés de cada avaliadora (aba 15, AG:AJ) */
+  function vieses(D) {
+    const gMean = D.gSum / D.gN;
+    const out = {};
+    D.avals.forEach((a, i) => { out[a] = D.avN[i] > 0 ? D.avSum[i] / D.avN[i] - gMean : NIL; });
+    return { gMean, porAvaliadora: out };
+  }
+
+  /* Aba 16 — índice por regente (unidade + segmento) */
+  function calc16(D, P, opts) {
+    const V = vieses(D);
+    const regs = D.reg16.map((r) => {
+      const rows = D.turmas.filter((t) => t.key === r.key);
+      const sum = (c) => rows.reduce((a, t) => a + (isNum(t[c]) ? t[c] : 0), 0);
+      const o = { un: r.un, seg: r.seg, regente: r.reg, key: r.key };
+      o.turmas = [...new Set(rows.map((t) => t.turma))].join(", ");
+      o.ingles = rows.some((t) => t.ing === "Sim") ? "Sim" : "Não";
+      o.nFam = sum("H");
+      o.fSomaItens = sum("I"); o.fItens = sum("J");
+      o.F = o.fItens > 0 ? o.fSomaItens / o.fItens : NIL;
+      const c = D.coor[r.key];
+      o.nCoor = c ? c.n : 0;
+      o.nAval = c ? D.avals.filter((a) => c.aval[a] > 0).length : 0;
+      o.Cbruto = c && c.n > 0 ? c.sum / c.n : NIL;
+      o.avalContrib = c ? D.avals.map((a) => ({ aval: a, n: c.aval[a], vies: V.porAvaliadora[a] })).filter((x) => x.n > 0) : [];
+      o.vies = c && c.n > 0 ? D.avals.reduce((a, n) => a + (c.aval[n] || 0) * (V.porAvaliadora[n] || 0), 0) / c.n : NIL;
+      o.Cadj = o.Cbruto === NIL ? NIL : clamp(o.Cbruto - P.ajuste * o.vies);
+      const au = D.auto[r.key];
+      o.nAuto = au ? au[1] : 0;
+      o.Auto = au && au[1] > 0 ? au[0] / au[1] : NIL;
+      o.temas = {};
+      TEMAS.forEach((t) => {
+        const ct = c ? c.tema[t.coorKey] : null;
+        const C = ct && ct[1] > 0 ? ct[0] / ct[1] : NIL;
+        const fs = sum(t.famCols[0]), fn = sum(t.famCols[1]);
+        const F = fn > 0 ? fs / fn : NIL;
+        o.temas[t.id] = { C, F, Fsoma: fs, Fn: fn, Csoma: ct ? ct[0] : 0, Cn: ct ? ct[1] : 0 };
+      });
+      core(o, P);
+      return o;
+    });
+    // elegibilidade, ranking e médias do grupo (unidade + segmento)
+    regs.forEach((o) => {
+      o.elig = o.nFam < P.minFam ? "Não — poucas famílias" : o.nAval < P.minAval ? "Não — poucas avaliadoras" : P.exigeAuto === 1 && o.nAuto === 0 ? "Não — sem autoavaliação" : "Sim";
+    });
+    grupoStats(regs, (o) => o.un + "|" + o.seg);
+    regs.forEach((o) => {
+      o.flags = {
+        geral: o.elig === "Sim" ? 1 : 0,
+        cuidado: flagTema(o, "cuidado", P), comunic: flagTema(o, "comunic", P),
+        ingles: o.ingles === "Sim" ? flagTema(o, "ingles", P) : 0, desenv: flagTema(o, "desenv", P),
+      };
+    });
+    marcaDemitidos(regs, D, opts, (o) => o.un + "|" + o.seg);
+    return { regs, vieses: V };
+  }
+
+  /* cálculos comuns de 16 e 18: base, gaps, perdas, índice final e nota por tema */
+  function core(o, P) {
+    o.Base = o.F === NIL || o.Cadj === NIL ? NIL : P.pesoC * o.Cadj + P.pesoF * o.F;
+    o.gap1 = o.Base === NIL ? NIL : Math.abs(o.Cadj - o.F);
+    o.perda1 = o.Base === NIL ? NIL : P.fat1 * Math.max(0, o.gap1 - P.tol1);
+    o.gap2 = o.Base === NIL || o.Auto === NIL ? NIL : Math.abs(o.Auto - o.Base);
+    o.perda2 = o.Base === NIL ? NIL : o.gap2 === NIL ? 0 : P.fat2 * Math.max(0, o.gap2 - P.tol2);
+    o.final = o.Base === NIL ? NIL : o.Base - o.perda1 - o.perda2;
+    Object.keys(o.temas).forEach((k) => {
+      const t = o.temas[k];
+      t.nota = t.C === NIL || t.F === NIL ? NIL : P.pesoC * clamp(t.C - P.ajuste * o.vies) + P.pesoF * t.F;
+      t.Cadj = t.C === NIL ? NIL : clamp(t.C - P.ajuste * o.vies);
+    });
+  }
+
+  /* Regra de negócio (fora da planilha): quem já foi desligado não concorre ao quadro. A nota continua
+   * valendo para a média do grupo (calculada ANTES desta etapa, para não alterar o que já foi apurado);
+   * só a posição, o pódio e o reconhecimento passam a ignorar o desligado. Ligada por opts.excluiDemitidos. */
+  function marcaDemitidos(regs, D, opts, keyFn) {
+    const on = !!(opts && opts.excluiDemitidos), ref = (D && D.refData) || "9999-12-31";
+    regs.forEach((o) => {
+      const v = D && D.vinc ? D.vinc[o.key] : null;
+      o.vinculo = v || null;
+      o.demitido = !!(on && v && v.des && v.des <= ref);
+      // afastado(a): status "Afastado" na base funcional e sem desligamento (regra ligada por opts.excluiAfastados)
+      o.afastado = !!(opts && opts.excluiAfastados && v && !v.des && /^afastad/i.test(v.status || ""));
+      o.fora = o.demitido || o.afastado;
+      o.tipoFora = o.demitido ? "demitido" : o.afastado ? "afastado" : null;
+      o.desligamento = o.demitido ? v.des : null;
+      o.motivoDeslig = o.demitido ? v.motivo || null : null;
+    });
+    if (!(on || (opts && opts.excluiAfastados))) return;
+    const g = {};
+    regs.forEach((o) => { (g[keyFn(o)] = g[keyFn(o)] || []).push(o); });
+    Object.keys(g).forEach((k) => {
+      const fin = g[k].filter((o) => o.elig === "Sim" && !o.fora).map((o) => o.final).filter(isNum);
+      g[k].forEach((o) => {
+        o.posComDemitidos = o.pos;
+        o.pos = o.elig === "Sim" && !o.fora && isNum(o.final) ? fin.filter((u) => u > o.final).length + 1 : NIL;
+      });
+    });
+  }
+
+  function grupoStats(regs, keyFn) {
+    const g = {};
+    regs.forEach((o) => { (g[keyFn(o)] = g[keyFn(o)] || []).push(o); });
+    Object.keys(g).forEach((k) => {
+      const el = g[k].filter((o) => o.elig === "Sim");
+      const fin = el.map((o) => o.final).filter(isNum);
+      const mediaFinal = avg(fin), mediaC = avg(el.map((o) => o.Cadj)), mediaF = avg(el.map((o) => o.F));
+      g[k].forEach((o) => {
+        o.mediaFinal = mediaFinal; o.mediaC = mediaC; o.mediaF = mediaF;
+        o.pos = o.elig === "Sim" && isNum(o.final) ? fin.filter((u) => u > o.final).length + 1 : NIL;
+      });
+    });
+  }
+
+  function flagTema(o, tema, P) {
+    const nota = o.temas[tema].nota;
+    return o.elig === "Sim" && nota !== NIL && (P.piso === 0 || o.final >= o.mediaFinal) ? 1 : 0;
+  }
+
+  /* Aba 17 — tabelas de premiação por unidade, segmento e categoria */
+  const CATS17 = [
+    { id: 1, key: "geral", nome: "Destaque Geral" },
+    { id: 4, key: "cuidado", nome: "Cuidado e Vínculo" },
+    { id: 5, key: "comunic", nome: "Comunicação com a Família" },
+    { id: 6, key: "ingles", nome: "Inglês" },
+    { id: 7, key: "desenv", nome: "Desenvolvimento e Aprendizagem" },
+  ];
+  const score = (o, key) => (key === "geral" ? o.final : o.temas[key].nota);
+
+  function tabela17(regs) {
+    const grupos = [];
+    const seen = new Set();
+    regs.forEach((o) => { const k = o.un + "|" + o.seg; if (!seen.has(k)) { seen.add(k); grupos.push([o.un, o.seg]); } });
+    const linhas = [];
+    ["Asa Norte", "Kinder"].forEach((un) =>
+      ["Educação Infantil", "Ensino Fundamental I"].forEach((seg) => {
+        CATS17.forEach((cat) => {
+          const todos = regs.filter((o) => o.un === un && o.seg === seg && o.flags[cat.key] === 1);
+          const ordT = todos.map((o, i) => ({ o, s: score(o, cat.key), i })).sort((a, b) => b.s - a.s || a.i - b.i);
+          const cand = todos.filter((o) => !o.fora);
+          const ord = cand.map((o, i) => ({ o, s: score(o, cat.key), i })).sort((a, b) => b.s - a.s || a.i - b.i);
+          const foraQuadro = ordT.map((x, j) => ({ x, j })).filter(({ x }) => x.o.fora).map(({ x, j }) => ({ regente: x.o.regente, key: x.o.key, tipo: x.o.tipoFora, nota: x.s, des: x.o.desligamento, motivo: x.o.motivoDeslig, posOriginal: j + 1 }));
+          linhas.push({ un, seg, cat: cat.nome, catKey: cat.key, ranking: ord.map((x) => ({ regente: x.o.regente, key: x.o.key, nota: x.s })), n: cand.length, foraQuadro });
+        });
+      }));
+    return linhas;
+  }
+
+  /* Aba 18 — recalculo por faixa */
+  function calc18(D, P, P18, r16, opts) {
+    const byKey = {};
+    r16.regs.forEach((o) => { if (!byKey[o.key]) byKey[o.key] = o; });
+    const regs = D.reg18.map((r) => {
+      const base = byKey[r.key] || {};
+      const rows = D.turmas.filter((t) => t.key === r.key && t.faixa === r.faixa);
+      const sum = (c) => rows.reduce((a, t) => a + (isNum(t[c]) ? t[c] : 0), 0);
+      const o = { un: r.un, faixa: r.faixa, regente: r.reg, key: r.key };
+      o.turmas = [...new Set(rows.map((t) => t.turma))].join(", ");
+      o.ingles = rows.some((t) => t.ing === "Sim") ? "Sim" : "Não";
+      o.alunos = sum("U") * 0 + sum("alunos");
+      o.nFam = sum("H");
+      o.minExigido = r.faixa === "K2–K4" ? Math.max(P18.minK, roundUp0(P18.pct * o.alunos)) : P18.minOutros;
+      o.fSomaItens = sum("I"); o.fItens = sum("J");
+      o.F = o.fItens > 0 ? o.fSomaItens / o.fItens : NIL;
+      o.nAval = base.nAval; o.Cadj = base.Cadj === undefined ? NIL : base.Cadj; o.vies = base.vies; o.Auto = base.Auto === undefined ? NIL : base.Auto; o.nAuto = base.nAuto;
+      o.Cbruto = base.Cbruto; o.nCoor = base.nCoor; o.avalContrib = base.avalContrib || [];
+      const f = (a, b) => { const n = sum(b); return n > 0 ? sum(a) / n : NIL; };
+      const cb = (k) => { const c = D.coor[r.key]; const ct = c ? c.tema[k] : null; return ct && ct[1] > 0 ? ct[0] / ct[1] : NIL; };
+      o.temas = {
+        cuidado: { F: f("U", "V"), C: cb("Cuidado e Vínculo"), Fsoma: sum("U"), Fn: sum("V") },
+        bemestar: { F: f("W", "X"), C: cb("Bem-estar"), Fsoma: sum("W"), Fn: sum("X") },
+        comunic: { F: f("M", "N"), C: cb("Comunicação com a Família"), Fsoma: sum("M"), Fn: sum("N") },
+        ingles: { F: f("O", "P"), C: cb("Inglês"), Fsoma: sum("O"), Fn: sum("P") },
+        desenv: { F: f("Q", "R"), C: cb("Desenvolvimento e Aprendizagem"), Fsoma: sum("Q"), Fn: sum("R") },
+      };
+      core(o, P);
+      o.elig = o.nFam < o.minExigido ? "Não — poucas famílias" : o.nAval < P.minAval ? "Não — poucas avaliadoras" : P.exigeAuto === 1 && o.nAuto === 0 ? "Não — sem autoavaliação" : "Sim";
+      return o;
+    });
+    grupoStats(regs, (o) => o.un + "|" + o.faixa);
+    regs.forEach((o) => {
+      const ft = (k) => flagTema(o, k, P);
+      o.flags = { geral: o.elig === "Sim" ? 1 : 0, cuidado: ft("cuidado"), bemestar: o.faixa === "K2–K4" ? ft("bemestar") : 0, comunic: ft("comunic"), ingles: o.ingles === "Sim" ? ft("ingles") : 0, desenv: ft("desenv") };
+    });
+    marcaDemitidos(regs, D, opts, (o) => o.un + "|" + o.faixa);
+    return regs;
+  }
+
+  const CATS18 = [
+    { id: 1, key: "geral", nome: "Destaque Geral" },
+    { id: 4, key: "cuidado", nome: "Cuidado e Vínculo" },
+    { id: 5, key: "bemestar", nome: "Bem-estar" },
+    { id: 6, key: "comunic", nome: "Comunicação com a Família" },
+    { id: 7, key: "ingles", nome: "Inglês" },
+    { id: 8, key: "desenv", nome: "Desenvolvimento e Aprendizagem" },
+  ];
+  const sc18 = (o, key) => (key === "geral" ? o.final : o.temas[key].nota);
+
+  function tabela18(regs, P18) {
+    const linhas = [];
+    ["Asa Norte", "Kinder"].forEach((un) =>
+      ["K2–K4", "K5–1º", "2º–5º"].forEach((faixa) =>
+        CATS18.forEach((cat) => {
+          if (cat.key === "bemestar" && faixa !== "K2–K4") return;
+          const todos = regs.filter((o) => o.un === un && o.faixa === faixa && o.flags[cat.key] === 1);
+          const ordT = todos.map((o, i) => ({ o, s: sc18(o, cat.key), i })).sort((a, b) => b.s - a.s || a.i - b.i);
+          const cand = todos.filter((o) => !o.fora);
+          const ord = cand.map((o, i) => ({ o, s: sc18(o, cat.key), i })).sort((a, b) => b.s - a.s || a.i - b.i);
+          const foraQuadro = ordT.map((x, j) => ({ x, j })).filter(({ x }) => x.o.fora).map(({ x, j }) => ({ regente: x.o.regente, key: x.o.key, tipo: x.o.tipoFora, nota: x.s, des: x.o.desligamento, motivo: x.o.motivoDeslig, posOriginal: j + 1 }));
+          const l = { un, faixa, cat: cat.nome, catKey: cat.key, n: cand.length, foraQuadro, ranking: ord.map((x) => ({ regente: x.o.regente, key: x.o.key, nota: x.s })) };
+          const H = ord.length ? ord[0].s : NIL, J = ord.length > 1 ? ord[1].s : NIL;
+          l.nota1 = H; l.nota2 = J;
+          l.dif = H === NIL || J === NIL ? NIL : H - J;
+          l.reconhecida = H === NIL || H < P18.notaMin ? "—" : ord[0].o.regente;
+          l.segundo = l.reconhecida !== "—" && J !== NIL && l.dif !== NIL && J >= P18.notaMin && l.dif <= P18.dif ? ord[1].o.regente : "";
+          l.situacao = H === NIL ? "Sem elegíveis" : H < P18.notaMin ? "1º abaixo da nota mínima" : l.segundo === "" ? "Reconhecida" : excelRound1(l.dif) === 0 ? "Empate — reconhecer ambas" : "Reconhecida + 2º próximo";
+          linhas.push(l);
+        })));
+    return linhas;
+  }
+
+  function run(D, p17, p18, opts) {
+    const P = Object.assign({}, D.p17, p17 || {});
+    const P18 = Object.assign({}, D.p18, p18 || {});
+    const r16 = calc16(D, P, opts);
+    const t17 = tabela17(r16.regs);
+    const r18 = calc18(D, P, P18, r16, opts);
+    const t18 = tabela18(r18, P18);
+    return { P, P18, r16, t17, r18, t18, opts: opts || {} };
+  }
+
+  const api = { run, calc16, calc18, tabela17, tabela18, TEMAS, CATS17, CATS18, vieses };
+  if (typeof module !== "undefined" && module.exports) module.exports = api; else root.Engine = api;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+/* Conciliação: compara o motor com os valores calculados pelo Excel (guardados em D.cache). */
+(function (root) {
+  function reconcile(D, R, E) {
+
+let bad=0, checks=0; const issues=[]; const porAba={};
+const eq=(a,b,tol=1e-7)=>{ if(a===null||a===undefined||a==='') a=null; if(b===null||b===undefined||b==='') b=null;
+  if(a===null||b===null) return a===b; if(typeof a==='number'||typeof b==='number') return Math.abs(a-b)<tol; return a===b; };
+function cmp(tag,id,name,a,b){ checks++; porAba[tag]=porAba[tag]||{n:0,bad:0}; porAba[tag].n++; if(!eq(a,b)){ bad++; porAba[tag].bad++; if(issues.length<40) issues.push(`${tag} ${id} ${name}: motor=${a} excel=${b}`);} }
+// aba 16
+const c16=D.cache.c16; 
+R.r16.regs.forEach((o,i)=>{ const x=c16[i]; const id=o.regente+' ('+o.un+'/'+o.seg+')';
+  cmp('16',id,'nFam',o.nFam,x[6]); cmp('16',id,'F',o.F,x[7]); cmp('16',id,'nCoor',o.nCoor,x[8]); cmp('16',id,'nAval',o.nAval,x[9]);
+  cmp('16',id,'Cbruto',o.Cbruto,x[10]); cmp('16',id,'vies',o.vies,x[11]); cmp('16',id,'Cadj',o.Cadj,x[12]); cmp('16',id,'nAuto',o.nAuto,x[13]);
+  cmp('16',id,'Auto',o.Auto,x[14]); cmp('16',id,'Base',o.Base,x[15]); cmp('16',id,'gap1',o.gap1,x[16]); cmp('16',id,'perda1',o.perda1,x[17]);
+  cmp('16',id,'gap2',o.gap2,x[18]); cmp('16',id,'perda2',o.perda2,x[19]); cmp('16',id,'final',o.final,x[20]); cmp('16',id,'elig',o.elig,x[21]);
+  cmp('16',id,'pos',o.pos,x[22]); cmp('16',id,'mediaFinal',o.mediaFinal,x[23]); cmp('16',id,'mediaC',o.mediaC,x[24]); cmp('16',id,'mediaF',o.mediaF,x[25]);
+  const T=['cuidado','comunic','ingles','desenv'];
+  T.forEach((t,k)=>{ cmp('16',id,'C_'+t,o.temas[t].C,x[26+2*k]); cmp('16',id,'F_'+t,o.temas[t].F,x[27+2*k]); cmp('16',id,'nota_'+t,o.temas[t].nota,x[37+k]); });
+  cmp('16',id,'flagGeral',o.flags.geral,x[41]); T.forEach((t,k)=>cmp('16',id,'flag_'+t,o.flags[t],x[44+k]));
+});
+// aba 17 tabela
+const t17=D.cache.t17; let idx=0;
+// excel rows order: Asa Norte EI (5 cats), Asa Norte F1, Kinder EI, Kinder F1
+R.t17.forEach((l,i)=>{ const x=t17[i]; const id=l.un+'/'+l.seg+'/'+l.cat;
+  cmp('17',id,'cat',l.cat,x[3]); const rk=l.ranking;
+  cmp('17',id,'1º',rk[0]?rk[0].regente:'—',x[5]); cmp('17',id,'nota1',rk[0]?rk[0].nota:null,x[6]);
+  cmp('17',id,'2º',rk[1]?rk[1].regente:'—',x[7]); cmp('17',id,'nota2',rk[1]?rk[1].nota:null,x[8]);
+  cmp('17',id,'3º',rk[2]?rk[2].regente:'—',x[9]); cmp('17',id,'nota3',rk[2]?rk[2].nota:null,x[10]); cmp('17',id,'n',l.n,x[11]); });
+// aba 18 por regente
+const c18=D.cache.c18;
+R.r18.forEach((o,i)=>{ const x=c18[i]; const id=o.regente+' ('+o.un+'/'+o.faixa+')';
+  cmp('18',id,'alunos',o.alunos,x[6]); cmp('18',id,'nFam',o.nFam,x[7]); cmp('18',id,'min',o.minExigido,x[8]); cmp('18',id,'F',o.F,x[9]);
+  cmp('18',id,'nAval',o.nAval,x[10]); cmp('18',id,'Cadj',o.Cadj,x[11]); cmp('18',id,'vies',o.vies,x[12]); cmp('18',id,'Auto',o.Auto,x[13]);
+  cmp('18',id,'nAuto',o.nAuto,x[14]); cmp('18',id,'Base',o.Base,x[15]); cmp('18',id,'gap1',o.gap1,x[16]); cmp('18',id,'perda1',o.perda1,x[17]);
+  cmp('18',id,'gap2',o.gap2,x[18]); cmp('18',id,'perda2',o.perda2,x[19]); cmp('18',id,'final',o.final,x[20]); cmp('18',id,'elig',o.elig,x[21]);
+  cmp('18',id,'pos',o.pos,x[22]); cmp('18',id,'mediaFinal',o.mediaFinal,x[23]); cmp('18',id,'mediaC',o.mediaC,x[24]); cmp('18',id,'mediaF',o.mediaF,x[25]);
+  const T=['cuidado','bemestar','comunic','ingles','desenv'];
+  T.forEach((t,k)=>{ cmp('18',id,'F_'+t,o.temas[t].F,x[26+k]); cmp('18',id,'C_'+t,o.temas[t].C,x[31+k]); cmp('18',id,'nota_'+t,o.temas[t].nota,x[39+k]); });
+  cmp('18',id,'flagGeral',o.flags.geral,x[44]); ['cuidado','bemestar','comunic','ingles','desenv'].forEach((t,k)=>cmp('18',id,'flag_'+t,o.flags[t],x[47+k]));
+});
+// aba 18 tabela
+const t18=D.cache.t18;
+R.t18.forEach((l,i)=>{ const x=t18[i]; const id=l.un+'/'+l.faixa+'/'+l.cat;
+  cmp('18T',id,'cat',l.cat,x[3]); cmp('18T',id,'G',l.reconhecida,x[5]); cmp('18T',id,'H',l.nota1,x[6]); cmp('18T',id,'I',l.segundo||null,x[7]);
+  cmp('18T',id,'J',l.nota2,x[8]); cmp('18T',id,'K',l.dif,x[9]); cmp('18T',id,'L',l.situacao,x[10]); cmp('18T',id,'M',l.n,x[11]); });
+
+    return { checks, bad, issues, porAba, linhas: { r16: [R.r16.regs.length, c16.length], r18: [R.r18.length, c18.length], t17: [R.t17.length, t17.length], t18: [R.t18.length, t18.length] } };
+  }
+  if (typeof module !== "undefined" && module.exports) module.exports = reconcile; else root.reconcile = reconcile;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+/* Mapeamento: Pergunta original → Fonte → Eixo original → Nova categoria → Agregação → Peso.
+ * Gerado a partir dos dados extraídos da planilha (blocos da aba 15 e padrões de texto da aba 15, AD:AE). */
+(function (root) {
+  const A_FAM = { "Conhecimento individual": "Cuidado e Vínculo", "Bem-estar": "Cuidado e Vínculo", "Comunicação": "Comunicação com a Família", "Inglês": "Inglês", "Desenvolvimento acadêmico": "Desenvolvimento e Aprendizagem", "Visibilidade do desenvolvimento": "Desenvolvimento e Aprendizagem" };
+  const B_FAM = Object.assign({}, A_FAM, { "Bem-estar": "Bem-estar" });
+  const FORA = "— (sem categoria; só no Índice geral, se o bloco entrar)";
+
+  function patternsMatch(D, perg) {
+    const p = String(perg).toLowerCase();
+    return [...new Set(D.patt.filter((x) => p.includes(String(x[0]).replace(/\*/g, "").trim().toLowerCase())).map((x) => x[1]))];
+  }
+  function build(D) {
+    const P = D.p17, rows = [];
+    D.famq.forEach((q) => {
+      const b = D.blocos.find((x) => x[0] === q.bloco), entra = b && b[1] === "Sim";
+      rows.push({
+        pergunta: q.perg, fonte: "Famílias", bloco: q.bloco, eixo: q.eixo || "—", n: q.n,
+        catA: A_FAM[q.bloco] || FORA, catB: B_FAM[q.bloco] || FORA,
+        agreg: "Resposta → índice 0–100 (aba 00-Mapa). F = Σ índices ÷ nº de respostas das turmas da regente" + (entra ? " (bloco entra no F geral)." : " (bloco NÃO entra no F geral)."),
+        peso: entra ? "F: " + P.pesoF * 100 + "% da Base" : "—",
+      });
+    });
+    D.coorq.forEach((q) => {
+      const t = q.temas || [], tA = t.filter((x) => x !== "Bem-estar");
+      rows.push({
+        pergunta: String(q.perg).replace(/\s+/g, " ").trim(), fonte: "Coordenação", bloco: "—", eixo: q.eixo || "—", n: q.n,
+        catA: tA.length ? tA.join(" + ") : FORA, catB: t.length ? t.join(" + ") : FORA,
+        agreg: "Média das respostas válidas por regente, corrigida pelo viés da avaliadora (C ajustado = C − ajuste × viés).",
+        peso: "C: " + P.pesoC * 100 + "% da Base",
+      });
+    });
+    D.autoq.forEach((q) => {
+      rows.push({
+        pergunta: String(q.perg).replace(/\s+/g, " ").trim(), fonte: "Autoavaliação", bloco: "—", eixo: q.eixo || "—", n: q.n,
+        catA: "— (não compõe categoria)", catB: "— (não compõe categoria)",
+        agreg: "Média das respostas válidas da regente → Autoavaliação. Entra na Perda 2 (|Auto − Base|) e na elegibilidade.",
+        peso: "Sem peso na Base; penalidade: " + P.fat2 * 100 + "% do que passar de " + P.tol2 + " pts",
+      });
+    });
+    return rows;
+  }
+  root.Mapping = { build, A_FAM, B_FAM, patternsMatch };
+})(window);
+
+</script>
+<script>
+/* Apoio ao coordenador (roteiro de feedback) e ao professor (PDI orientado pelo conceito SMART).
+ * Gera TEXTO EDITÁVEL a partir das notas já calculadas; não cria perguntas novas nem altera nenhum cálculo.
+ * Entrada (ctx): { regente, unidade, grupo, painel, final, mediaFinal, F, Cadj, Auto, gap1, gap2, tol1, tol2, pos, nGrupo,
+ *                  elig, cats:[{key,nome,nota,ref,C,F}], refData:"AAAA-MM-DD" }.  Funciona no navegador (window.Acoes) e no Node. */
+(function (root) {
+  const LIM = 85; // notas abaixo disso são destacadas como atenção (regra do painel)
+  const num = (v) => typeof v === "number" && isFinite(v);
+  const fmt = (v, d = 1) => (num(v) ? v.toFixed(d).replace(".", ",") : "—");
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const addDays = (iso, n) => { const d = new Date((iso || new Date().toISOString().slice(0, 10)) + "T12:00:00"); d.setDate(d.getDate() + n); return d.toLocaleDateString("pt-BR"); };
+  const ed = (t, cls) => '<span class="ed' + (cls ? " " + cls : "") + '" contenteditable="true" spellcheck="true">' + t + "</span>";
+  const edb = (t) => '<div class="ed block" contenteditable="true" spellcheck="true">' + t + "</div>";
+
+  /* ---- biblioteca de práticas por categoria (sugestões; o coordenador valida e edita) ---- */
+  const LIB = {
+    cuidado: {
+      nome: "Cuidado e Vínculo",
+      forte: "o cuidado individual e o vínculo com cada criança e sua família",
+      escuta: ["Em que momentos da rotina você sente que conhece melhor cada criança?", "O que você faz hoje quando uma criança chega abalada ou retraída?", "O que a família precisa perceber para saber que seu filho é visto individualmente?"],
+      pratica: [
+        { a: "Acolhimento individual na entrada: cumprimentar cada criança pelo nome e registrar em 1 linha como ela chegou", f: "diária", e: "registro rápido (caderno ou planilha da turma)" },
+        { a: "Observação individual semanal: escolher 3–4 crianças por semana (rodízio) e anotar interesses, conquistas e necessidades", f: "semanal", e: "todas as crianças observadas ao menos 1 vez a cada 4 semanas" },
+        { a: "Combinar com cada família um sinal de alerta (como a criança demonstra desconforto) e como a escola deve avisar", f: "uma vez no ciclo", e: "ficha de combinados preenchida" },
+      ],
+      indicador: "nota de Cuidado e Vínculo na próxima pesquisa e % de crianças com observação registrada no mês",
+    },
+    comunic: {
+      nome: "Comunicação com a Família",
+      forte: "a comunicação clara, próxima e no tempo certo com as famílias",
+      escuta: ["Quais canais você usa hoje com as famílias e qual funciona melhor?", "Em que situações a família fica sem resposta ou sem informação?", "Que tipo de recado a família mais valoriza e ainda não recebe?"],
+      pratica: [
+        { a: "Recado semanal padronizado (o que foi trabalhado, o que vem, um destaque da turma)", f: "semanal", e: "recado enviado em 8 de cada 10 semanas" },
+        { a: "Responder mensagens das famílias em até 1 dia útil (ou avisar o prazo de retorno)", f: "contínua", e: "amostra de 10 mensagens/mês com prazo cumprido" },
+        { a: "Devolutiva individual curta, positiva e com um próximo passo, para cada família", f: "quinzenal (rodízio)", e: "todas as famílias com ao menos 1 devolutiva no ciclo" },
+      ],
+      indicador: "nota de Comunicação com a Família na próxima pesquisa e % de semanas com recado enviado",
+    },
+    ingles: {
+      nome: "Inglês",
+      forte: "a vivência do inglês na rotina e o avanço visível das crianças",
+      escuta: ["Quanto tempo da semana a turma realmente vive o inglês (e não só aprende palavras soltas)?", "Como a família enxerga o progresso das crianças em inglês?", "Que apoio de planejamento ou material ajudaria mais agora?"],
+      pratica: [
+        { a: "Rotina bilíngue diária: 2–3 momentos fixos com comandos, músicas e conversas apenas em inglês", f: "diária", e: "rotina descrita no planejamento e observada em 1 visita" },
+        { a: "Tornar o progresso visível: portfólio mensal (áudio, foto ou produção da criança em inglês) compartilhado com as famílias", f: "mensal", e: "portfólio enviado em 3 de 3 meses" },
+        { a: "Planejamento conjunto com a coordenação de inglês (30 min) para alinhar objetivos e vocabulário do período", f: "quinzenal", e: "ata curta do encontro" },
+      ],
+      indicador: "nota de Inglês na próxima pesquisa e nº de registros de progresso compartilhados com as famílias",
+    },
+    desenv: {
+      nome: "Desenvolvimento e Aprendizagem",
+      forte: "a evolução de aprendizagem das crianças e a clareza dos objetivos de cada etapa",
+      escuta: ["Como você sabe, hoje, se cada criança aprendeu o que foi planejado?", "Que dificuldades da turma se repetem e que estratégia você já testou?", "O que a família consegue enxergar do desenvolvimento do filho ao longo do bimestre?"],
+      pratica: [
+        { a: "Avaliação formativa curta (exit ticket, observação guiada) ao fim de cada sequência de aulas, para ajustar o planejamento", f: "semanal", e: "registro de ajustes feitos a partir dos resultados" },
+        { a: "Devolutiva de aprendizagem por habilidade para as famílias, em linguagem simples (o que já faz, o que está consolidando, como apoiar em casa)", f: "bimestral", e: "devolutiva enviada a 100% das famílias" },
+        { a: "Atividades diferenciadas para pelo menos 2 níveis de apoio na turma (reforço e desafio)", f: "semanal", e: "planejamento com os níveis descritos" },
+      ],
+      indicador: "nota de Desenvolvimento e Aprendizagem na próxima pesquisa e % de habilidades-chave com registro de evolução",
+    },
+    bemestar: {
+      nome: "Bem-estar",
+      forte: "o bem-estar emocional e o clima afetivo da turma",
+      escuta: ["Como você percebe o clima emocional da turma ao longo do dia?", "Que combinados de convivência a turma já construiu?", "Como as crianças demonstram que se sentem seguras com você?"],
+      pratica: [
+        { a: "Roda de check-in emocional curta (3–5 min) no início do dia", f: "diária", e: "rotina registrada no planejamento" },
+        { a: "Construir com a turma 3–4 combinados de convivência e retomá-los semanalmente", f: "semanal", e: "cartaz/painel dos combinados e retomadas registradas" },
+        { a: "Registrar situações de conflito e o que funcionou na mediação, compartilhando com a coordenação", f: "quinzenal", e: "registro de 2 situações por quinzena" },
+      ],
+      indicador: "nota de Bem-estar na próxima pesquisa e nº de retomadas de combinados registradas",
+    },
+  };
+  const libOf = (c) => LIB[c.key] || { nome: c.nome, forte: "o desempenho nesta categoria", escuta: ["O que está funcionando bem nesta categoria?", "O que dificulta o seu trabalho aqui?"], pratica: [{ a: "Definir com a coordenação 2 práticas semanais ligadas a esta categoria", f: "semanal", e: "registro das práticas" }], indicador: "nota da categoria na próxima pesquisa" };
+
+  /* ---- leitura dos números ---- */
+  function leitura(ctx) {
+    const cs = ctx.cats.filter((c) => num(c.nota));
+    const fortes = cs.filter((c) => c.nota >= LIM && (!num(c.ref) || c.nota >= c.ref)).sort((a, b) => b.nota - a.nota);
+    const atencao = cs.filter((c) => c.nota < LIM || (num(c.ref) && c.nota < c.ref - 3)).sort((a, b) => a.nota - b.nota);
+    const sem = ctx.cats.filter((c) => !num(c.nota));
+    const alertas = [];
+    if (num(ctx.gap1) && ctx.gap1 > ctx.tol1) alertas.push({ k: "fc", t: "Famílias (" + fmt(ctx.F) + ") e coordenação ajustada (" + fmt(ctx.Cadj) + ") divergem em " + fmt(ctx.gap1) + " pts. Vale entender o que cada lado está enxergando." });
+    if (num(ctx.gap2) && ctx.gap2 > ctx.tol2) alertas.push({ k: "auto", t: num(ctx.Auto) && num(ctx.Base) && ctx.Auto > ctx.Base ? "A autoavaliação (" + fmt(ctx.Auto) + ") está " + fmt(ctx.gap2) + " pts acima da percepção externa (" + fmt(ctx.Base) + "): trabalhar autopercepção e evidências." : "A autoavaliação (" + fmt(ctx.Auto) + ") está " + fmt(ctx.gap2) + " pts abaixo da percepção externa (" + fmt(ctx.Base) + "): reconhecer o que vai bem e fortalecer a confiança." });
+    return { cs, fortes, atencao, sem, alertas };
+  }
+
+  const tabela = (ctx) => '<div class="wrap"><table class="rtab"><thead><tr><th>Categoria</th><th class="n">Nota</th><th class="n">Média do grupo</th><th class="n">Dif.</th><th>Leitura</th></tr></thead><tbody>' +
+    '<tr><td><b>Índice Final</b></td><td class="n"><b>' + fmt(ctx.final) + '</b></td><td class="n">' + fmt(ctx.mediaFinal) + '</td><td class="n">' + (num(ctx.final) && num(ctx.mediaFinal) ? (ctx.final - ctx.mediaFinal >= 0 ? "+" : "−") + fmt(Math.abs(ctx.final - ctx.mediaFinal)) : "—") + "</td><td>" + (num(ctx.pos) ? ctx.pos + "º entre " + ctx.nGrupo + " elegíveis" : "—") + "</td></tr>" +
+    ctx.cats.map((c) => "<tr><td>" + esc(c.nome) + '</td><td class="n"><b>' + fmt(c.nota) + '</b></td><td class="n">' + fmt(c.ref) + '</td><td class="n">' + (num(c.nota) && num(c.ref) ? (c.nota - c.ref >= 0 ? "+" : "−") + fmt(Math.abs(c.nota - c.ref)) : "—") + "</td><td>" + (!num(c.nota) ? "sem nota (faltam respostas)" : c.nota < LIM ? "⚠ atenção (< " + LIM + ")" : num(c.ref) && c.nota >= c.ref ? "✅ acima do grupo" : "dentro do esperado") + "</td></tr>").join("") + "</tbody></table></div>";
+
+  const cab = (titulo, ctx) => '<div class="acab"><h2>' + esc(titulo) + "</h2><div class=\"foot\">" + esc(ctx.regente) + " · " + esc(ctx.unidade) + " · " + esc(ctx.grupo) + " · " + (ctx.painel === "b" ? "Painel B" : "Painel A") + '</div><div class="note noprint">Rascunho para validação: <b>todos os campos tracejados são editáveis</b>. Depois de revisar, use “Imprimir / salvar PDF” para gerar o relatório individual. Os números vêm da pesquisa; o texto é uma sugestão, não uma sentença.</div></div>';
+
+  /* ---- 1) FEEDBACK DO COORDENADOR ---- */
+  function feedback(ctx) {
+    const L = leitura(ctx), nome = esc(ctx.regente.split(" ")[0]);
+    let h = cab("Roteiro de feedback — coordenação", ctx);
+    h += "<h3>1. Antes da conversa (5 min)</h3><ul><li>Leia os números abaixo como <b>percepções</b> de famílias, coordenação e da própria professora — um ponto de partida para a conversa, não um julgamento.</li><li>Escolha <b>1 ou 2 temas</b> para a conversa (no máximo). Muitos temas diluem o combinado.</li><li>Separe 1 exemplo concreto recente de cada ponto forte e de cada ponto de atenção.</li><li>Escolha um lugar reservado e 30–40 minutos sem interrupções.</li></ul>" + tabela(ctx);
+    if (L.sem.length) h += '<div class="note">Sem nota em: ' + L.sem.map((c) => esc(c.nome)).join(", ") + " — faltam respostas de famílias ou da coordenação; não use esses temas como ‘nota baixa’.</div>";
+    // abertura
+    h += "<h3>2. Abertura (3 min)</h3>" + edb("“" + nome + ", agradeço por você ter vindo. O objetivo desta conversa é olhar juntos os resultados da pesquisa do semestre, celebrar o que está bom e combinar 1 ou 2 próximos passos que eu possa apoiar. Quero te ouvir antes de dar a minha leitura.”");
+    // forças
+    h += "<h3>3. Pontos fortes — reconhecer com fatos (SCI: Situação · Comportamento · Impacto)</h3>";
+    if (L.fortes.length) h += L.fortes.slice(0, 3).map((c) => { const b = libOf(c); return "<div class=\"card\"><b>" + esc(c.nome) + "</b> · nota " + fmt(c.nota) + (num(c.ref) ? " (grupo " + fmt(c.ref) + ")" : "") + edb("<b>Situação:</b> na pesquisa deste semestre, famílias e coordenação destacaram " + b.forte + ".<br><b>Comportamento:</b> [descreva 1 exemplo concreto que você viu — ex.: o que a professora fez numa aula, numa reunião ou numa mensagem].<br><b>Impacto:</b> [o efeito nas crianças e nas famílias — ex.: famílias mais tranquilas, turma mais engajada].") + "</div>"; }).join("");
+    else h += '<div class="note">Nenhuma categoria ficou acima de ' + LIM + " e da média do grupo. Procure ao menos 1 ponto forte real (a categoria de maior nota, " + (L.cs.length ? esc(L.cs.slice().sort((a, b) => b.nota - a.nota)[0].nome) + " — " + fmt(L.cs.slice().sort((a, b) => b.nota - a.nota)[0].nota) : "—") + ") ou um esforço visível para começar por aí.</div>" + edb("[Registre aqui 1 ponto forte concreto, com exemplo.]");
+    // atenção
+    h += "<h3>4. Pontos de desenvolvimento — perguntar antes de afirmar</h3>";
+    if (L.atencao.length) h += L.atencao.slice(0, 2).map((c) => { const b = libOf(c); return "<div class=\"card warnc\"><b>" + esc(c.nome) + "</b> · nota " + fmt(c.nota) + (num(c.ref) ? " (grupo " + fmt(c.ref) + ")" : "") + "<div class=\"foot\">Perguntas de escuta (escolha 1–2):</div><ul>" + b.escuta.map((p) => "<li>" + ed(esc(p)) + "</li>").join("") + "</ul><div class=\"foot\">Práticas que costumam mover essa nota (negocie 1–2 com a professora):</div><ul>" + b.pratica.map((p) => "<li>" + ed(esc(p.a)) + " <span class=\"foot\">(" + esc(p.f) + ")</span></li>").join("") + "</ul>" + edb("<b>Frase-modelo:</b> “Nesta categoria a nota ficou em " + fmt(c.nota) + (num(c.ref) ? ", e a média do grupo é " + fmt(c.ref) : "") + ". Notei que [exemplo concreto]. O que você acha que está por trás disso? O que ajudaria você agora?”") + "</div>"; }).join("");
+    else h += '<div class="note">Nenhuma categoria abaixo de ' + LIM + " ou muito abaixo do grupo. Use a conversa para <b>manter</b> o nível e perguntar o que a professora quer aprofundar.</div>";
+    // alinhamento
+    if (L.alertas.length) h += "<h3>5. Alinhamento de percepções</h3><ul>" + L.alertas.map((a) => "<li>" + esc(a.t) + "</li>").join("") + "</ul>" + edb("[Pergunta sugerida: “O que você vê na sua prática que as famílias/coordenação talvez não estejam vendo — ou o contrário?”]");
+    // combinados
+    h += "<h3>" + (L.alertas.length ? "6" : "5") + ". Combinados (5–10 min)</h3><ul><li>Transforme o(s) tema(s) escolhido(s) em metas no <b>PDI com formato SMART</b> (botão “PDI do professor”): específica, mensurável, atingível, relevante e com prazo.</li><li>Defina <b>o que a professora fará</b>, <b>o que a coordenação apoiará</b> e <b>quando</b> vocês se reencontram (sugestão: 30 dias).</li></ul>" + edb("Combinado 1: [ ]<br>Apoio da coordenação: [ ]<br>Próximo encontro: " + addDays(ctx.refData, 30));
+    h += "<h3>Fechamento (2 min)</h3>" + edb("“Agradeço a conversa. Resumindo: celebramos [ponto forte], vamos trabalhar [tema] com [ação] até [data], e eu apoio com [apoio]. Algo mais que você queira que eu saiba?”");
+    h += '<h3>Boas práticas e o que evitar</h3><div class="two2"><div class="card"><b>Faça</b><ul><li>Comece pelo que está bom, com fatos.</li><li>Pergunte antes de concluir.</li><li>Foque em comportamentos observáveis, não em traços de personalidade.</li><li>Feche com combinados escritos e data de retorno.</li></ul></div><div class="card warnc"><b>Evite</b><ul><li>Comparar a professora com colegas nominalmente.</li><li>Prometer reconhecimento, bônus ou resultado ligado à nota.</li><li>Tratar a nota como verdade absoluta: são percepções de amostras de respondentes.</li><li>Falar de mais de 2 temas numa única conversa.</li></ul></div></div>';
+    return h;
+  }
+
+  /* ---- 2) PDI DO PROFESSOR — orientado pelo conceito SMART ---- */
+  function alvo(c, ref) {
+    const base = Math.max(num(ref) ? ref : 0, LIM);
+    return Math.min(100, Math.max(c.nota + 3, Math.min(c.nota + 5, base)));
+  }
+  function pdi(ctx) {
+    const L = leitura(ctx);
+    let prio = L.atencao.slice(0, 3);
+    let modo = "desenvolvimento";
+    if (!prio.length) { prio = L.cs.slice().sort((a, b) => a.nota - b.nota).slice(0, 1); modo = "consolidação"; }
+    const ini = ctx.refData;
+    let h = cab("PDI — Plano de Desenvolvimento Individual (formato SMART)", ctx);
+    h += '<div class="smart"><b>Como ler este PDI — conceito SMART</b><div class="sm5">' +
+      [["S", "Específica", "diz exatamente o que vai mudar, para quem e em qual prática"], ["M", "Mensurável", "tem número ou evidência para saber se aconteceu (nota-alvo e indicador de processo)"], ["A", "Atingível", "o salto é realista para o prazo, com apoio e recursos definidos"], ["R", "Relevante", "ligada às categorias da pesquisa e ao que as famílias e crianças percebem"], ["T", "Temporal", "tem data de início, marcos (30/60/90 dias) e prazo final"]].map((x) => '<div><span>' + x[0] + "</span><b>" + x[1] + "</b><small>" + x[2] + "</small></div>").join("") + "</div></div>";
+    h += "<h3>Ponto de partida</h3>" + tabela(ctx);
+    if (modo === "consolidação") h += '<div class="note">Nenhuma categoria ficou abaixo de ' + LIM + " nem muito abaixo do grupo. O PDI foca em <b>consolidar</b> a categoria de menor nota e em <b>compartilhar</b> uma boa prática com colegas.</div>";
+    prio.forEach((c, i) => {
+      const b = libOf(c), a = alvo(c, c.ref), d = a - c.nota;
+      h += '<div class="meta"><div class="mh"><span class="badge">Meta ' + (i + 1) + "</span><b>" + esc(c.nome) + "</b><span class=\"foot\">nota atual " + fmt(c.nota) + (num(c.ref) ? " · média do grupo " + fmt(c.ref) : "") + "</span></div>" +
+        '<div class="smrow"><span class="k">S</span><div><b>Específica</b>' + edb("Elevar a nota de <b>" + esc(c.nome) + "</b> de " + fmt(c.nota) + " para <b>" + fmt(a) + "</b> até " + addDays(ini, 90) + ", por meio de: (1) " + esc(b.pratica[0].a.toLowerCase()) + (b.pratica[1] ? "; e (2) " + esc(b.pratica[1].a.toLowerCase()) : "") + ".") + "</div></div>" +
+        '<div class="smrow"><span class="k">M</span><div><b>Mensurável</b>' + edb("Resultado: nota ≥ <b>" + fmt(a) + "</b> em " + esc(c.nome) + " na próxima aplicação da pesquisa.<br>Processo: " + esc(b.pratica[0].e) + (b.pratica[1] ? "; " + esc(b.pratica[1].e) : "") + ".<br>Indicador acompanhado: " + esc(b.indicador) + ".") + "</div></div>" +
+        '<div class="smrow"><span class="k">A</span><div><b>Atingível</b>' + edb("Ganho proposto: <b>+" + fmt(d) + " pts</b>" + (num(c.ref) ? " (a média do grupo é " + fmt(c.ref) + ")" : "") + ", ritmo compatível com a carga de trabalho. Recursos e apoio: [coordenação — encontros de 30 min; material/formação: ____]. Possíveis barreiras: [____] → como contorná-las: [____].") + "</div></div>" +
+        '<div class="smrow"><span class="k">R</span><div><b>Relevante</b>' + edb("A categoria <b>" + esc(c.nome) + "</b> é percebida diretamente pelas famílias e pela coordenação e compõe o Índice Final. Melhorar aqui fortalece o vínculo com as famílias e a aprendizagem das crianças: [descreva o que isso muda na sua turma].") + "</div></div>" +
+        '<div class="smrow"><span class="k">T</span><div><b>Temporal</b>' + edb("Início: " + addDays(ini, 0) + " · 30 dias (" + addDays(ini, 30) + "): plano pronto e 1ª prática em andamento · 60 dias (" + addDays(ini, 60) + "): checkpoint com a coordenação · 90 dias (" + addDays(ini, 90) + "): revisão dos indicadores e decisão (manter, ajustar ou ampliar).") + "</div></div>" +
+        '<div class="wrap"><table class="rtab acao"><thead><tr><th>Ação</th><th>Frequência</th><th>Evidência</th><th>Apoio / responsável</th><th>Prazo</th></tr></thead><tbody>' + b.pratica.map((p) => "<tr><td>" + ed(esc(p.a)) + "</td><td>" + ed(esc(p.f)) + "</td><td>" + ed(esc(p.e)) + "</td><td>" + ed("Professora / Coordenação") + "</td><td>" + ed(addDays(ini, 90)) + "</td></tr>").join("") + "</tbody></table></div>" +
+        '<div class="chkS noprint"><b>Checklist SMART</b> ' + ["Específica", "Mensurável", "Atingível", "Relevante", "Temporal"].map((x) => '<label><input type="checkbox"> ' + x + "</label>").join("") + "</div></div>";
+    });
+    // alinhamento de percepção
+    const al = L.alertas.find((x) => x.k === "auto");
+    if (al) h += '<div class="meta"><div class="mh"><span class="badge">Meta extra</span><b>Alinhar a autopercepção às evidências</b></div>' + [["S", "Específica", "Registrar, a cada quinzena, 1 evidência concreta (feedback de família, produção de aluno ou observação da coordenação) que sustente a autoavaliação em cada categoria."], ["M", "Mensurável", "6 registros de evidência até o fim do ciclo; diferença entre autoavaliação e percepção externa ≤ " + ctx.tol2 + " pts na próxima pesquisa."], ["A", "Atingível", "Registro de 5 minutos por quinzena; coordenação revisa em conjunto uma vez por mês."], ["R", "Relevante", esc(al.t)], ["T", "Temporal", "Início " + addDays(ini, 0) + "; revisões em " + addDays(ini, 30) + ", " + addDays(ini, 60) + " e " + addDays(ini, 90) + "."]].map((x) => '<div class="smrow"><span class="k">' + x[0] + "</span><div><b>" + x[1] + "</b>" + edb(x[2]) + "</div></div>").join("") + "</div>";
+    // fortes
+    if (L.fortes.length) { const c = L.fortes[0]; h += '<div class="meta"><div class="mh"><span class="badge">Meta de força</span><b>Compartilhar uma boa prática — ' + esc(c.nome) + "</b><span class=\"foot\">nota " + fmt(c.nota) + "</span></div>" + [["S", "Específica", "Apresentar para a equipe do segmento 1 prática que sustenta o bom resultado em " + esc(c.nome) + " (o que faz, como faz e que material usa)."], ["M", "Mensurável", "1 apresentação de 15 minutos e 1 material (roteiro ou modelo) arquivado no drive da equipe."], ["A", "Atingível", "Um encontro de formação já existente; a coordenação reserva o espaço na pauta."], ["R", "Relevante", "Fortalece a equipe e consolida a prática que as famílias já reconhecem."], ["T", "Temporal", "Apresentação até " + addDays(ini, 60) + "."]].map((x) => '<div class="smrow"><span class="k">' + x[0] + "</span><div><b>" + x[1] + "</b>" + edb(x[2]) + "</div></div>").join("") + "</div>"; }
+    h += "<h3>Acompanhamento e fechamento do ciclo</h3>" + edb("Encontro de 30 dias (" + addDays(ini, 30) + "): [o que avançou / o que travou]<br>Encontro de 60 dias (" + addDays(ini, 60) + "): [ajustes]<br>Revisão de 90 dias (" + addDays(ini, 90) + "): [metas atingidas? manter, ajustar ou ampliar]");
+    h += '<div class="assin"><div>Professora: ____________________<br><span class="foot">Data: ___/___/_____</span></div><div>Coordenação: ____________________<br><span class="foot">Data: ___/___/_____</span></div></div>';
+    return h;
+  }
+
+  const api = { feedback, pdi, leitura, LIM };
+  if (typeof module !== "undefined" && module.exports) module.exports = api; else root.Acoes = api;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+/* Interface do painel de reconhecimento docente — Painel A · Segmento (aba 17).
+ * Só apresenta: todos os números vêm de Engine.run(DADOS, parâmetros). Nenhum resultado fixo. */
+(function () {
+  "use strict";
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const num = (v) => typeof v === "number" && isFinite(v);
+  const pct = (v) => String(+(v * 100).toFixed(1)).replace(".", ",");
+  const pz = (v) => String(v).replace(".", ",");
+  const loss = (v) => (num(v) && v > 0.005 ? "−" + fmt(v, 2) : "0,00");
+  const fmt = (v, d = 1) => (num(v) ? v.toFixed(d).replace(".", ",") : "—");
+  const cls = (v) => (!num(v) ? "na" : v >= 85 ? "ok" : v >= 80 ? "ad" : "at");
+  const UN = { "Asa Norte": "Asa Norte", Kinder: "Lago Sul" };
+  const unL = (u) => UN[u] || u;
+  const UNITS = ["Asa Norte", "Kinder"], SEGS = ["Educação Infantil", "Ensino Fundamental I"], FAIXAS = ["K2–K4", "K5–1º", "2º–5º"];
+  const fdata = (iso) => (iso ? iso.split("-").reverse().join("/") : "—");
+  const lbl = (o) => (o.tipoFora === "afastado" ? "Afastado(a)" : "Demitido(a)");
+  const demTxt = (o) => (o.tipoFora === "afastado" ? "Afastado(a) (base funcional)" : "Demitido(a) em " + fdata(o.desligamento));
+  const nDem = (regs) => regs.filter((o) => o.fora).length;
+  const optsOn = (b) => ({ excluiDemitidos: b, excluiAfastados: b });
+  const PARAM_DEF = {
+    pesoC: ["Peso da Coordenação (C)", 0, 1, 0.05, "Fração da Base vinda da coordenação."],
+    pesoF: ["Peso das Famílias (F)", 0, 1, 0.05, "Fração da Base vinda das famílias. Na planilha é C6; mantido editável."],
+    tol1: ["Tolerância Perda 1 (pts)", 0, 100, 1, "Diferença |F − C ajustado| aceita sem penalidade."],
+    fat1: ["Fator Perda 1", 0, 1, 0.05, "Fração do excesso de gap que vira perda."],
+    tol2: ["Tolerância Perda 2 (pts)", 0, 100, 1, "Diferença |Autoavaliação − Base| aceita sem penalidade."],
+    fat2: ["Fator Perda 2", 0, 1, 0.05, "Fração do excesso de gap que vira perda."],
+    minFam: ["Mín. de famílias", 0, 50, 1, "Respostas de famílias necessárias para ser elegível."],
+    minAval: ["Mín. de avaliadoras", 0, 11, 1, "Avaliadoras distintas da coordenação."],
+    ajuste: ["Ajuste de viés (0 = desligado, 1 = ligado)", 0, 1, 0.1, "Quanto do viés da avaliadora é descontado do C."],
+    exigeAuto: ["Exigir autoavaliação (1 = sim)", 0, 1, 1, "Sem autoavaliação a regente fica inelegível."],
+    piso: ["Piso temático (1 = Final ≥ média do grupo)", 0, 1, 1, "Para as categorias temáticas."],
+  };
+  const PARAM18_DEF = {
+    minK: ["K2–K4: mínimo absoluto de famílias", 0, 30, 1, "Mínimo = máx(este valor; % × alunos ativos)."],
+    pct: ["K2–K4: % dos alunos ativos", 0, 1, 0.05, "Por exemplo 0,20 = 20%."],
+    minOutros: ["K5–1º e 2º–5º: mín. de famílias", 0, 50, 1, ""],
+    notaMin: ["Nota mínima para reconhecimento", 0, 100, 1, "Piso de 80 na planilha."],
+    dif: ["Diferença p/ mencionar o 2º (pts)", 0, 20, 0.5, "2º é mencionado se estiver até esta diferença do 1º e ≥ nota mínima."],
+  };
+
+  /* ---------- estado ---------- */
+  const S = { view: "geral", kpi: null, sub: { a: "exec", b: "exec" }, unit: "Asa Norte", cat: "geral", simP17: null, simP18: null, simTab: "a", mapF: "", mapSrc: "", D: null, R: null, RP: null, RC: null, MAP: null, opts: { excluiDemitidos: true, excluiAfastados: true } };
+
+  /* ---------- helpers de domínio ---------- */
+  function regsOf(res, panel, un, grp) {
+    return panel === "a" ? res.r16.regs.filter((o) => o.un === un && o.seg === grp) : res.r18.filter((o) => o.un === un && o.faixa === grp);
+  }
+  const catsOf = (panel) => (panel === "a" ? Engine.CATS17 : Engine.CATS18);
+  const scoreOf = (o, k) => (k === "geral" ? o.final : o.temas[k].nota);
+  const tableOf = (res, panel) => (panel === "a" ? res.t17 : res.t18);
+  const grpKey = (l) => l.seg || l.faixa;
+  function rowOf(res, panel, un, grp, cat) {
+    return tableOf(res, panel).find((l) => l.un === un && grpKey(l) === grp && l.catKey === cat);
+  }
+  function motivo(o, k, panel, res) {
+    if (o.fora) return demTxt(o) + " — fora do quadro";
+    if (k === "geral") return o.elig === "Sim" ? "" : o.elig.replace("Não — ", "Inelegível: ");
+    if (k === "ingles" && o.ingles !== "Sim") return "Não leciona Inglês";
+    if (k === "bemestar" && o.faixa !== "K2–K4") return "Categoria só para K2–K4";
+    if (o.elig !== "Sim") return o.elig.replace("Não — ", "Inelegível: ");
+    if (o.temas[k].nota == null) return "Sem nota na categoria (faltam respostas de famílias ou da coordenação)";
+    if (res.P.piso === 1 && o.final < o.mediaFinal) return "Índice Final (" + fmt(o.final) + ") abaixo da média do grupo (" + fmt(o.mediaFinal) + ")";
+    return "";
+  }
+  function detalheCat(res, panel, un, grp, k) {
+    const regs = regsOf(res, panel, un, grp);
+    const apt = regs.map((o, i) => ({ o, s: scoreOf(o, k), i })).filter((x) => x.o.flags[k] === 1 && !x.o.fora).sort((a, b) => b.s - a.s || a.i - b.i);
+    const out = regs.filter((o) => o.flags[k] !== 1 && !o.fora).map((o) => ({ o, m: motivo(o, k, panel, res) }));
+    const dem = regs.filter((o) => o.fora).map((o) => ({ o, s: o.flags[k] === 1 ? scoreOf(o, k) : null }));
+    return { regs, apt, out, dem };
+  }
+  const grpLabel = (panel, g) => g;
+  function groupsOf(panel) {
+    return panel === "a" ? UNITS.flatMap((u) => SEGS.map((g) => [u, g])) : UNITS.flatMap((u) => FAIXAS.map((g) => [u, g]));
+  }
+
+  /* ---------- peças visuais ---------- */
+  /* ---------- ícones (traço, estilo Lucide) ---------- */
+  const ICONS = {
+    trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+    heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+    chat: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    trend: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    usercheck: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>',
+    userx: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/>',
+    pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    dash: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+    layers: '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',
+    award: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+    sliders: '<line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/>',
+    book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+    moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+    info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+    x: '<path d="M18 6 6 18M6 6l12 12"/>',
+    warn: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>',
+    target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    print: '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/>',
+    copy: '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    back: '<path d="m12 19-7-7 7-7M19 12H5"/>',
+    calc: '<rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M16 14h.01M12 18h.01M8 18h.01M16 18h.01"/>',
+    ok: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+    no: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>',
+    minus: '<circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>',
+    download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+    crown: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zM5 20h14"/>',
+    reset: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+    star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+    cap: '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+    smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',
+    pause: '<circle cx="12" cy="12" r="10"/><line x1="10" x2="10" y1="15" y2="9"/><line x1="14" x2="14" y1="15" y2="9"/>',
+    flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+    chart: '<path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/>',
+    flask: '<path d="M10 2v7.31L4 20a1 1 0 0 0 .9 1.5h14.2A1 1 0 0 0 20 20l-6-10.69V2M8.5 2h7M7 16h10"/>',
+    list: '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+  };
+  const ic = (n, c) => '<svg class="ic' + (c ? " " + c : "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[n] || "") + "</svg>";
+  const CATSTY = { geral: { ic: "trophy", c: "gold" }, cuidado: { ic: "heart", c: "pink" }, comunic: { ic: "chat", c: "blue" }, ingles: { ic: "globe", c: "green" }, desenv: { ic: "trend", c: "purple" } };
+  const csty = (k) => CATSTY[k] || { ic: "award", c: "blue" };
+  const SEGIC = { "Educação Infantil": "smile", "Ensino Fundamental I": "book" };
+  const NIVEL = (v) => (!num(v) ? "—" : v >= 85 ? "Consolidado" : v >= 80 ? "Atenção" : "Prioridade");
+  const posTie = (rk, r) => rk.filter((x) => x.nota > r.nota + 1e-9).length + 1;
+  const tied = (rk, r) => rk.filter((x) => Math.abs(x.nota - r.nota) < 1e-9).length > 1;
+
+  /* ---------- peças visuais ---------- */
+  function podiumCard(res, panel, un, grp, cat) {
+    const l = rowOf(res, "a", un, grp, cat.key);
+    if (!l) return "";
+    const sty = csty(cat.key), rk = l.ranking, slots = rk.slice(0, 3);
+    const rule = cat.key === "geral" ? "Maior Índice Final entre as elegíveis." : "Elegível e Índice Final ≥ média do grupo. Nota = " + res.P.pesoC * 100 + "% Coordenação (ajustada) + " + res.P.pesoF * 100 + "% Famílias.";
+    let body = "";
+    if (!slots.length) body = '<div class="empty">' + ic("info") + " Nenhuma regente apta nesta categoria.</div>";
+    slots.forEach((r) => {
+      const p = posTie(rk, r), t = tied(rk, r);
+      body += '<div class="slot p' + Math.min(p, 3) + '"><span class="rk">' + (p === 1 ? ic("crown") : p) + '</span><button class="nm" data-act="ficha" data-p="a" data-k="' + esc(r.key) + '" data-u="' + esc(un) + '" data-g="' + esc(grp) + '">' + esc(r.regente) + '</button><span class="sc ' + cls(r.nota) + '">' + fmt(r.nota) + '</span><span class="tr"><i style="width:' + Math.max(0, Math.min(100, r.nota)) + '%"></i><u></u></span>' + (t ? "<small>" + ic("flag") + " Empate na nota · " + p + "º lugar</small>" : "") + "</div>";
+    });
+    const fq = (l.foraQuadro || []).filter((x) => x.posOriginal <= 3);
+    if (fq.length) body += '<div class="dem">' + fq.map((x) => '<span class="chip ' + (x.tipo === "afastado" ? "ad" : "at") + '">' + ic(x.tipo === "afastado" ? "pause" : "userx") + (x.tipo === "afastado" ? "Afastado(a)" : "Desligado(a)") + "</span> <b>" + esc(x.regente) + "</b> sairia em " + x.posOriginal + "º (" + fmt(x.nota) + ") · " + (x.tipo === "afastado" ? "afastado(a)" : "desligado(a) em " + fdata(x.des)) + " · fora do quadro; a nota segue na média do grupo").join("<br>") + "</div>";
+    return '<article class="pc cat-' + sty.c + '"><h3><span class="ci">' + ic(sty.ic) + "</span><span class='ct'>" + esc(cat.nome) + "</span><span class='chip'>" + l.n + " apta" + (l.n === 1 ? "" : "s") + '</span></h3><div class="rule">' + esc(rule) + "</div>" + body +
+      '<div class="pf"><button class="q" data-act="explica" data-p="a" data-u="' + esc(un) + '" data-g="' + esc(grp) + '" data-c="' + cat.key + '">' + ic("calc") + " Como foi calculado?</button></div></article>";
+  }
+  function groupSection(res, panel, un, grp, onlyCat) {
+    const regs = regsOf(res, "a", un, grp), elAll = regs.filter((o) => o.elig === "Sim"), el = elAll.filter((o) => !o.fora);
+    const cats = catsOf("a").filter((c) => (onlyCat ? c.key === onlyCat : true));
+    const mf = elAll.length ? elAll[0].mediaFinal : null, nd = nDem(regs);
+    return '<section class="box grp"><div class="gh"><span class="gi">' + ic(SEGIC[grp] || "users") + '</span><div class="gt"><h2>' + esc(grp) + '</h2><div class="gs">' + ic("pin") + esc(unL(un)) + '</div></div><div class="gchips"><span class="chip">' + ic("users") + regs.length + " regentes</span><span class='chip ok'>" + ic("usercheck") + el.length + " elegíveis</span><span class='chip bl'>" + ic("chart") + "Média do Índice Final " + fmt(mf) + "</span>" + (nd ? "<span class='chip at'>" + ic("userx") + nd + " fora do quadro</span>" : "") + "</div></div>" +
+      '<div class="grid">' + cats.map((c) => podiumCard(res, "a", un, grp, c)).join("") + "</div></section>";
+  }
+  /* ---------- cabeçalhos de tela ---------- */
+  const vtitle = (icn, t, sub) => '<div class="vt"><span class="vti">' + ic(icn) + "</span><div><h2>" + t + "</h2><p>" + sub + "</p></div></div>";
+  function kpi(icn, tone, v, l, hint, key) {
+    return '<button type="button" class="kp ' + tone + (S.kpi === key ? " on" : "") + '" data-act="kpi" data-k="' + key + '" aria-expanded="' + (S.kpi === key) + '"><span class="ki">' + ic(icn) + '</span><div><b>' + v + "</b><span>" + l + "</span>" + (hint ? "<small>" + hint + "</small>" : "") + '</div><span class="kc">' + ic("list") + "<em>" + (S.kpi === key ? "ocultar lista" : "ver lista") + "</em></span></button>";
+  }
+  function kpiList(res) {
+    const k = S.kpi; if (!k) return "";
+    const regs = res.r16.regs, ok = (o) => o.elig === "Sim" && !o.fora;
+    const byG = (a, b) => UNITS.indexOf(a.un) - UNITS.indexOf(b.un) || SEGS.indexOf(a.seg) - SEGS.indexOf(b.seg);
+    const desc = (a, b) => (num(b.final) ? b.final : -1) - (num(a.final) ? a.final : -1);
+    const sit = (o) => (o.fora ? "<span class='chip " + (o.afastado ? "ad" : "at") + "'>" + ic(o.afastado ? "pause" : "userx") + lbl(o) + "</span> fora do quadro" : o.elig === "Sim" ? "<span class='chip ok'>" + ic("ok") + "Elegível</span>" : "<span class='chip'>" + ic("minus") + esc(o.elig.replace("Não — ", "")) + "</span>");
+    const rows = (list) => '<div class="wrap"><table><thead><tr><th>Regente</th><th>Unidade</th><th>Segmento</th><th class="n">Índice Final</th><th>Situação</th></tr></thead><tbody>' + list.map((o) => "<tr class='" + (o.fora ? "inel dem-row" : o.elig === "Sim" ? "" : "inel") + "'><td><button class='nm-btn' data-act='ficha' data-p='a' data-k='" + esc(o.key) + "' data-u='" + esc(o.un) + "' data-g='" + esc(o.seg) + "'>" + esc(o.regente) + "</button></td><td>" + esc(unL(o.un)) + "</td><td>" + esc(o.seg) + "</td><td class='n'><span class='pill " + cls(o.final) + "'>" + fmt(o.final) + "</span></td><td>" + sit(o) + "</td></tr>").join("") + "</tbody></table></div>";
+    let t, sub, body;
+    if (k === "regentes") { t = "Regentes avaliadas"; const l = regs.slice().sort((a, b) => byG(a, b) || (a.fora ? 1 : 0) - (b.fora ? 1 : 0) || desc(a, b)); sub = l.length + " regentes, por unidade e segmento"; body = rows(l); }
+    else if (k === "elegiveis") { t = "Elegíveis no quadro"; const l = regs.filter(ok).sort((a, b) => byG(a, b) || desc(a, b)), f = regs.filter((o) => o.elig === "Sim" && o.fora); sub = l.length + " regentes" + (f.length ? " · mais " + f.length + " elegíveis fora do quadro (desligadas/afastadas): " + f.map((o) => esc(o.regente)).join("; ") : ""); body = rows(l); }
+    else if (k === "atencao") { t = "Índice Final abaixo de 85,0"; const l = regs.filter((o) => ok(o) && num(o.final) && o.final < 85).sort((a, b) => a.final - b.final); sub = l.length + " regentes elegíveis, da menor para a maior nota (≥ 80 atenção · < 80 prioridade)"; body = rows(l); }
+    else {
+      t = "Pódios com aptas"; const l = res.t17.filter((x) => x.n > 0); sub = l.length + " de " + res.t17.length + " pódios (unidade × segmento × categoria)";
+      body = '<div class="wrap"><table><thead><tr><th>Grupo</th><th>Categoria</th><th>1º lugar</th><th>2º lugar</th><th>3º lugar</th></tr></thead><tbody>' + res.t17.map((x) => {
+        const cell = (p) => { const m = x.ranking.slice(0, 3).filter((r) => posTie(x.ranking, r) === p); return m.length ? m.map((r) => esc(r.regente) + " <b>" + fmt(r.nota) + "</b>").join("<br>") : "—"; };
+        return "<tr class='" + (x.n ? "" : "inel") + "'><td>" + esc(unL(x.un) + " · " + x.seg) + "</td><td>" + esc(x.cat) + "</td><td>" + cell(1) + "</td><td>" + cell(2) + "</td><td>" + cell(3) + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+    }
+    return '<div class="kl" id="kpilist"><div class="kl-h"><div><h3>' + esc(t) + "</h3><p>" + sub + '</p></div><button class="q" data-act="kpi" data-k="' + k + '">' + ic("x") + " Fechar lista</button></div>" + body + "</div>";
+  }
+  function demBanner(res) {
+    const regs = res.r16.regs, elAll = regs.filter((o) => o.elig === "Sim");
+    const ndAll = S.D.vinc ? regs.filter((o) => { const v = S.D.vinc[o.key]; return v && ((v.des && v.des <= S.D.refData) || (!v.des && /^afastad/i.test(v.status || ""))); }).length : 0;
+    const on = S.opts.excluiDemitidos;
+    const sw = ndAll ? '<div class="swr ' + (on ? "on" : "off") + '"><span class="swi">' + ic(on ? "shield" : "warn") + '</span><div class="swt"><b>Regra de desligados e afastados ' + (on ? "ligada" : "desligada") + "</b><span>" + (on ? "Quem foi desligado(a) ou está afastado(a) não concorre ao quadro e aparece com etiqueta; a nota continua na média do grupo. " + ndAll + " pessoa(s) nesta situação; " + elAll.filter((o) => o.fora).length + " elegível(is) seriam ranqueada(s)." : "Estão voltando a concorrer (como na planilha original): " + ndAll + " regente(s) desligado(a)(s)/afastado(a)(s) aparecem no ranking.") + '</span></div><button class="q" data-act="dem">' + ic(on ? "sliders" : "shield") + (on ? "Ver como na planilha" : "Aplicar a regra") + "</button></div>" : "";
+    return sw;
+  }
+  function panelHead(panel, res, simulado, mini) {
+    const P = res.P, regs = res.r16.regs;
+    const elAll = regs.filter((o) => o.elig === "Sim"), el = elAll.filter((o) => !o.fora);
+    const nrec = res.t17.filter((l) => l.n > 0).length, ncat = res.t17.length;
+    const aten = el.filter((o) => num(o.final) && o.final < 85).length;
+
+
+
+    if (mini && !simulado) return "";
+    return (simulado ? '<div class="sim-ban">' + ic("warn") + " SIMULAÇÃO — parâmetros diferentes dos valores oficiais da planilha. Não use como resultado oficial.</div>" : "") +
+      '<section class="hero"><div class="hero-t"><span class="hero-i">' + ic("trophy") + '</span><div><h2>Reconhecimento por segmento</h2><p>Pódio por <b>unidade × segmento</b> (Educação Infantil e Ensino Fundamental I), com todas as turmas da regente. Mínimo de <b>' + P.minFam + " famílias</b> e <b>" + P.minAval + " avaliadoras</b>" + (P.exigeAuto === 1 ? ", autoavaliação obrigatória" : "") + ". Nas categorias temáticas, só concorre quem tem Índice Final ≥ média do grupo.</p></div></div>" +
+      '<div class="kpis">' + kpi("users", "t-blue", regs.length, "regentes avaliadas", "", "regentes") + kpi("usercheck", "t-green", el.length, "elegíveis no quadro", elAll.length !== el.length ? "+" + (elAll.length - el.length) + " fora do quadro" : "", "elegiveis") + kpi("award", "t-gold", nrec + " de " + ncat, "pódios com aptas", "", "podios") + kpi("warn", "t-red", aten, "abaixo de 85,0", "pontos de atenção", "atencao") + "</div>" + kpiList(res) + "</section>";
+  }
+  function podioGroups(res) {
+    const out = [];
+    res.t17.forEach((l) => {
+      l.ranking.slice(0, 3).forEach((r) => out.push({ r, un: l.un, seg: l.seg, cat: l.cat, key: l.catKey, p: posTie(l.ranking, r) }));
+    });
+    return out;
+  }
+  function destaques(res) {
+    return '<div class="hl4">' + groupsOf("a").map(([u, g]) => {
+      const l = rowOf(res, "a", u, g, "geral"), r = l && l.ranking[0];
+      const ties = l ? l.ranking.filter((x) => r && Math.abs(x.nota - r.nota) < 1e-9) : [];
+      return '<div class="hl"><div class="hl-h">' + ic(SEGIC[g] || "users") + "<span>" + esc(g) + "</span><em>" + ic("pin") + esc(unL(u)) + "</em></div>" +
+        (r ? ties.map((t) => '<div class="hl-b"><span class="rk big">' + ic("crown") + '</span><button class="nm-btn" data-act="ficha" data-p="a" data-k="' + esc(t.key) + '" data-u="' + esc(u) + '" data-g="' + esc(g) + '">' + esc(t.regente) + '</button><span class="sc ' + cls(t.nota) + '">' + fmt(t.nota) + "</span></div>").join("") + (ties.length > 1 ? '<div class="foot">Empate na nota — ambas em 1º lugar</div>' : '<div class="foot">Destaque Geral · Índice Final</div>') : '<div class="empty">Sem elegíveis</div>') + "</div>";
+    }).join("") + "</div>";
+  }
+  function quadroHonra(res) {
+    const m = {};
+    podioGroups(res).forEach((x) => { const id = x.un + "|" + x.r.key; (m[id] = m[id] || { r: x.r, un: x.un, seg: x.seg, v: [] }).v.push(x); });
+    const cnt = (x, p) => x.v.filter((y) => y.p === p).length;
+    const rows = Object.values(m).sort((a, b) => cnt(b, 1) - cnt(a, 1) || cnt(b, 2) - cnt(a, 2) || cnt(b, 3) - cnt(a, 3) || a.r.regente.localeCompare(b.r.regente));
+    const fora = [];
+    res.t17.forEach((l) => (l.foraQuadro || []).filter((x) => x.posOriginal <= 3).forEach((x) => fora.push({ x, l })));
+    const foraHtml = fora.length ? '<div class="warn">' + ic("userx") + "<div><b>Fora do quadro (desligados e afastados):</b> " + fora.map(({ x, l }) => esc(x.regente) + " (" + esc(l.cat + " · " + l.seg + " · " + unL(l.un)) + ", " + x.posOriginal + "º com " + fmt(x.nota) + ", " + (x.tipo === "afastado" ? "afastado(a)" : "desligado(a) em " + fdata(x.des)) + ")").join("; ") + ". As notas continuam nas médias do grupo.</div></div>" : "";
+    const med = (n, c, t) => '<span class="med ' + c + (n ? "" : " z") + '" title="' + t + '">' + ic(c === "m1" ? "crown" : "award") + "<b>" + n + "</b></span>";
+    return foraHtml + '<div class="honra">' + rows.map((x, i) => {
+      const sty1 = x.v.slice().sort((a, b) => a.p - b.p);
+      return '<div class="hn"><div class="hn-h"><span class="hn-n">' + (i + 1) + '</span><div class="hn-id"><button class="nm-btn" data-act="ficha" data-p="a" data-k="' + esc(x.r.key) + '" data-u="' + esc(x.un) + '" data-g="' + esc(x.seg) + '">' + esc(x.r.regente) + "</button><span>" + ic("pin") + esc(unL(x.un)) + " · " + esc(x.seg) + '</span></div><div class="meds">' + med(cnt(x, 1), "m1", "1º lugar") + med(cnt(x, 2), "m2", "2º lugar") + med(cnt(x, 3), "m3", "3º lugar") + "</div></div>" +
+        '<div class="hn-c">' + sty1.map((y) => { const s = csty(y.key); return '<span class="chip cc-' + s.c + '">' + ic(s.ic) + y.p + "º · " + esc(y.cat) + "</span>"; }).join("") + "</div></div>";
+    }).join("") + "</div>";
+  }
+  function unitTables(res, un) {
+    return SEGS.map((g) => {
+      const regs = regsOf(res, "a", un, g).slice().sort((a, b) => (a.fora ? 1 : 0) - (b.fora ? 1 : 0) || (num(b.final) ? b.final : -1) - (num(a.final) ? a.final : -1));
+      return groupSection(res, "a", un, g) + '<div class="wrap"><table><thead><tr><th>Regente</th><th class="n">Famílias</th><th class="n">Coord. aj.</th><th class="n">Auto</th><th class="n">Índice Final</th><th class="n">Pos.</th><th>Situação</th></tr></thead><tbody>' +
+        regs.map((o) => "<tr class='" + (o.fora ? "inel dem-row" : o.elig === "Sim" ? "" : "inel") + "'><td><button class='nm-btn' data-act='ficha' data-p='a' data-k='" + esc(o.key) + "' data-u='" + esc(un) + "' data-g='" + esc(g) + "'>" + esc(o.regente) + "</button></td><td class='n'>" + fmt(o.F) + "</td><td class='n'>" + fmt(o.Cadj) + "</td><td class='n'>" + fmt(o.Auto) + "</td><td class='n'><span class='pill " + cls(o.final) + "'>" + fmt(o.final) + "</span></td><td class='n'>" + (o.pos == null ? "—" : o.pos + "º") + "</td><td>" + (o.fora ? "<span class='chip " + (o.afastado ? "ad" : "at") + "'>" + ic(o.afastado ? "pause" : "userx") + lbl(o) + "</span> " + (o.afastado ? "" : esc(fdata(o.desligamento)) + " ") + "· fora do quadro" : o.elig === "Sim" ? "<span class='chip ok'>" + ic("ok") + "Elegível</span>" : "<span class='chip'>" + ic("minus") + esc(o.elig.replace("Não — ", "")) + "</span>") + "</td></tr>").join("") + "</tbody></table></div>";
+    }).join("");
+  }
+  function renderView(v, res, simulado) {
+    let h = panelHead("a", res, simulado, v !== "geral");
+    if (v === "geral") {
+      h += vtitle("dash", "Visão geral", "Quem lidera o Destaque Geral em cada grupo e os pódios completos de todas as categorias.") + destaques(res) + groupsOf("a").map(([u, g]) => groupSection(res, "a", u, g)).join("");
+    } else if (v === "unidade") {
+      h += vtitle("pin", "Por unidade", "Escolha a unidade para ver os pódios e a tabela completa de cada segmento.") +
+        '<div class="seg-c">' + UNITS.map((u) => '<button class="' + (S.unit === u ? "on" : "") + '" data-act="unit" data-u="' + esc(u) + '">' + ic("pin") + esc(unL(u)) + "</button>").join("") + "</div>" + unitTables(res, S.unit);
+    } else if (v === "categoria") {
+      const cats = catsOf("a"), ck = cats.some((c) => c.key === S.cat) ? S.cat : "geral", cat = cats.find((c) => c.key === ck);
+      h += vtitle("layers", "Por categoria", "Compare o mesmo pódio nos quatro grupos (unidade × segmento).") +
+        '<div class="seg-c cats">' + cats.map((c) => { const s = csty(c.key); return '<button class="cb-' + s.c + (S.cat === c.key ? " on" : "") + '" data-act="cat" data-c="' + c.key + '">' + ic(s.ic) + esc(c.nome) + "</button>"; }).join("") + "</div>" +
+        '<div class="grid g2">' + groupsOf("a").map(([u, g]) => '<div class="gcol"><div class="gcol-h">' + ic(SEGIC[g] || "users") + "<b>" + esc(g) + "</b><span>" + ic("pin") + esc(unL(u)) + "</span></div>" + podiumCard(res, "a", u, g, cat) + "</div>").join("") + "</div>";
+    } else if (v === "honra") {
+      h += vtitle("crown", "Quadro de honra", "Todas as regentes que chegaram ao pódio, ordenadas por 1ºs, 2ºs e 3ºs lugares.") + quadroHonra(res);
+    }
+    return h;
+  }
+  function renderPanelSim(panel, sim) {
+    return '<div id="simpanel">' + panelHead("a", sim, true) + groupsOf("a").map(([u, g]) => groupSection(sim, "a", u, g)).join("") + "</div>";
+  }
+  function simInputs(def, base, cur, scope) {
+    return '<div class="params">' + Object.keys(def).map((k) => {
+      const [nome, mn, mx, st, ajuda] = def[k], v = cur[k], ch = Math.abs(v - base[k]) > 1e-12;
+      return '<label class="' + (ch ? "chg" : "") + '">' + esc(nome) + '<input type="number" min="' + mn + '" max="' + mx + '" step="' + st + '" value="' + v + '" data-sim="' + scope + '" data-k="' + k + '"><small>Oficial: ' + base[k] + (ajuda ? " · " + esc(ajuda) : "") + "</small></label>";
+    }).join("") + "</div>";
+  }
+  function renderSimulador() {
+    const D = S.D, p17 = S.simP17;
+    const sim = Engine.run(D, p17, D.p18, S.opts), off = S.R;
+    const changed = JSON.stringify(p17) !== JSON.stringify(D.p17);
+    const d = off.t17.map((l, i) => ({ l, s: sim.t17[i] })).filter(({ l, s }) => (l.ranking[0] ? l.ranking[0].key : "") !== (s.ranking[0] ? s.ranking[0].key : ""));
+    const dr = !d.length ? '<div class="empty">' + ic("info") + " Nenhuma mudança de 1º lugar em relação ao oficial.</div>" : '<div class="wrap"><table><thead><tr><th>Grupo</th><th>Categoria</th><th>Oficial</th><th>Simulado</th></tr></thead><tbody>' + d.map(({ l, s }) => "<tr><td>" + esc(unL(l.un) + " · " + l.seg) + "</td><td>" + esc(l.cat) + "</td><td>" + esc(l.ranking[0] ? l.ranking[0].regente : "—") + "</td><td><b>" + esc(s.ranking[0] ? s.ranking[0].regente : "—") + "</b></td></tr>").join("") + "</tbody></table></div>";
+    const nEl = (res) => res.r16.regs.filter((o) => o.elig === "Sim").length;
+    S._sim = sim;
+    return vtitle("sliders", "Simulador de parâmetros", "Teste outras regras sem alterar o resultado oficial.") +
+      '<div class="box"><div class="note">' + ic("info") + "<div>Começa nos <b>valores oficiais</b> lidos da planilha. Alterar aqui <b>não muda</b> o painel oficial: o resultado simulado aparece só nesta tela, marcado como simulação.</div></div>" +
+      '<div class="bar"><button data-act="reset">' + ic("reset") + " Restaurar valores oficiais</button>" + (changed ? '<span class="chip at">' + ic("warn") + "simulação ativa</span>" : '<span class="chip ok">' + ic("ok") + "valores oficiais</span>") + "</div>" +
+      simInputs(PARAM_DEF, D.p17, p17, "17") +
+      '<div class="stat"><div><b>' + nEl(off) + "</b><span>elegíveis — oficial</span></div><div><b>" + nEl(sim) + "</b><span>elegíveis — simulado</span></div><div><b>" + d.length + "</b><span>pódios com novo 1º lugar</span></div></div></div>" +
+      '<div class="box"><h2>' + ic("trophy") + " Mudanças de 1º lugar</h2>" + dr + "</div>" +
+      (changed ? renderPanelSim("a", sim) : '<div class="foot">Altere algum parâmetro para ver o painel simulado.</div>');
+  }
+  /* Radar com duas séries em cores distintas e rótulos de valor sem sobreposição.
+   * axes: [{label, v (regente), ref (média do grupo)}]; opt: {nome, grupo, n}.
+   * Rótulos: o da maior nota do eixo fica para fora do ponto e o da menor para dentro, sempre em lados
+   * opostos do vértice, então nunca se encostam; halo na cor do cartão garante a leitura sobre as linhas. */
+  function radar(axes, opt) {
+    opt = opt || {};
+    const n = axes.length;
+    if (n < 3) return "";
+    const W = 540, H = 400, cx = W / 2, cy = H / 2 + 4, R = 118, C1 = "var(--c1)", C2 = "var(--c2)";
+    const ang = (i) => -Math.PI / 2 + (2 * Math.PI * i) / n;
+    const pt = (i, v, d) => { const a = ang(i), rr = R * (Math.max(0, Math.min(100, v)) / 100) + (d || 0); return [cx + rr * Math.cos(a), cy + rr * Math.sin(a)]; };
+    const f1 = (x) => x.toFixed(1);
+    let g = "";
+    [25, 50, 75, 100].forEach((lv) => { g += '<polygon fill="none" stroke="var(--line)" points="' + axes.map((_, i) => pt(i, lv).map(f1).join(",")).join(" ") + '"/>'; });
+    const wrap = (t) => { if (t.length <= 17) return [t]; const w = t.split(" "); let best = 1, bd = 1e9; for (let k = 1; k < w.length; k++) { const d = Math.abs(w.slice(0, k).join(" ").length - w.slice(k).join(" ").length); if (d < bd) { bd = d; best = k; } } return [w.slice(0, best).join(" "), w.slice(best).join(" ")]; };
+    axes.forEach((ax, i) => {
+      const [x, y] = pt(i, 100), a = ang(i), c = Math.cos(a), sn = Math.sin(a);
+      g += '<line x1="' + cx + '" y1="' + cy + '" x2="' + f1(x) + '" y2="' + f1(y) + '" stroke="var(--line)"/>';
+      const side = c > 0.35 ? "start" : c < -0.35 ? "end" : "middle";
+      const [lx, ly] = pt(i, 100, 50);
+      const lines = wrap(ax.label), y0 = ly - (side === "middle" && sn < 0 ? (lines.length - 1) * 13 : (lines.length - 1) * 6.5);
+      g += '<text x="' + f1(lx) + '" y="' + f1(y0) + '" font-size="12" font-weight="600" fill="var(--ink)" text-anchor="' + side + '" dominant-baseline="middle">' + lines.map((t, k) => '<tspan x="' + f1(lx) + '" dy="' + (k ? 13 : 0) + '">' + esc(t) + "</tspan>").join("") + "</text>";
+    });
+    const poly = (key, col, dash) => '<polygon points="' + axes.map((ax, i) => pt(i, num(ax[key]) ? ax[key] : 0).map(f1).join(",")).join(" ") + '" fill="' + col + '" fill-opacity="' + (dash ? ".06" : ".20") + '" stroke="' + col + '" stroke-width="2.2"' + (dash ? ' stroke-dasharray="6 4"' : "") + ' stroke-linejoin="round"/>';
+    let marks = "", labs = "";
+    axes.forEach((ax, i) => {
+      const a = ang(i), c = Math.cos(a), sn = Math.sin(a), side = c > 0.35 ? 1 : c < -0.35 ? -1 : 0;
+      const items = [["v", C1, "c"], ["ref", C2, "d"]].filter(([k]) => num(ax[k]));
+      items.forEach(([k, col, shape]) => { const [x, y] = pt(i, ax[k]); marks += shape === "c" ? '<circle cx="' + f1(x) + '" cy="' + f1(y) + '" r="4.5" fill="' + col + '" stroke="var(--card)" stroke-width="1.5"/>' : '<rect x="' + f1(x - 4) + '" y="' + f1(y - 4) + '" width="8" height="8" transform="rotate(45 ' + f1(x) + " " + f1(y) + ')" fill="' + col + '" stroke="var(--card)" stroke-width="1.5"/>'; });
+      // maior nota para fora, menor para dentro (empate: regente fora)
+      const order = items.slice().sort((p, q) => ax[q[0]] - ax[p[0]] || (p[0] === "v" ? -1 : 1));
+      order.forEach(([k, col], rank) => {
+        const out = rank === 0 && order.length > 1 || order.length === 1, d = out ? 14 : -16;
+        const [x, y] = pt(i, ax[k], d);
+        let anchor, yy = y;
+        if (side === 0) { anchor = "middle"; yy = y + (sn < 0 ? (out ? -2 : 9) : (out ? 8 : -3)); }
+        else anchor = (side > 0) === out ? "start" : "end";
+        labs += '<text x="' + f1(x) + '" y="' + f1(yy) + '" font-size="12" font-weight="700" fill="' + col + '" text-anchor="' + anchor + '" dominant-baseline="middle" stroke="var(--card)" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round">' + fmt(ax[k]) + "</text>";
+      });
+      if (!num(ax.v)) labs += '<text x="' + f1(pt(i, 0, 14)[0]) + '" y="' + f1(pt(i, 0, 14)[1]) + '" font-size="10" fill="var(--mut)" text-anchor="middle">sem nota</text>';
+    });
+    const nome = opt.nome ? esc(opt.nome) : "Regente";
+    const leg = '<div class="rleg"><div><svg width="34" height="12" aria-hidden="true"><line x1="2" y1="6" x2="32" y2="6" stroke="' + C1 + '" stroke-width="2.4"/><circle cx="17" cy="6" r="4.5" fill="' + C1 + '"/></svg><span><b style="color:' + C1 + '">' + nome + "</b> — nota da própria regente em cada categoria (50% coordenação ajustada + 50% famílias)</span></div>" +
+      '<div><svg width="34" height="12" aria-hidden="true"><line x1="2" y1="6" x2="32" y2="6" stroke="' + C2 + '" stroke-width="2.2" stroke-dasharray="5 3"/><rect x="13" y="2" width="8" height="8" transform="rotate(45 17 6)" fill="' + C2 + '"/></svg><span><b style="color:' + C2 + '">Média do grupo' + (opt.grupo ? " (" + esc(opt.grupo) + ")" : "") + "</b> — média das regentes elegíveis" + (opt.n ? ", n = " + opt.n : "") + ". Anéis do gráfico: 25, 50, 75 e 100. Os números ao lado de cada ponto são as notas de 0 a 100 na mesma cor da série; o número mais externo é o da maior nota daquele eixo.</span></div></div>";
+    const tb = '<table class="rtab"><thead><tr><th>Categoria</th><th class="n" style="color:' + C1 + '">Regente</th><th class="n" style="color:' + C2 + '">Média do grupo</th><th class="n">Diferença</th></tr></thead><tbody>' + axes.map((ax) => "<tr><td>" + esc(ax.label) + '</td><td class="n" style="color:' + C1 + ';font-weight:700">' + fmt(ax.v) + '</td><td class="n" style="color:' + C2 + ';font-weight:700">' + fmt(ax.ref) + '</td><td class="n ' + (num(ax.v) && num(ax.ref) ? (ax.v >= ax.ref ? "diffup" : "diffdn") : "") + '">' + (num(ax.v) && num(ax.ref) ? (ax.v - ax.ref >= 0 ? "+" : "−") + fmt(Math.abs(ax.v - ax.ref)) : "—") + "</td></tr>").join("") + "</tbody></table>";
+    return '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" style="max-width:' + W + 'px" role="img" aria-label="Radar das categorias: nota da regente comparada à média do grupo">' + g + poly("ref", C2, true) + poly("v", C1, false) + marks + labs + "</svg>" + leg + tb;
+  }
+
+  /* ---------- modal ---------- */
+  function openModal(title, html, sim) {
+    $("#modal").className = sim ? "sim" : "";
+    $("#modal").innerHTML = '<div class="mb"><div class="mt"><h2>' + title + '</h2><span class="sp"></span><button class="x" data-act="close">' + ic("x") + ' Fechar</button></div><div class="mc">' + html + "</div></div>";
+    $("#modal").classList.add("open"); $("#modal").scrollTop = 0; document.body.style.overflow = "hidden";
+  }
+  function closeModal() { document.body.classList.remove("print-modal"); $("#modal").classList.remove("open"); $("#modal").className = ""; document.body.style.overflow = ""; }
+
+  /* ---------- explicação de categoria ---------- */
+  function explicaCategoria(res, panel, un, grp, k) {
+    const P = res.P, P18 = res.P18, isB = panel === "b";
+    const cat = catsOf(panel).find((c) => c.key === k), { apt, out, dem } = detalheCat(res, panel, un, grp, k);
+    const l = rowOf(res, panel, un, grp, k);
+    let regras = "<ul>";
+    if (k === "geral") {
+      regras += "<li><b>Nota</b> = Índice Final = Base − Perda 1 − Perda 2, onde Base = " + P.pesoC * 100 + "% × Coord. ajustada + " + P.pesoF * 100 + "% × Famílias.</li>";
+    } else {
+      regras += "<li><b>Nota da categoria</b> = " + P.pesoC * 100 + "% × (Coord. da categoria − " + P.ajuste + " × viés) + " + P.pesoF * 100 + "% × Famílias da categoria. <b>Sem penalidades</b>: o Índice Final não substitui a nota temática; ele só entra como filtro" + (P.piso === 1 ? " (Final ≥ média do grupo)" : " (piso desligado)") + ".</li>";
+      if (k === "ingles") regras += "<li>Só concorre quem leciona Inglês.</li>";
+      if (k === "bemestar") regras += "<li>Categoria exclusiva da faixa K2–K4.</li>";
+    }
+    const minTxt = isB ? (grp === "K2–K4" ? "máx(" + P18.minK + "; " + pct(P18.pct) + "% dos alunos ativos das turmas da faixa) famílias" : P18.minOutros + " famílias") : P.minFam + " famílias";
+    regras += "<li><b>Elegibilidade</b>: ≥ " + minTxt + ", ≥ " + P.minAval + " avaliadoras" + (P.exigeAuto === 1 ? ", autoavaliação respondida" : "") + ".</li>";
+    if (isB) regras += "<li><b>Reconhecimento</b>: o 1º precisa ter nota ≥ " + P18.notaMin + ". O 2º é mencionado se nota ≥ " + P18.notaMin + " e a diferença para o 1º ≤ " + P18.dif + " pt.</li>";
+    regras += "</ul>";
+    let rows = "";
+    apt.forEach((x, i) => {
+      const o = x.o;
+      rows += "<tr><td>" + (i + 1) + 'º</td><td><button class="nm-btn" data-act="ficha" data-p="' + panel + '" data-k="' + esc(o.key) + '" data-u="' + esc(un) + '" data-g="' + esc(grp) + '">' + esc(o.regente) + "</button></td>" +
+        (k === "geral" ? "<td class='n'>" + fmt(o.Base) + "</td><td class='n'>−" + fmt(o.perda1) + "</td><td class='n'>−" + fmt(o.perda2) + "</td><td class='n'><b>" + fmt(o.final) + "</b></td>" : "<td class='n'>" + fmt(o.temas[k].Cadj) + "</td><td class='n'>" + fmt(o.temas[k].F) + "</td><td class='n'><b>" + fmt(x.s) + "</b></td><td class='n'>" + fmt(o.final) + "</td>") + "</tr>";
+    });
+    const head = k === "geral" ? "<th>#</th><th>Regente</th><th class='n'>Base</th><th class='n'>Perda 1</th><th class='n'>Perda 2</th><th class='n'>Índice Final</th>" : "<th>#</th><th>Regente</th><th class='n'>Coord. ajust.</th><th class='n'>Famílias</th><th class='n'>Nota</th><th class='n'>Índice Final</th>";
+    let rowsOut = out.map((x) => "<tr class='inel'><td>—</td><td><button class='nm-btn' data-act='ficha' data-p='" + panel + "' data-k='" + esc(x.o.key) + "' data-u='" + esc(un) + "' data-g='" + esc(grp) + "'>" + esc(x.o.regente) + "</button></td><td colspan='4'>" + esc(x.m || "—") + "</td></tr>").join("");
+    rowsOut += dem.map((x) => "<tr class='dem-row'><td>—</td><td><button class='nm-btn' data-act='ficha' data-p='" + panel + "' data-k='" + esc(x.o.key) + "' data-u='" + esc(un) + "' data-g='" + esc(grp) + "'>" + esc(x.o.regente) + "</button> <span class='chip at'>" + lbl(x.o) + "</span></td><td colspan='4'>" + esc(demTxt(x.o)) + " — fora do quadro" + (x.s != null ? " (nota " + fmt(x.s) + " continua na média do grupo)" : "") + "</td></tr>").join("");
+    let sit = isB && l ? '<div class="note"><b>Situação (como na planilha):</b> ' + esc(l.situacao) + (l.nota1 != null ? " · 1º: " + fmt(l.nota1) : "") + (l.nota2 != null ? " · 2º: " + fmt(l.nota2) + " · diferença " + fmt(l.dif) : "") + "</div>" : "";
+    return regras + sit + '<div class="wrap"><table><thead><tr>' + head + "</tr></thead><tbody>" + rows + rowsOut + "</tbody></table></div><div class='foot'>Clique no nome para abrir a ficha com a memória de cálculo." + (dem.length ? " Regentes demitidos ficam no fim da lista e não concorrem ao quadro; as notas deles continuam compondo as médias do grupo." : "") + "</div>";
+  }
+
+  /* ---------- ficha da regente ---------- */
+  function perguntasFamilia(panel, o) {
+    const D = S.D, map = panel === "a" ? Mapping.A_FAM : Mapping.B_FAM;
+    const ent = new Set(D.blocos.filter((b) => b[1] === "Sim").map((b) => b[0]));
+    const rows = D.turmas.filter((t) => t.key === o.key && (panel === "a" || t.faixa === o.faixa));
+    const agg = {};
+    rows.forEach((t) => (D.famQ[t.turma] || []).forEach(([bl, pq, sum, n]) => { const k = bl + "|" + pq; (agg[k] = agg[k] || { bl, pq, sum: 0, n: 0 }); agg[k].sum += sum; agg[k].n += n; }));
+    return Object.values(agg).map((x) => ({ ...x, cat: map[x.bl] || "—", entra: ent.has(x.bl) })).sort((a, b) => a.bl.localeCompare(b.bl));
+  }
+  function acoesBar(o, panel, key, un, grp) {
+    const at = ' data-p="' + panel + '" data-k="' + esc(key) + '" data-u="' + esc(un) + '" data-g="' + esc(grp) + '"';
+    if (o.fora) return '<div class="acoes"><span class="foot">Feedback e PDI não se aplicam: ' + esc(lbl(o).toLowerCase()) + " — fora do quadro.</span></div>";
+    return '<div class="acoes"><button class="q fb" data-act="fb"' + at + '>' + ic("chat") + ' Dicas de feedback (coordenação)</button><button class="q pdi" data-act="pdi"' + at + '>' + ic("target") + ' PDI do professor (SMART)</button></div>';
+  }
+  function ctxAcoes(panel, key, un, grp, res) {
+    const isB = panel === "b", list = isB ? res.r18 : res.r16.regs;
+    const o = list.find((x) => x.key === key && x.un === un && (isB ? x.faixa === grp : x.seg === grp));
+    if (!o) return null;
+    const reg = regsOf(res, panel, un, grp).filter((x) => x.elig === "Sim" && !x.fora);
+    const refAvg = (k) => { const v = reg.map((x) => x.temas[k] && x.temas[k].nota).filter(num); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+    const cats = catsOf(panel).filter((c) => c.key !== "geral" && !(c.key === "bemestar" && o.faixa !== "K2–K4") && !(c.key === "ingles" && o.ingles !== "Sim")).map((c) => ({ key: c.key, nome: c.nome, nota: o.temas[c.key].nota, ref: refAvg(c.key), C: o.temas[c.key].Cadj, F: o.temas[c.key].F }));
+    return { o, ctx: { regente: o.regente, unidade: unL(un), grupo: grp, painel: panel, final: o.final, mediaFinal: o.mediaFinal, F: o.F, Cadj: o.Cadj, Auto: o.Auto, Base: o.Base, gap1: o.gap1, gap2: o.gap2, tol1: res.P.tol1, tol2: res.P.tol2, pos: o.pos, nGrupo: reg.length, elig: o.elig, cats, refData: S.D.refData } };
+  }
+  function acoes(kind, d, res) {
+    const r = ctxAcoes(d.p, d.k, d.u, d.g, res);
+    if (!r) return;
+    const back = '<div class="noprint barra"><button data-act="ficha" data-p="' + d.p + '" data-k="' + esc(d.k) + '" data-u="' + esc(d.u) + '" data-g="' + esc(d.g) + '">' + ic("back") + ' Voltar à ficha</button><button data-act="copy">' + ic("copy") + ' Copiar texto</button><button class="on" data-act="print">' + ic("print") + ' Imprimir / salvar PDF</button></div>';
+    openModal((kind === "fb" ? "Feedback — " : "PDI SMART — ") + esc(r.o.regente), back + '<div id="acao" class="acao-doc">' + (kind === "fb" ? Acoes.feedback(r.ctx) : Acoes.pdi(r.ctx)) + "</div>", res !== S.R);
+    document.body.classList.add("print-modal");
+  }
+  function vinculoBox(o) {
+    const v = o.vinculo;
+    if (!v) return "";
+    let h = "";
+    if (o.fora) h += '<div class="warn"><b>' + esc(demTxt(o)) + (o.motivoDeslig ? " (" + esc(o.motivoDeslig) + ")" : "") + ".</b> " + "Não concorre ao quadro e fica na última posição das listas. A nota continua compondo as médias do grupo, para não alterar o que já foi apurado.</div>";
+    else if (!v.adm && v.status) h += '<div class="foot">Vínculo na base funcional: ' + esc(v.status) + ".</div>";
+    if (v.adm) h += '<div class="foot">Base funcional: ' + esc(v.cargo || "—") + " · admissão " + fdata(v.adm) + (v.des ? " · desligamento " + fdata(v.des) + (v.motivo ? " (" + esc(v.motivo) + ")" : "") : " · " + esc(v.status || "ativo(a)")) + (v.adm > "2026-06-01" ? ' · <b style="color:var(--at)">admitido(a) após 01/06/2026 (informativo: a regra de exclusão por admissão ainda não está aplicada)</b>' : "") + "</div>";
+    return h;
+  }
+  function ficha(panel, key, un, grp, res) {
+    res = res || S.R; const P = res.P, P18 = res.P18, isB = panel === "b";
+    const list = isB ? res.r18 : res.r16.regs;
+    const o = list.find((x) => x.key === key && x.un === un && (isB ? x.faixa === grp : x.seg === grp));
+    if (!o) return;
+    const cats = catsOf(panel).filter((c) => c.key !== "geral" && !(c.key === "bemestar" && o.faixa !== "K2–K4"));
+    const minReq = isB ? o.minExigido : P.minFam;
+    const chk = (ok, t, v) => '<div class="chk"><span class="ck ' + (ok ? "y" : "n") + '">' + ic(ok ? "ok" : "no") + "</span><span>" + t + "</span><b>" + v + "</b></div>";
+    const checks = chk(o.nFam >= minReq, "Respostas de famílias ≥ " + minReq + (isB && o.faixa === "K2–K4" ? " (máx(" + P18.minK + "; ⌈" + pct(P18.pct) + "% × " + o.alunos + " alunos⌉))" : ""), o.nFam) +
+      chk(o.nAval >= P.minAval, "Avaliadoras da coordenação ≥ " + P.minAval, o.nAval) +
+      (P.exigeAuto === 1 ? chk(o.nAuto > 0, "Autoavaliação respondida (exigida)", o.nAuto > 0 ? o.nAuto + " respostas" : "ausente") : '<div class="chk"><span class="ck m">' + ic("minus") + '</span><span>Autoavaliação não exigida (simulação)</span><b>' + o.nAuto + " resp.</b></div>");
+    const step = (id, titulo, formula, subst, valor, expl) => '<div class="step"><div class="hd"><b>' + titulo + '</b><code>' + formula + "</code><span class='val'>" + valor + '</span><button class="q" data-act="toggle" data-t="' + id + '">? como</button></div>' + (subst ? '<div class="foot">' + subst + '</div>' : "") + '<div class="exp" id="' + id + '">' + expl + "</div></div>";
+    const contrib = o.avalContrib.map((x) => esc(x.aval) + " (n=" + x.n + ", viés " + fmt(x.vies, 2) + ")").join("; ");
+    const passos =
+      step("s1", "1. Famílias (F)", "F = Σ índices ÷ nº de respostas", fmt(o.fSomaItens, 0) + " ÷ " + o.fItens + (isB ? " · apenas turmas da faixa " + esc(o.faixa) : " · todas as turmas da regente"), fmt(o.F, 2),
+        "Cada resposta vira um índice 0–100 (Sempre = 100, Quase sempre = 75, Às vezes = 50, Raramente = 25, Nunca = 0; Sim, plenamente = 100 … Não, ainda não = 0). F é a média de todas as respostas dos blocos que entram no Índice (Conhecimento individual, Bem-estar, Comunicação, Inglês, Desenvolvimento acadêmico, Visibilidade). Turmas: " + esc(o.turmas) + ".") +
+      step("s2", "2. Coordenação bruta (C)", "C = média das respostas válidas", o.nCoor + " respostas · " + o.nAval + " avaliadoras", fmt(o.Cbruto, 2), "Média de todas as respostas da coordenação para esta regente. Contribuições: " + (contrib || "—")) +
+      step("s3", "3. Viés ponderado", "viés = Σ(n × viés da avaliadora) ÷ n total", "viés da avaliadora = média dela − média global (" + fmt(Engine.vieses(S.D).gMean, 2) + ")", fmt(o.vies, 3), "Avaliadoras mais generosas ou mais rígidas deslocam a nota. O viés de cada uma é a média dela menos a média geral; o da regente pondera pelas respostas de cada avaliadora.") +
+      step("s4", "4. Coordenação ajustada", "C aj = limita(C − ajuste × viés; 0..100)", fmt(o.Cbruto, 2) + " − " + pz(P.ajuste) + " × " + fmt(o.vies, 3), fmt(o.Cadj, 2), "Se o ajuste estiver ligado (1), o viés é descontado. No simulador é possível desligar (0).") +
+      step("s5", "5. Base", "Base = " + pz(P.pesoC) + "×C aj + " + pz(P.pesoF) + "×F", pz(P.pesoC) + " × " + fmt(o.Cadj, 2) + " + " + pz(P.pesoF) + " × " + fmt(o.F, 2), fmt(o.Base, 2), "Pesos lidos de " + (isB ? "Painel B (herdados da aba 17, C5:C6)" : "aba 17, C5:C6") + ".") +
+      step("s6", "6. Perda 1 — Família × Coordenação", "gap1 = |F − C aj|; perda1 = " + P.fat1 + " × máx(0; gap1 − " + P.tol1 + ")", "gap1 = " + fmt(o.gap1, 2), loss(o.perda1), "Penaliza quando famílias e coordenação divergem mais do que a tolerância (" + P.tol1 + " pts).") +
+      step("s7", "7. Perda 2 — Autoavaliação × Base", "gap2 = |Auto − Base|; perda2 = " + P.fat2 + " × máx(0; gap2 − " + P.tol2 + ")", "Autoavaliação = " + fmt(o.Auto, 2) + " (" + o.nAuto + " resp.) · gap2 = " + fmt(o.gap2, 2), loss(o.perda2), "É aqui que a autoavaliação entra no cálculo: compara a visão da regente com a Base. Sem autoavaliação, a regente é inelegível (se exigida) e a perda é 0.") +
+      step("s8", "8. Índice Final", "Final = Base − Perda 1 − Perda 2", fmt(o.Base, 2) + " − " + fmt(o.perda1, 2) + " − " + fmt(o.perda2, 2), "<b>" + fmt(o.final, 2) + "</b>", "Usado no Destaque Geral e como filtro (média do grupo) das categorias temáticas. Média do grupo: " + fmt(o.mediaFinal, 2) + ". Posição entre as elegíveis: " + (o.pos == null ? "—" : o.pos + "º") + ".");
+    const mC = {}, mF = {};
+    const reg = regsOf(res, panel, un, grp).filter((x) => x.elig === "Sim");
+    const refAvg = (k) => { const v = reg.map((x) => x.temas[k] && x.temas[k].nota).filter(num); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+    const axes = cats.map((c) => ({ label: c.nome, v: o.temas[c.key].nota, ref: refAvg(c.key) }));
+    let catRows = cats.map((c) => {
+      const t = o.temas[c.key], m = motivo(o, c.key, panel, res), l = rowOf(res, panel, un, grp, c.key);
+      const posn = l ? l.ranking.findIndex((r) => r.key === o.key) : -1;
+      return "<tr><td>" + esc(c.nome) + "</td><td class='n'>" + fmt(t.C) + "</td><td class='n'>" + fmt(t.Cadj) + "</td><td class='n'>" + fmt(t.F) + "</td><td class='n'><b>" + fmt(t.nota) + "</b></td><td>" + (o.fora ? "⛔ fora do quadro · " + esc(demTxt(o)) : o.flags[c.key] === 1 ? "✅ apta" + (posn >= 0 ? " · " + (posn + 1) + "º" : "") : "—  " + esc(m)) + "</td></tr>";
+    }).join("");
+    const pf = perguntasFamilia(panel, o);
+    const pfRows = pf.map((x) => "<tr><td>" + esc(x.bl) + "</td><td>" + esc(x.pq) + "</td><td class='n'>" + x.n + "</td><td class='n'>" + fmt(x.sum / x.n) + "</td><td>" + esc(x.cat) + (x.entra ? "" : " (fora do Índice)") + "</td></tr>").join("");
+    const cq = (S.D.coorQ[o.key] || []).map(([pq, s, n]) => {
+      const tm = Mapping.patternsMatch(S.D, pq).filter((t) => panel === "b" || t !== "Bem-estar");
+      return "<tr><td>" + esc(pq.replace(/\s+/g, " ")) + "</td><td class='n'>" + n + "</td><td class='n'>" + fmt(s / n) + "</td><td>" + (tm.length ? esc(tm.join(" + ")) : "só Índice geral") + "</td></tr>";
+    }).join("");
+    const aq = (S.D.autoQ[o.key] || []).map(([pq, s, n]) => "<tr><td>" + esc(pq.replace(/\s+/g, " ")) + "</td><td class='n'>" + n + "</td><td class='n'>" + fmt(s / n) + "</td></tr>").join("");
+    const html =
+      '<div class="stat"><div><b>' + fmt(o.final) + "</b><span>Índice Final</span></div><div><b>" + (o.pos == null ? "—" : o.pos + "º") + "</b><span>posição no grupo" + (o.fora ? " (" + lbl(o).toLowerCase() + ": última posição)" : "") + "</span></div><div><b>" + esc(o.fora ? lbl(o) : o.elig === "Sim" ? "Elegível" : o.elig.replace("Não — ", "")) + "</b><span>" + (o.fora ? "fora do quadro" : "elegibilidade") + "</span></div><div><b>" + esc(o.ingles) + "</b><span>leciona Inglês</span></div></div>" +
+      vinculoBox(o) + acoesBar(o, panel, key, un, grp) +
+      '<div class="foot">' + esc(unL(un)) + " · " + esc(grp) + " · turmas: " + esc(o.turmas) + (isB ? " · alunos ativos nas turmas da faixa: " + o.alunos : "") + "</div>" +
+      (isB ? '<div class="note">No Painel B esta regente é calculada <b>só com as turmas da faixa ' + esc(grp) + '</b>. Se atua em mais de uma faixa, tem uma ficha em cada.</div>' : "") +
+      "<h3>Elegibilidade</h3>" + checks +
+      "<h3>Memória de cálculo <span class='foot'>(clique em “? como” para a explicação de cada passo)</span></h3>" + passos +
+      '<h3>Categorias</h3><div class="two"><div class="wrap"><table><thead><tr><th>Categoria</th><th class="n">C</th><th class="n">C aj.</th><th class="n">F</th><th class="n">Nota</th><th>Situação</th></tr></thead><tbody>' + catRows + "</tbody></table></div><div>" + radar(axes, { nome: o.regente, grupo: unL(un) + " · " + grp, n: reg.length }) + "</div></div>" +
+      "<h3>Perguntas utilizadas</h3>" +
+      "<details open><summary>Famílias (" + pf.length + " perguntas)</summary><div class='wrap'><table><thead><tr><th>Bloco</th><th>Pergunta</th><th class='n'>Resp.</th><th class='n'>Média</th><th>Categoria (" + (isB ? "B" : "A") + ")</th></tr></thead><tbody>" + (pfRows || "<tr><td colspan='5'>Sem respostas.</td></tr>") + "</tbody></table></div></details>" +
+      "<details><summary>Coordenação (" + (S.D.coorQ[o.key] || []).length + " perguntas)</summary><div class='wrap'><table><thead><tr><th>Pergunta</th><th class='n'>Resp.</th><th class='n'>Média bruta</th><th>Categoria (" + (isB ? "B" : "A") + ")</th></tr></thead><tbody>" + (cq || "<tr><td colspan='4'>Sem respostas.</td></tr>") + "</tbody></table></div><div class='foot'>Médias brutas, antes do ajuste de viés.</div></details>" +
+      "<details><summary>Autoavaliação (" + (S.D.autoQ[o.key] || []).length + " perguntas)</summary><div class='wrap'><table><thead><tr><th>Pergunta</th><th class='n'>Resp.</th><th class='n'>Média</th></tr></thead><tbody>" + (aq || "<tr><td colspan='3'>Sem autoavaliação.</td></tr>") + "</tbody></table></div></details>";
+    openModal(esc(o.regente) + ' <span class="chip">' + (isB ? "Painel B" : "Painel A") + "</span>" + (res !== S.R ? ' <span class="chip at">SIMULAÇÃO</span>' : ""), html, res !== S.R);
+  }
+
+  /* ---------- painéis A e B ---------- */
+  /* ---------- metodologia / mapeamento ---------- */
+  function renderMetodologia() {
+    const P = S.D.p17, rows = S.MAP.filter((r) => (!S.mapSrc || r.fonte === S.mapSrc) && (!S.mapF || (r.pergunta + r.eixo + r.catA + r.bloco).toLowerCase().includes(S.mapF.toLowerCase())));
+    return vtitle("book", "Metodologia e perguntas", "Como o Índice Final é calculado e de onde vem cada pergunta.") + demBanner(S.R) + '<div class="box"><h2>' + ic("calc") + " Painel A — Segmento (aba 17)</h2><ul>" +
+      "<li><b>Base</b> = " + P.pesoC * 100 + "% × Coord. ajustada + " + P.pesoF * 100 + "% × Famílias</li><li><b>Perda 1</b> = " + P.fat1 + " × máx(0; |F − C aj| − " + P.tol1 + ")</li><li><b>Perda 2</b> = " + P.fat2 + " × máx(0; |Auto − Base| − " + P.tol2 + ")</li><li><b>Índice Final</b> = Base − Perda 1 − Perda 2</li>" +
+      "<li>Elegível: ≥ " + P.minFam + " famílias, ≥ " + P.minAval + " avaliadoras, autoavaliação " + (P.exigeAuto ? "obrigatória" : "opcional") + "</li><li>Categorias temáticas: Final ≥ média do grupo; nota sem penalidades</li><li>Top 3 por categoria</li><li>Desligados e afastados não concorrem ao pódio; as notas continuam nas médias</li></ul></div>" +
+      '<div class="box"><h2>' + ic("list") + ' Mapeamento de perguntas</h2><div class="note">Pergunta original → fonte avaliadora → eixo original → categoria do pódio → regra de agregação → peso. Contagens (“n”) são respostas válidas das regentes avaliadas.</div>' +
+      '<div class="bar"><input type="search" placeholder="Filtrar texto…" value="' + esc(S.mapF) + '" data-act="mapf"><select data-act="maps"><option value="">Todas as fontes</option>' + ["Famílias", "Coordenação", "Autoavaliação"].map((f) => "<option" + (S.mapSrc === f ? " selected" : "") + ">" + f + "</option>").join("") + '</select><button data-act="csv">' + ic("download") + ' Baixar CSV</button><span class="foot">' + rows.length + " de " + S.MAP.length + " perguntas</span></div>" +
+      '<div class="wrap"><table><thead><tr><th>Pergunta original</th><th>Fonte</th><th>Eixo original</th><th class="n">n</th><th>Categoria</th><th>Agregação</th><th>Peso</th></tr></thead><tbody>' +
+      rows.map((r) => "<tr><td>" + esc(r.pergunta) + "</td><td>" + esc(r.fonte) + (r.bloco !== "—" ? "<br><span class='foot'>" + esc(r.bloco) + "</span>" : "") + "</td><td>" + esc(r.eixo) + "</td><td class='n'>" + r.n + "</td><td>" + esc(r.catA) + "</td><td class='foot'>" + esc(r.agreg) + "</td><td class='foot'>" + esc(r.peso) + "</td></tr>").join("") + "</tbody></table></div></div>";
+  }
+  function csvMap() {
+    const q = (s) => '"' + String(s).replace(/"/g, '""') + '"';
+    const head = ["Pergunta original", "Fonte avaliadora", "Bloco", "Eixo original", "n", "Categoria", "Regra de agregação", "Peso"];
+    const t = [head.map(q).join(";")].concat(S.MAP.map((r) => [r.pergunta, r.fonte, r.bloco, r.eixo, r.n, r.catA, r.agreg, r.peso].map(q).join(";")));
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + t.join("\n")], { type: "text/csv;charset=utf-8" })); a.download = "mapeamento-perguntas.csv"; a.click();
+  }
+
+  /* ---------- conciliação ---------- */
+  function renderConciliacao() {
+    const rc = reconcile(Object.assign({}, S.D, S.D.pre || {}), S.RP, Engine), T = (window.TESTES || []).filter((t) => !/^T?\d*[a-z]?\s*.*(Painel B|faixa|aba 18)/i.test(t.teste));
+    const pa = Object.entries(rc.porAba).filter(([k]) => k === "16" || k === "17"), nA = pa.reduce((s, [, v]) => s + v.n, 0), bA = pa.reduce((s, [, v]) => s + v.bad, 0), okAll = bA === 0;
+    return vtitle("shield", "Conciliação e qualidade dos dados", "Conferência do motor de cálculo com a planilha Excel, correções da base e regra de desligados.") + '<div class="box"><h2>' + ic("shield") + ' Conciliação com a planilha Excel</h2><div class="' + (okAll ? "note" : "warn") + '">' + ic(okAll ? "ok" : "warn") + '<div><b>' + (okAll ? "Motor e Excel coincidem" : "Há divergências") + "</b> — " + nA.toLocaleString("pt-BR") + " valores comparados (tolerância 1e-7), " + bA + " divergência(s). A comparação é refeita agora, no seu navegador, entre o motor de cálculo <b>sem a regra de demitidos</b> (que não existe no Excel) e os valores que o Excel tinha guardados. A regra de demitidos é aplicada só na exibição dos painéis (veja abaixo).</div></div>" +
+      '<div class="wrap"><table><thead><tr><th>Aba</th><th class="n">Comparações</th><th class="n">Divergências</th></tr></thead><tbody>' + pa.map(([k, v]) => "<tr><td>" + ({ "16": "16-Calc-Regentes (66 regentes)", "17": "17-Premiação-K-F1 (20 linhas × 8 campos)", "18": "18 — por regente × faixa (69 linhas)", "18T": "18 — tabela de premiação (32 linhas)" }[k] || k) + "</td><td class='n'>" + v.n + "</td><td class='n'>" + v.bad + "</td></tr>").join("") + "</tbody></table></div>" +
+      (rc.issues.length ? "<pre>" + esc(rc.issues.join("\n")) + "</pre>" : "") + "</div>" +
+      correcoesBox() + demBoxConc() +
+      '<div class="box"><h2>Testes de cenário</h2><div class="foot">Executados com <code>tests/tests.js</code> (Node) sobre o mesmo motor.</div><div class="wrap"><table><tbody>' + T.map((t) => "<tr><td class='ck " + (t.ok ? "y" : "n") + "'>" + ic(t.ok ? "ok" : "no") + "</td><td>" + esc(t.teste) + "</td><td class='foot'>" + esc(t.detalhe) + "</td></tr>").join("") + "</tbody></table></div></div>" +
+      '<div class="box"><h2>Pontos da planilha que merecem decisão (nada foi corrigido em silêncio)</h2><ul>' +
+      "<li><b>Cuidado e Vínculo não é o mesmo nas duas abas.</b> Aba 17: F de Cuidado = “Conhecimento individual” + “Bem-estar”. Aba 18: F de Cuidado = só “Conhecimento individual”, e “Bem-estar” vira categoria própria (K2–K4). Reproduzido como está; decidir se a diferença é intencional.</li>" +
+      "<li><b>Cabeçalhos AQ/AR da aba 16 parecem trocados</b> em relação às fórmulas das colunas. As colunas não alimentam a tabela da aba 17 e não afetam nenhum resultado aqui.</li>" +
+      "<li><b>Unidade “Kinder”</b> nos dados corresponde ao Lago Sul; o painel exibe “Lago Sul”.</li>" +
+      "<li>A pergunta sobre “vínculo afetivo” é contada tanto em Cuidado e Vínculo quanto em Bem-estar (padrões da aba 15, AD:AE); é uma escolha da planilha.</li></ul></div>";
+  }
+
+  function changes(A, B) {
+    const mud = [];
+    B.t17.forEach((l, i) => { const a = A.t17[i], ka = a.ranking.slice(0, 3).map((r) => r.regente), kb = l.ranking.slice(0, 3).map((r) => r.regente); if (JSON.stringify(ka) !== JSON.stringify(kb)) mud.push("A · " + unL(l.un) + " · " + l.seg + " · " + l.cat + ": " + (ka.join(", ") || "—") + "  →  " + (kb.join(", ") || "—")); });
+    return mud;
+  }
+  function correcoesBox() {
+    const C = S.D.correcoes || [];
+    if (!C.length) return "";
+    const mud = changes(S.RP, S.RC);
+    return '<div class="box"><h2>Correções aplicadas à base (professor da época da avaliação)</h2><div class="note">A turma passa a ser ligada a quem lecionava <b>na época da avaliação</b>, conforme informado pela direção. Isso muda quais respostas das famílias entram na nota de cada regente. A planilha original (valores do Excel) continua sendo a referência da conciliação acima.</div>' +
+      '<div class="wrap"><table><thead><tr><th>Turma</th><th>Ação</th><th>Regente</th><th>Motivo</th></tr></thead><tbody>' + C.map((c) => "<tr" + (c.acao.startsWith("Confirmada") ? " class='inel'" : "") + "><td>" + esc(c.turma) + "</td><td>" + esc(c.acao) + "</td><td>" + esc(c.de) + (c.para && c.para !== c.de ? " → <b>" + esc(c.para) + "</b>" : "") + "</td><td>" + esc(c.motivo) + "</td></tr>").join("") + "</tbody></table></div>" +
+      ((S.D.semTurma || []).length ? '<div class="warn"><b>Ficaram sem nenhuma turma após as correções (aparecem como inelegíveis, “poucas famílias”):</b> ' + S.D.semTurma.map(esc).join("; ") + ".</div>" : "") +
+      "<h3>O que muda no quadro por causa das correções</h3>" + (mud.length ? "<ul>" + mud.map((m) => "<li>" + esc(m) + "</li>").join("") + "</ul>" : '<div class="foot">Nenhuma mudança.</div>') + "</div>";
+  }
+  function demBoxConc() {
+    const v = S.D.vinc || {}, ref = S.D.refData, ls = [];
+    S.R.r16.regs.filter((o) => o.fora).forEach((o) => { const a = o, b = S.R.r18.filter((x) => x.key === o.key && x.un === o.un); ls.push("<tr><td>" + esc(o.regente) + "</td><td>" + esc(unL(o.un) + " · " + o.seg) + "</td><td>" + (o.afastado ? "Afastado(a)" : fdata(o.desligamento)) + "</td><td>" + esc(o.motivoDeslig || (o.afastado ? "Afastamento (base funcional)" : "—")) + "</td><td>" + (o.elig === "Sim" ? "Elegível (nota " + fmt(o.final) + "; era " + (o.posComDemitidos == null ? "—" : o.posComDemitidos + "º") + ")" : esc(o.elig.replace("Não — ", "Inelegível: "))) + "</td></tr>"); });
+    const mud = [];
+    S.R.t17.forEach((l, i) => { const a = S.RC.t17[i]; if (JSON.stringify(a.ranking.slice(0, 3).map((r) => r.key)) !== JSON.stringify(l.ranking.slice(0, 3).map((r) => r.key))) mud.push("A · " + unL(l.un) + " · " + l.seg + " · " + l.cat + ": " + a.ranking.slice(0, 3).map((r) => r.regente).join(", ") + "  →  " + l.ranking.slice(0, 3).map((r) => r.regente).join(", ")); });
+    return '<div class="box"><h2>Regra de demitidos e afastados (fora da planilha)</h2><div class="note">Regentes com desligamento até ' + fdata(ref) + ' (base funcional) não concorrem ao quadro e ficam na última posição. As notas deles continuam nas médias de grupo, para não alterar o que já foi apurado. ' + (S.opts.excluiDemitidos ? "" : "<b>Regra desligada nesta visualização.</b>") + "</div>" +
+      '<div class="wrap"><table><thead><tr><th>Regente</th><th>Grupo (painel A)</th><th>Desligamento</th><th>Motivo</th><th>Situação no cálculo</th></tr></thead><tbody>' + (ls.join("") || "<tr><td colspan='5'>Nenhum desligado entre as regentes.</td></tr>") + "</tbody></table></div>" +
+      "<h3>O que muda no quadro por causa da regra</h3>" + (mud.length ? "<ul>" + mud.map((m) => "<li>" + esc(m) + "</li>").join("") + "</ul>" : '<div class="foot">Nenhuma mudança de pódio ou reconhecimento.</div>') + "</div>";
+  }
+
+  /* ---------- roteamento / render ---------- */
+  const VIEWS = [["geral", "Visão geral", "dash"], ["unidade", "Por unidade", "pin"], ["categoria", "Por categoria", "layers"], ["honra", "Quadro de honra", "crown"], ["metodologia", "Metodologia", "book"]];
+  function render() {
+    $("nav.main").innerHTML = VIEWS.map(([k, n, i]) => '<button class="' + (S.view === k ? "on" : "") + '" data-act="view" data-v="' + k + '">' + ic(i) + "<span>" + n + "</span></button>").join("");
+    let h = "";
+    try {
+      if (["geral", "unidade", "categoria", "honra"].includes(S.view)) h = renderView(S.view, S.R, false);
+      else if (S.view === "simulador") h = renderSimulador();
+      else if (S.view === "metodologia") h = renderMetodologia();
+      else h = renderConciliacao();
+    } catch (e) { h = '<div class="warn">' + ic("warn") + "<div>Erro ao montar a tela: " + esc(e.message) + "</div></div>"; console.error(e); }
+    const y = window.scrollY, act = document.activeElement && document.activeElement.dataset ? document.activeElement : null;
+    $("#app").innerHTML = h;
+    const tb = document.querySelector('[data-act="theme"]'); if (tb) { const dk = document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme:dark)").matches); tb.innerHTML = ic(dk ? "sun" : "moon") + "<span>" + (dk ? "Claro" : "Escuro") + "</span>"; }
+    if (S.view === "simulador" || S.view === "metodologia") window.scrollTo(0, y);
+    if (act && act.dataset.sim) { const el = $('[data-sim="' + act.dataset.sim + '"][data-k="' + act.dataset.k + '"]'); if (el) { el.focus(); } }
+    if (act && act.dataset.act === "mapf") { const el = $('[data-act="mapf"]'); if (el) { el.focus(); const l = el.value.length; el.setSelectionRange(l, l); } }
+  }
+  function go(v) { S.view = v; try { history.replaceState(null, "", "#/" + v); } catch (e) {} render(); window.scrollTo(0, 0); }
+
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-act]"); if (!b) { if (e.target.id === "modal") closeModal(); return; }
+    const d = b.dataset, rs = (b.closest("#simpanel") || b.closest("#modal.sim")) && S._sim ? S._sim : S.R;
+    switch (d.act) {
+      case "view": go(d.v); break;
+      case "kpi": S.kpi = S.kpi === d.k ? null : d.k; render(); if (S.kpi) { const el = document.getElementById("kpilist"); if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" }); } break;
+      case "unit": S.unit = d.u; render(); break;
+      case "cat": S.cat = d.c; render(); break;
+      case "ficha": ficha("a", d.k, d.u, d.g, rs); break;
+      case "explica": { const cat = catsOf("a").find((c) => c.key === d.c); openModal("Como foi calculado — " + esc(cat.nome) + ' <span class="chip">' + esc(unL(d.u) + " · " + d.g) + "</span>" + (rs !== S.R ? ' <span class="chip at">SIMULAÇÃO</span>' : ""), explicaCategoria(rs, "a", d.u, d.g, d.c), rs !== S.R); break; }
+      case "close": closeModal(); break;
+      case "toggle": { const x = document.getElementById(d.t); if (x) x.classList.toggle("open"); break; }
+      case "reset": S.simP17 = Object.assign({}, S.D.p17); render(); break;
+      case "csv": csvMap(); break;
+      case "fb": case "pdi": acoes(d.act === "fb" ? "fb" : "pdi", d, rs); break;
+      case "print": window.print(); break;
+      case "copy": { const el = document.getElementById("acao"); if (el) { const t = el.innerText; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = "Copiado ✓"; }).catch(() => { const r = document.createRange(); r.selectNodeContents(el); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); b.textContent = "Texto selecionado: Ctrl+C"; }); } break; }
+      case "dem": S.opts = optsOn(!S.opts.excluiDemitidos); S.R = Engine.run(S.D, null, null, S.opts); render(); break;
+      case "theme": { const r = document.documentElement, dark = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme:dark)").matches); r.dataset.theme = dark ? "light" : "dark"; try { localStorage.setItem("th", r.dataset.theme); } catch (x) {} render(); break; }
+    }
+  });
+  document.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.sim) { const v = parseFloat(t.value); if (!isNaN(v)) { S.simP17[t.dataset.k] = v; render(); } }
+    else if (t.dataset.act === "mapf") { S.mapF = t.value; render(); }
+  });
+  document.addEventListener("change", (e) => { if (e.target.dataset.act === "maps") { S.mapSrc = e.target.value; render(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  /* ---------- dados ---------- */
+  function start(D) {
+    S.D = D; S.R = Engine.run(D, null, null, S.opts); S.RC = Engine.run(D); S.RP = D.pre ? Engine.run(Object.assign({}, D, D.pre)) : S.RC; S.MAP = Mapping.build(D);
+    S.simP17 = Object.assign({}, D.p17);
+    $("#gate").style.display = "none"; $("#shell").style.display = "";
+    const v = (location.hash.match(/#\/(\w+)/) || [])[1];
+    S.view = VIEWS.some((x) => x[0] === v) ? v : "geral";
+    render();
+  }
+  function init() {
+    try { const t = localStorage.getItem("th"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    $("#logo").src = window.LOGO || ""; try { document.documentElement.style.setProperty("--logo", 'url("' + (window.LOGO || "") + '")'); } catch (e) {}
+    if (window.DADOS) return start(window.DADOS);
+    $("#shell").style.display = "none";
+    const fin = $("#file"), drop = $("#drop");
+    const load = (f) => { if (!f) return; f.text().then((t) => start(JSON.parse(t))).catch((x) => { $("#gerr").textContent = "Arquivo inválido: " + x.message; }); };
+    fin.addEventListener("change", (ev) => load(ev.target.files[0]));
+    if (drop) { ["dragover", "dragenter"].forEach((n) => drop.addEventListener(n, (ev) => { ev.preventDefault(); drop.classList.add("over"); })); ["dragleave", "drop"].forEach((n) => drop.addEventListener(n, (ev) => { ev.preventDefault(); drop.classList.remove("over"); if (n === "drop") load(ev.dataTransfer.files[0]); })); }
+  }
+  window.addEventListener("hashchange", () => { const v = (location.hash.match(/#\/(\w+)/) || [])[1]; if (S.D && v && v !== S.view && VIEWS.some((x) => x[0] === v)) { S.view = v; render(); window.scrollTo(0, 0); } });
+  window.PainelApp = { init, state: S, ficha };
+  document.addEventListener("DOMContentLoaded", init);
+})();
+
+</script>
+</body></html>
