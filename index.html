@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR" data-theme="dark"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
-<title>Portal Heavenly · Capital Humano e Avaliações</title>
+<title>Portal Heavenly · Capital Humano e Pedagógico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@700;800&display=swap">
 <style>
@@ -182,6 +182,31 @@ h1 em{font-style:normal;color:var(--bege)}
 :root[data-theme=light] .acts li{background:#fff}:root[data-theme=light] .acts li b{background:#f1e3e6;color:var(--bordo)}
 :root[data-theme=light] .badge{border-color:#d9a0ab}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.portal,.fadeup{opacity:1}html{scroll-behavior:auto}}
+
+/* escolha dentro do Pedagógico */
+.pk{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(2,12,26,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.pk[hidden]{display:none}
+.pk-box{position:relative;width:min(720px,100%);border-radius:28px;padding:28px 26px 26px;border:1px solid rgba(255,255,255,.24);background:linear-gradient(160deg,rgba(18,44,74,.96),rgba(8,28,52,.96));box-shadow:0 30px 80px rgba(0,0,0,.5);animation:pkin .28s ease both}
+@keyframes pkin{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.pk-box .kick{font:700 11px var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--acc-av)}
+.pk-box h3{margin:4px 0 6px;font:800 clamp(1.3rem,3vw,1.7rem)/1.1 var(--font-heading)}
+.pk-box>p{margin:0 0 18px;opacity:.8;font-size:.95rem}
+.pk-x{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:inherit;font:600 22px/1 var(--font-body);cursor:pointer}
+.pk-x:hover,.pk-x:focus-visible{background:rgba(255,255,255,.18)}
+.pk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pk-opt{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;border-radius:20px;padding:18px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);transition:transform .2s,border-color .2s,box-shadow .2s}
+.pk-opt:hover,.pk-opt:focus-visible{transform:translateY(-4px);border-color:var(--acc-av);box-shadow:0 18px 40px rgba(3,10,24,.4)}
+.pk-opt .pi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--acc-av) 22%,transparent);color:var(--acc-av);border:1px solid color-mix(in srgb,var(--acc-av) 50%,transparent)}
+.pk-opt .pi svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pk-opt b{font:800 1.15rem/1.2 var(--font-heading)}
+.pk-opt span.d{opacity:.82;font-size:.9rem;line-height:1.5}
+.pk-opt .go2{margin-top:auto;font:700 .88rem var(--font-body);color:var(--acc-av)}
+:root[data-theme=light] .pk{background:rgba(238,244,251,.7)}
+:root[data-theme=light] .pk-box{background:linear-gradient(160deg,#fff,#f3f8fe);border-color:rgba(2,36,66,.16);box-shadow:0 30px 70px rgba(2,36,66,.22)}
+:root[data-theme=light] .pk-x{border-color:rgba(2,36,66,.2);background:rgba(2,36,66,.06)}
+:root[data-theme=light] .pk-opt{background:#fff;border-color:rgba(2,36,66,.16)}
+@media(max-width:600px){.pk-grid{grid-template-columns:1fr}.pk-box{padding:24px 18px 20px}}
+@media(prefers-reduced-motion:reduce){.pk-box{animation:none!important}}
 </style></head>
 <body>
 <div class="hero" id="topo">
@@ -200,7 +225,7 @@ h1 em{font-style:normal;color:var(--bege)}
       <div class="copy fadeup">
         <div class="tag"><i></i><span id="hoje">Portal Heavenly</span></div>
         <h1><span id="sauda">Olá</span>! Escolha por onde <em>começar</em>.</h1>
-        <p class="sub">Aqui você chega aos painéis de gestão de pessoas e às avaliações da Heavenly e reencontra o que nos guia: nossa missão, nossa cultura e o porquê do nosso trabalho. <b>We are H&bull;I&bull;S &ndash; We are His.</b></p>
+        <p class="sub">Aqui você chega ao painel de gestão de pessoas e ao pedagógico (line-up das turmas e avaliações dos docentes) e reencontra o que nos guia: nossa missão, nossa cultura e o porquê do nosso trabalho. <b>We are H&bull;I&bull;S &ndash; We are His.</b></p>
         <div class="qcard" aria-live="polite">
           <div class="lb"><span>Frase do dia</span><button class="qbtn" id="qnext" type="button">Outra frase</button></div>
           <blockquote id="hq"><p></p><cite></cite></blockquote>
@@ -216,13 +241,13 @@ h1 em{font-style:normal;color:var(--bege)}
           <div class="chips"><i>Headcount</i><i>Turnover</i><i>Absenteísmo</i><i>Onboarding</i><i>Treinamentos</i><i>Perfis e equipes</i></div>
           <span class="go">Abrir painel de pessoas <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="portal av" id="lk-av" href="avaliacao-docentes/" target="_self" rel="noopener">
+        <a class="portal av" id="lk-av" href="#pedagogico" role="button" aria-haspopup="dialog" aria-controls="pk">
           <span class="glow"></span>
-          <div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.9z"/></svg></span>
-            <div><div class="kick">Painel 2</div><h2>Avaliações</h2></div></div>
-          <p>Avaliação de docentes e de coordenadores por unidade e segmento, com resultados e leitura para o acompanhamento de cada equipe.</p>
-          <div class="chips"><i>Kinder</i><i>Fundamental I</i><i>Fundamental II e Médio</i><i>Coordenação</i></div>
-          <span class="go">Abrir avaliações <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <div class="top"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 5.5C5 4.5 8 4.5 12 6c4-1.5 7-1.5 9-.5V19c-2-1-5-1-9 .5-4-1.5-7-1.5-9-.5z"/><path d="M12 6v13.5"/></svg></span>
+            <div><div class="kick">Painel 2</div><h2>Pedagógico</h2></div></div>
+          <p>Line-up das turmas e avaliações dos docentes e coordenadores, por unidade e segmento. Escolha o que quer abrir.</p>
+          <div class="chips"><i>Line-up das turmas</i><i>Avaliação dos docentes</i><i>Coordenação</i></div>
+          <span class="go">Escolher o que abrir <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
       </section>
     </main>
@@ -316,10 +341,32 @@ h1 em{font-style:normal;color:var(--bege)}
 </div>
 </div>
 
+<div class="pk" id="pk" hidden role="dialog" aria-modal="true" aria-labelledby="pk-t">
+  <div class="pk-box">
+    <button class="pk-x" type="button" id="pk-x" aria-label="Fechar">&times;</button>
+    <div class="kick">Pedagógico</div>
+    <h3 id="pk-t">O que você quer abrir?</h3>
+    <p>Escolha uma das opções para continuar.</p>
+    <div class="pk-grid">
+      <a class="pk-opt" id="lk-lu" href="lineup.turmas.html" target="_self">
+        <span class="pi"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9 4v16"/></svg></span>
+        <b>Line-up das turmas</b>
+        <span class="d">Quadro de atendimento das turmas: quem atende cada turma, por unidade.</span>
+        <span class="go2">Abrir line-up &rarr;</span>
+      </a>
+      <a class="pk-opt" id="lk-av2" href="avaliacao-docentes/" target="_self">
+        <span class="pi"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.9z"/></svg></span>
+        <b>Avaliações dos docentes</b>
+        <span class="d">Avaliação de docentes e de coordenadores por unidade e segmento.</span>
+        <span class="go2">Abrir avaliações &rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
 <script>
 (function(){
   /* ===== Configuração: ajuste aqui os links e os textos ===== */
-  var LINKS={capitalHumano:"Painel-Capital-Humano-HIS.html",avaliacoes:"avaliacao-docentes/"};
+  var LINKS={capitalHumano:"Painel-Capital-Humano-HIS.html",lineup:"lineup.turmas.html",avaliacoes:"avaliacao-docentes/"};
   var QUOTES=[
     ["Educar é um ato de amor, é dar vida.","Papa Francisco, no Manual de Cultura"],
     ["Nosso trabalho é missão, e nossa vocação é servir com propósito.","Manual de Cultura H\u2022I\u2022S"],
@@ -364,7 +411,19 @@ h1 em{font-style:normal;color:var(--bege)}
     ["Ética","Agimos com dignidade, mesmo quando não há espectadores. Um teste: se sentiríamos vergonha caso nossas ações fossem expostas, e a resposta for \u201Csim\u201D, é importante reconsiderar. Esperamos que todos protejam as informações confidenciais do Colégio, mesmo quando não estiverem explicitamente identificadas como tal."]
   ];
   function $(s){return document.querySelector(s)}
-  try{$("#lk-ch").href=LINKS.capitalHumano;$("#lk-av").href=LINKS.avaliacoes}catch(e){}
+  try{$("#lk-ch").href=LINKS.capitalHumano;$("#lk-lu").href=LINKS.lineup;$("#lk-av2").href=LINKS.avaliacoes}catch(e){}
+  /* Pedagógico: janela para escolher entre line-up e avaliações */
+  (function(){
+    var pk=$("#pk"),btn=$("#lk-av"),x=$("#pk-x"),last=null;
+    function open(e){if(e)e.preventDefault();last=document.activeElement;pk.hidden=false;document.body.style.overflow="hidden";setTimeout(function(){$("#lk-lu").focus()},30)}
+    function close(){pk.hidden=true;document.body.style.overflow="";if(last&&last.focus)last.focus()}
+    btn.addEventListener("click",open);x.addEventListener("click",close);
+    pk.addEventListener("click",function(e){if(e.target===pk)close()});
+    document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!pk.hidden)close();
+      if(e.key==="Tab"&&!pk.hidden){var f=[].slice.call(pk.querySelectorAll("a[href],button")),a=f[0],z=f[f.length-1];
+        if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
+    if(location.hash==="#pedagogico")open();
+  })();
 
   /* saudação e data */
   var d=new Date(),h=d.getHours();
